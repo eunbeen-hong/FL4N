@@ -13,3 +13,5 @@ Static site: open `index.html` directly or serve the folder (`python3 -m http.se
 To fill in before release: authors, affiliations, paper/arXiv/code links, badge text, and the BibTeX entry in `index.html`.
 
 The hero camera-rig visualisation and its clips were removed on 2026-10-13 (user request); `tools/build_rig.py` and `tools/build_rig_grid.py` remain for reference.
+
+`tools/teaser_ppt/build_teaser_ppt.py` builds the paper teaser deck (`tools/teaser_ppt/teaser.pptx`, also copied to `figure_ppts/`): explicit 3D Gaussians vs the FL4N latent on three NVIDIA scenes, native PowerPoint shapes in the page palette with Google Sans, plus `teaser_preview.png` rendered from an HTML twin of the same layout.

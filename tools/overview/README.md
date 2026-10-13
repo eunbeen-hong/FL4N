@@ -2,7 +2,7 @@
 
 `overview.html` is a deterministic timeline animation in the page's light theme (cream background, caramel/custard accents, flan logo): `render(t)` sets every element for time `t` in seconds, 41.5 s total at 30 fps, 1920x840, no chapter numbering. Chapters: title 0-2.5, input 2.5-6.5, task grid 6.5-11, Gaussians struggle 11-16, architecture 16-25.5 (the paper figure `static/figures/arch.svg`, injected by `render_frames.js`, revealed stage by stage through its `.st` classes with per-stage captions), any view any time 25.5-31.5, image-only training 31.5-35, state of the art 35-39.5, closing 39.5-41.5. Minimum text 22 px.
 
-`assets/` holds the frames it uses (Skating input/rendered/bullet-time frames and baseline renders); the Skating view x time matrix comes from `static/figures/teaser/Skating/`.
+`assets/` holds the frames it uses, all from CamxTime Scene392 (8 views x 8 frames, 512 px square): `input/` the eight context frames (GT diagonal), `ours05/` FL4N at view index 3 across time, `bullet/` FL4N at frame 24 across views, `base/` GT, FL4N and four baselines at view 8 / frame 48; the view x time matrix comes from `static/figures/teaser/Scene392/`.
 
 Re-render:
 

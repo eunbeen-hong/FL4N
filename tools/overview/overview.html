@@ -89,8 +89,9 @@ const lerp = (a, b, x) => a + (b - a) * x;
 const F = (t, a, d = .25) => ease(seg(t, a, a + d));
 const FO = (t, a, d = .3) => easeOut(seg(t, a, a + d));
 const A = 'assets/';
-const T = '../../static/figures/teaser/Skating/';
-const KEEP = [0, 1, 2, 3, 4, 8, 9, 10];
+const T = '../../static/figures/teaser/Scene392/';
+const KEEP = [0, 1, 2, 3, 4, 5, 6, 7];
+const NF = 8;
 const CAM = '<svg viewBox="0 0 30 22"><rect x="1" y="5" width="28" height="16" rx="3" fill="#231a12"/><rect x="9" y="1" width="12" height="6" rx="2" fill="#231a12"/><circle cx="15" cy="13" r="5" fill="#fff"/><circle cx="15" cy="13" r="2.5" fill="#231a12"/></svg>';
 const NS = 'http://www.w3.org/2000/svg';
 const state = {};
@@ -104,19 +105,19 @@ const LOCK = '<svg class="lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16
 function build() {
   const c1 = $('#c1frames'), s1 = $('#c1svg'); defs(s1, 1);
   state.c1 = [];
-  const n = 12, w = 170, h = 96, x0 = 60, x1 = 1860 - w;
+  const n = NF, w = 180, h = 180, x0 = 120, x1 = 1800 - w;
   const pts = [];
-  for (let i = 0; i < n; i++) { const u = i / (n - 1), x = lerp(x0, x1, u), y = 330 - 150 * Math.sin(Math.PI * u); pts.push([x + w / 2, y + h + 58]); }
+  for (let i = 0; i < n; i++) { const u = i / (n - 1), x = lerp(x0, x1, u), y = 300 - 140 * Math.sin(Math.PI * u); pts.push([x + w / 2, y + h + 58]); }
   state.c1arc = svgEl(s1, 'path', { d: 'M' + pts.map(p => p.join(',')).join(' L'), fill: 'none', stroke: '#e2d0b8', 'stroke-width': 3, 'stroke-dasharray': '8 8', opacity: 0 });
   for (let i = 0; i < n; i++) {
-    const u = i / (n - 1), x = lerp(x0, x1, u), y = 330 - 150 * Math.sin(Math.PI * u), rot = (u - .5) * -18;
+    const u = i / (n - 1), x = lerp(x0, x1, u), y = 300 - 140 * Math.sin(Math.PI * u), rot = (u - .5) * -14;
     const card = el('div', 'card', `left:${x}px;top:${y}px;width:${w}px;height:${h}px;opacity:0;z-index:${i}`, `<img src="${A}input/${String(i + 1).padStart(2, '0')}.png">`);
     card.dataset.rot = rot;
     const cam = el('div', 'cam', `left:${x + w / 2 - 15}px;top:${y + h + 46}px;opacity:0`, CAM);
     const lbl = el('div', 'lbl', `left:${x + w / 2 - 30}px;top:${y + h + 76}px;width:60px;text-align:center;font:500 22px var(--mono);color:var(--p);opacity:0`, `t${i + 1}`);
     c1.append(card, cam, lbl); state.c1.push([card, cam, lbl]);
   }
-  state.c1note = el('div', 'lbl', 'left:0;right:0;top:640px;text-align:center;font-size:28px;opacity:0', '12 frames &nbsp;=&nbsp; <b style="color:var(--p)">12 viewpoints</b> &nbsp;=&nbsp; <b style="color:var(--p)">12 instants</b>'); c1.appendChild(state.c1note);
+  state.c1note = el('div', 'lbl', 'left:0;right:0;top:660px;text-align:center;font-size:28px;opacity:0', '8 frames &nbsp;=&nbsp; <b style="color:var(--p)">8 viewpoints</b> &nbsp;=&nbsp; <b style="color:var(--p)">8 instants</b>'); c1.appendChild(state.c1note);
 
   const g = $('#c2grid'); const cs = 62, gap = 6, gx = 300, gy = 170;
   g.appendChild(el('div', 'ax', `left:${gx}px;top:${gy - 36}px`, 'Time →'));
@@ -129,26 +130,26 @@ function build() {
     const q = el('span', '', 'position:relative;opacity:0', '?');
     c.append(img, q); g.appendChild(c); state.c2.push({ c, img, q, v, t });
   }
-  const bx = 1000, by = 160;
-  state.c2big = el('div', 'card', `left:${bx}px;top:${by}px;width:720px;height:405px;opacity:0;border:3px solid var(--p)`, `<img src="${T}ours_v01_f08.webp">`);
-  state.c2bigl = el('div', 'lbl', `left:${bx}px;top:${by + 420}px;opacity:0;font-size:24px`, '<b style="color:var(--p)">FL4N</b> renders a never-seen view and instant from the single input video');
+  const bx = 1060, by = 150;
+  state.c2big = el('div', 'card', `left:${bx}px;top:${by}px;width:520px;height:520px;opacity:0;border:3px solid var(--p)`, `<img src="${T}ours_v01_f06.webp">`);
+  state.c2bigl = el('div', 'lbl', `left:${bx}px;top:${by + 536}px;opacity:0;font-size:24px;width:720px;white-space:normal;line-height:1.3`, '<b style="color:var(--p)">FL4N</b> renders a never-seen view and instant');
   state.c2gl = el('div', 'lbl', `left:${gx}px;top:${gy + 8 * (cs + gap) + 10}px;opacity:0;font-size:22px`, '<span style="display:inline-block;width:18px;height:18px;background:var(--y);border-radius:4px;vertical-align:-2px;margin-right:8px"></span>context frame &nbsp;&nbsp; <span style="display:inline-block;width:18px;height:18px;background:var(--p);border-radius:4px;vertical-align:-2px;margin-right:8px"></span>target');
   g.append(state.c2big, state.c2bigl, state.c2gl);
 
   const c3 = $('#c3');
   state.c3 = {};
-  state.c3.gt = el('div', 'card', 'left:96px;top:150px;width:440px;height:248px;opacity:0;border-color:var(--g)', `<img src="${A}base/gt.png">`);
-  state.c3.gtl = el('div', 'lbl', 'left:96px;top:406px;opacity:0;color:var(--g);font-weight:600', 'Ground truth');
-  state.c3.ours = el('div', 'card', 'left:96px;top:450px;width:440px;height:248px;opacity:0;border-color:var(--p)', `<img src="${A}base/ours.png">`);
-  state.c3.oursl = el('div', 'lbl', 'left:96px;top:706px;opacity:0;color:var(--p);font-weight:600', 'FL4N (ours)');
-  state.c3.check = el('div', 'check', 'left:504px;top:440px;opacity:0', '✓');
+  state.c3.gt = el('div', 'card', 'left:96px;top:130px;width:260px;height:260px;opacity:0;border-color:var(--g)', `<img src="${A}base/gt.png">`);
+  state.c3.gtl = el('div', 'lbl', 'left:96px;top:398px;opacity:0;color:var(--g);font-weight:600', 'Ground truth');
+  state.c3.ours = el('div', 'card', 'left:96px;top:440px;width:260px;height:260px;opacity:0;border-color:var(--p)', `<img src="${A}base/ours.png">`);
+  state.c3.oursl = el('div', 'lbl', 'left:96px;top:708px;opacity:0;color:var(--p);font-weight:600', 'FL4N (ours)');
+  state.c3.check = el('div', 'check', 'left:328px;top:428px;opacity:0', '✓');
   c3.append(state.c3.gt, state.c3.gtl, state.c3.ours, state.c3.oursl, state.c3.check);
   state.c3.base = [];
-  [['4dgt', '4DGT', 'ghosting'], ['movies', 'MoVieS', 'blur'], ['neoverse', 'NeoVerse', 'floaters'], ['c4g', 'C4G', 'holes']].forEach(([k, name, chip], i) => {
-    const x = 660 + (i % 2) * 560, y = 150 + Math.floor(i / 2) * 306;
-    const card = el('div', 'card', `left:${x}px;top:${y}px;width:520px;height:258px;opacity:0`, `<img src="${A}base/${k}.png">`);
-    const lbl = el('div', 'lbl', `left:${x}px;top:${y - 34}px;opacity:0;font-size:24px;color:var(--ink);font-weight:600`, name);
-    const ch = el('div', 'chip', `left:${x + 520 - 150}px;top:${y + 258 - 48}px;opacity:0`, chip);
+  [['4dgt', '4DGT', 'washed out'], ['neoverse', 'NeoVerse', 'holes'], ['c4g', 'C4G', 'ghosting'], ['movies', 'MoVieS', 'floaters']].forEach(([k, name, chip], i) => {
+    const x = 480 + i * 350, y = 240;
+    const card = el('div', 'card', `left:${x}px;top:${y}px;width:320px;height:320px;opacity:0`, `<img src="${A}base/${k}.png">`);
+    const lbl = el('div', 'lbl', `left:${x}px;top:${y - 36}px;opacity:0;font-size:24px;color:var(--ink);font-weight:600`, name);
+    const ch = el('div', 'chip', `left:${x + 320 - 150}px;top:${y + 320 - 48}px;opacity:0`, chip);
     c3.append(card, lbl, ch); state.c3.base.push([card, lbl, ch]);
   });
 
@@ -157,15 +158,15 @@ function build() {
 
   const c5 = $('#c5d');
   state.c5 = { dots: [] };
-  state.c5.out = el('div', 'card', 'left:96px;top:150px;width:960px;height:540px;opacity:0;border-color:var(--p)', `<img id="c5img" src="${A}ours05/01.png">`); c5.appendChild(state.c5.out);
+  state.c5.out = el('div', 'card', 'left:96px;top:150px;width:540px;height:540px;opacity:0;border-color:var(--p)', `<img id="c5img" src="${A}ours05/01.png">`); c5.appendChild(state.c5.out);
   state.c5.outl = el('div', 'lbl', 'left:96px;top:702px;opacity:0;font-size:24px', '<b style="color:var(--p)">FL4N</b> output &nbsp;·&nbsp; <span id="c5mode">novel-view video, fixed camera</span>'); c5.appendChild(state.c5.outl);
-  state.c5.sl = el('div', 'lbl', 'left:1180px;top:236px;opacity:0;font-size:26px;font-weight:600;color:var(--ink)', 'target time'); c5.appendChild(state.c5.sl);
-  state.c5.track = el('div', 'abs', 'left:1180px;top:296px;width:640px;height:8px;background:var(--line);border-radius:4px;opacity:0'); c5.appendChild(state.c5.track);
-  state.c5.knob = el('div', 'abs', 'left:1180px;top:281px;width:38px;height:38px;border-radius:50%;background:var(--y);border:3px solid #fff;box-shadow:0 4px 12px rgba(120,60,10,.3);opacity:0'); c5.appendChild(state.c5.knob);
-  state.c5.sv = el('div', 'lbl', 'left:1180px;top:340px;opacity:0;font:500 26px var(--mono);color:var(--p)', ''); c5.appendChild(state.c5.sv);
-  state.c5.fix = el('div', 'lbl', 'left:1180px;top:440px;opacity:0;font-size:24px;line-height:1.45;white-space:normal;width:640px', ''); c5.appendChild(state.c5.fix);
-  for (let i = 0; i < 12; i++) { const d = el('div', 'abs', `left:${1180 + i * 50}px;top:560px;width:22px;height:22px;border-radius:50%;background:var(--line2);opacity:0`); c5.appendChild(d); state.c5.dots.push(d); }
-  state.c5.dotl = el('div', 'lbl', 'left:1180px;top:600px;opacity:0;font-size:22px', 'cameras 1 – 12'); c5.appendChild(state.c5.dotl);
+  state.c5.sl = el('div', 'lbl', 'left:760px;top:236px;opacity:0;font-size:26px;font-weight:600;color:var(--ink)', 'target time'); c5.appendChild(state.c5.sl);
+  state.c5.track = el('div', 'abs', 'left:760px;top:296px;width:640px;height:8px;background:var(--line);border-radius:4px;opacity:0'); c5.appendChild(state.c5.track);
+  state.c5.knob = el('div', 'abs', 'left:760px;top:281px;width:38px;height:38px;border-radius:50%;background:var(--y);border:3px solid #fff;box-shadow:0 4px 12px rgba(120,60,10,.3);opacity:0'); c5.appendChild(state.c5.knob);
+  state.c5.sv = el('div', 'lbl', 'left:760px;top:340px;opacity:0;font:500 26px var(--mono);color:var(--p)', ''); c5.appendChild(state.c5.sv);
+  state.c5.fix = el('div', 'lbl', 'left:760px;top:440px;opacity:0;font-size:24px;line-height:1.45;white-space:normal;width:640px', ''); c5.appendChild(state.c5.fix);
+  for (let i = 0; i < NF; i++) { const d = el('div', 'abs', `left:${760 + i * 50}px;top:560px;width:22px;height:22px;border-radius:50%;background:var(--line2);opacity:0`); c5.appendChild(d); state.c5.dots.push(d); }
+  state.c5.dotl = el('div', 'lbl', 'left:760px;top:600px;opacity:0;font-size:22px', 'cameras 1 – 8'); c5.appendChild(state.c5.dotl);
 
   const c6 = $('#c6d');
   state.c6 = { cards: [] };
@@ -211,7 +212,7 @@ function render(t) {
 
   u = t - 6.5;
   state.c2.forEach(o => {
-    const diag = o.v === o.t, isT = o.v === 1 && o.t === 5;
+    const diag = o.v === o.t, isT = o.v === 1 && o.t === 6;
     if (diag) { const a = FO(u, .2 + o.v * .12, .25); o.img.style.opacity = a; o.c.style.boxShadow = `inset 0 0 0 ${3 * a}px var(--y)`; }
     else if (isT) {
       const p = F(u, 1.6, .25), fill = F(u, 3.0, .3);
@@ -238,9 +239,9 @@ function render(t) {
   const sA = F(u, .3); c5.sl.style.opacity = sA; c5.track.style.opacity = sA; c5.knob.style.opacity = sA; c5.sv.style.opacity = sA; c5.fix.style.opacity = sA;
   const ph1 = seg(u, .5, 2.9), ph2 = seg(u, 3.3, 5.5), bullet = u >= 3.1;
   const img = $('#c5img');
-  if (!bullet) { const k = Math.min(11, Math.floor(ph1 * 12)); img.src = `${A}ours05/${String(k + 1).padStart(2, '0')}.png`; c5.knob.style.left = `${1180 + 602 * ph1}px`; c5.sv.textContent = `t = ${k + 1} / 12`; c5.sl.textContent = 'target time'; $('#c5mode').textContent = 'novel-view video, fixed camera'; c5.fix.innerHTML = 'camera fixed at a <b>novel viewpoint</b>, time sweeps across the sequence'; }
-  else { const k = Math.min(11, Math.floor(ph2 * 12)); img.src = `${A}bullet/c${String(k).padStart(2, '0')}.png`; c5.knob.style.left = `${1180 + 602 * ph2}px`; c5.sv.textContent = `cam ${k + 1} / 12`; c5.sl.textContent = 'target view'; $('#c5mode').textContent = 'bullet time, fixed instant'; c5.fix.innerHTML = 'instant frozen, the camera sweeps through <b>twelve viewpoints</b>'; }
-  c5.dotl.style.opacity = F(u, 3.1); c5.dots.forEach((d, i) => { d.style.opacity = F(u, 3.1); const on = bullet && Math.min(11, Math.floor(ph2 * 12)) === i; d.style.background = on ? 'var(--p)' : 'var(--line2)'; d.style.transform = `scale(${on ? 1.35 : 1})`; });
+  if (!bullet) { const k = Math.min(NF - 1, Math.floor(ph1 * NF)); img.src = `${A}ours05/${String(k + 1).padStart(2, '0')}.png`; c5.knob.style.left = `${760 + 602 * ph1}px`; c5.sv.textContent = `t = ${k + 1} / ${NF}`; c5.sl.textContent = 'target time'; $('#c5mode').textContent = 'novel-view video, fixed camera'; c5.fix.innerHTML = 'camera fixed at a <b>novel viewpoint</b>, time sweeps across the sequence'; }
+  else { const k = Math.min(NF - 1, Math.floor(ph2 * NF)); img.src = `${A}bullet/c${String(k).padStart(2, '0')}.png`; c5.knob.style.left = `${760 + 602 * ph2}px`; c5.sv.textContent = `cam ${k + 1} / ${NF}`; c5.sl.textContent = 'target view'; $('#c5mode').textContent = 'bullet time, fixed instant'; c5.fix.innerHTML = 'instant frozen, the camera sweeps through <b>eight viewpoints</b>'; }
+  c5.dotl.style.opacity = F(u, 3.1); c5.dots.forEach((d, i) => { d.style.opacity = F(u, 3.1); const on = bullet && Math.min(NF - 1, Math.floor(ph2 * NF)) === i; d.style.background = on ? 'var(--p)' : 'var(--line2)'; d.style.transform = `scale(${on ? 1.35 : 1})`; });
 
   u = t - 31.5;
   const c6 = state.c6;
