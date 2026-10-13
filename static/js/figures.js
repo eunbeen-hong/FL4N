@@ -51,7 +51,7 @@
     fetch(F + 'teaser/teaser.json').then(r => r.json()).then(m => {
       const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
-      const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View ←</span>`);
+      const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View →</span>`);
       info.innerHTML = `<span class="k"><i class="sw obs"></i>context frame</span><span class="k"><i class="sw"></i>rendered frame</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover to pick a cell.</span>`;
       const padBox = el('div', 'tz-padbox'); padBox.append(padSide, pad);
       padWrap.append(padHead, padBox, info);
@@ -76,8 +76,8 @@
         Promise.all(srcs.map(([, u]) => load(u))).then(() => {
           if (my !== seq) return;
           srcs.forEach(([k, u]) => { P[k].i.src = u; P[k].f.classList.toggle('dim', obs && k !== 'gt'); });
-          P.ours.cap.textContent = obs ? `Observed input frame · view ${v + 1}, time ${t + 1}` : `FL4N (Ours) · view ${v + 1}, time ${t + 1}`;
-          P.gt.cap.textContent = obs ? `Ground truth (= input) · view ${v + 1}, time ${t + 1}` : `Ground truth · view ${v + 1}, time ${t + 1}`;
+          P.ours.cap.textContent = obs ? 'Context frame' : 'FL4N (Ours)';
+          P.gt.cap.textContent = obs ? 'Ground truth (= context frame)' : 'Ground truth';
         });
       }
       function tick() { const n = keep.length; step = (step + 1) % (n * n); go(keep[Math.floor(step / n)], keep[step % n]); }
