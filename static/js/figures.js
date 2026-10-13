@@ -51,7 +51,7 @@
     fetch(F + 'teaser/teaser.json').then(r => r.json()).then(m => {
       const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
-      const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View ↓</span>`);
+      const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View ←</span>`);
       info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input frame (one per camera)</span><span class="k"><i class="sw"></i>never observed: rendered</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover the grid to pick a cell; it auto-plays otherwise.</span>`;
       const padBox = el('div', 'tz-padbox'); padBox.append(padSide, pad);
       padWrap.append(padHead, padBox, info);
