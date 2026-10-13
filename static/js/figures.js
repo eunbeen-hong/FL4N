@@ -79,7 +79,7 @@
           P.gt.cap.textContent = obs ? 'Ground truth (= context frame)' : 'Ground truth';
         });
       }
-      function tick() { const n = keep.length; step = (step + 1) % (n * n); go(keep[Math.floor(step / n)], keep[step % n]); }
+      function tick() { const n = keep.length; step = (step + 1) % (n * n); const a = keep[Math.floor(step / n)], b = keep[step % n]; sc.ds === 'camxtime' ? go(b, a) : go(a, b); }
       function start() { if (!timer) timer = setInterval(() => { if (!hover) tick(); }, 420); }
       function stop() { clearInterval(timer); timer = null; }
       function pickScene(s) {
@@ -87,7 +87,7 @@
         keep.forEach(v => keep.forEach(t => {
           const c = el('button', 'tz-cell' + (v === t ? ' obs' : '')); c.type = 'button'; c.dataset.v = v; c.dataset.t = t;
           c.title = v === t ? `Observed input: view ${v + 1} at time ${t + 1}` : `Render view ${v + 1} at time ${t + 1}`;
-          c.addEventListener('mouseenter', () => { step = keep.indexOf(v) * keep.length + keep.indexOf(t); go(v, t); });
+          c.addEventListener('mouseenter', () => { step = sc.ds === 'camxtime' ? keep.indexOf(t) * keep.length + keep.indexOf(v) : keep.indexOf(v) * keep.length + keep.indexOf(t); go(v, t); });
           c.addEventListener('click', () => go(v, t));
           pad.appendChild(c); cells.push(c);
         }));

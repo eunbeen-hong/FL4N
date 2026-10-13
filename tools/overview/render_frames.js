@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 (async () => {
   const html = path.resolve(process.argv[2]), out = path.resolve(process.argv[3]);
-  const fps = +(process.argv[4] || 30), total = +(process.argv[5] || 72), only = process.argv[6] ? process.argv[6].split(',').map(Number) : null;
+  const fps = +(process.argv[4] || 30), total = +(process.argv[5] || 47), only = process.argv[6] ? process.argv[6].split(',').map(Number) : null;
   fs.mkdirSync(out, { recursive: true });
   const b = await chromium.launch(); const pg = await b.newPage({ viewport: { width: 1920, height: 840 } });
   pg.on('pageerror', e => console.error('pageerror', e.message));
