@@ -149,7 +149,8 @@ class Conv:
             if n == 'solidFill':
                 col, alpha = self.color(ch)
             if n == 'gradFill':
-                col, alpha = self.gradient(ch), 1.0
+                stops = ch.find(q('a:gsLst'))
+                col, alpha = self.color(stops[len(stops) // 2])
             if n == 'prstDash':
                 dash = ch.get('val')
         if col is None:

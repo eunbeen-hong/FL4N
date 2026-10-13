@@ -149,6 +149,13 @@
     v.load();
     v.oncanplay = () => { v.oncanplay = null; try { v.currentTime = vids[0] ? vids[0].currentTime : 0; } catch (e) {} v.play().catch(() => {}); };
   }
+  function attachAll(pairs) {
+    let n = 0;
+    pairs.forEach(([v, src]) => {
+      v.pause(); v.src = src; v.load();
+      v.oncanplay = () => { v.oncanplay = null; if (++n === pairs.length) pairs.forEach(([x]) => { try { x.currentTime = 0; } catch (e) {} x.play().catch(() => {}); }); };
+    });
+  }
 
   function gridSrc(s, name) { return `${CONFIG.base}${s.ds}_${s.id}__grid_${name}.mp4`; }
   function show(s) {
@@ -158,9 +165,8 @@
     build();
     const cv = $('video', center), mv = $('.rig-gridvideo.main', world), bv = $('.rig-gridvideo.base', world);
     vids = [cv, mv, bv];
-    attach(cv, CONFIG.inputSrc(s));
-    attach(mv, gridSrc(s, 'main'));
-    attach(bv, gridSrc(s, baseline));
+    lastT = 0;
+    attachAll([[cv, CONFIG.inputSrc(s)], [mv, gridSrc(s, 'main')], [bv, gridSrc(s, baseline)]]);
     $$('.rig-thumb', thumbs).forEach(b => b.classList.toggle('active', b.dataset.key === `${s.ds}_${s.id}`));
   }
   function setBaseline(b) {
@@ -181,11 +187,14 @@
     basebar.appendChild(b);
   });
 
+  let lastT = 0;
   setInterval(() => {
     const m = vids[0];
     if (!m || m.paused || !isFinite(m.duration)) return;
-    vids.slice(1).forEach(v => { if (v.src && !v.oncanplay && Math.abs(v.currentTime - m.currentTime) > 0.12) v.currentTime = m.currentTime; });
-  }, 400);
+    const wrapped = m.currentTime < lastT - 0.5;
+    lastT = m.currentTime;
+    vids.slice(1).forEach(v => { if (v.src && !v.oncanplay && (wrapped || Math.abs(v.currentTime - m.currentTime) > 0.1)) v.currentTime = m.currentTime; });
+  }, 120);
 
   new IntersectionObserver(es => es.forEach(e => vids.forEach(v => e.isIntersecting ? v.play().catch(() => {}) : v.pause())), { rootMargin: '100px 0px' }).observe(root);
   window.addEventListener('resize', layout);

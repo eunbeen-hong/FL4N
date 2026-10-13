@@ -101,20 +101,32 @@ def main():
     out.append(body[pos:])
     body = ''.join(out)
     body = re.sub(r'(data-name="Picture 152"[^>]*>\s*<image[^>]*href=")img/[^"]+"', r'\1img/9677ee948a.webp"', body)
+    body = body.replace('img/42fb69aaaa.webp', 'img/4421af8406.webp').replace('img/f7167f24cd.webp', 'img/4421af8406.webp')
+    boxes = [(m.group(1), [float(v) / 72 for v in m.group(2).split()]) for m in re.finditer(r'data-name="([^"]*)" data-bbox="([^"]*)"', body)]
+    def near(name, x, y):
+        cands = [b for n, b in boxes if n == name]
+        return min(cands, key=lambda b: (b[0] + b[2] / 2 - x) ** 2 + (b[1] + b[3] / 2 - y) ** 2) if cands else [x, y, 0, 0]
+    zres_t = near('그룹 134', 15.3, 2.7); zdyn = near('그룹 95', 16.9, 2.7); zst = near('그룹 88', 12.5, 4.2); zres = near('그룹 122', 12.5, 3.0)
+    cam = near('그룹 78', 17.0, 3.8); tgt = near('그림 117', 18.5, 3.2); ctx = near('Picture 100', 8.0, 3.0); tok = near('dynamic-patch-token-0', 12.3, 2.5)
+    lmask = near('flow-38', 15.4, 1.5); lrgb = near('그룹 172', 20.3, 3.3); qbox = near('직사각형 52', 4.0, 2.4)
+    body = body.replace('#156082', '#1b1b1f')
+    cx = lambda b: b[0] + b[2] / 2
     extra = [
         label(9.56, 2.27, ['×8'], 13, '#4b4475', 'middle', 600), label(9.56, 2.48, ['layers'], 13, '#4b4475', 'middle', 600),
         label(9.56, 4.1, ['×24'], 13, '#3f5c5f', 'middle', 600), label(9.56, 4.31, ['layers'], 13, '#3f5c5f', 'middle', 600),
-        label(12.62, 4.88, ['Static latent ', ('b', 'z'), ('sub', 'st')], 14, '#5f7681'),
-        label(12.62, 3.67, ['Residual latent ', ('b', 'z'), ('sub', 'res')], 14, '#6a4fc4'),
-        label(15.44, 3.42, [('b', 'z'), ('sub', 'res'), ('sup', 'tgt')], 15, '#6a4fc4'),
-        label(17.02, 3.42, [('b', 'z'), ('sub', 'dyn'), ('sup', 'tgt')], 15, '#3a7a9c'),
-        label(12.86, 2.24, ['Target time ', ('i', 'τ̂'), ('sub', 'tgt')], 13, '#8a6d2a'),
-        label(17.0, 4.32, ['Target view ', ('i', 'π'), ('sub', 'tgt')], 13, '#8a6d2a'),
-        label(15.45, 1.98, [('i', 'ℒ'), ('sub', 'mask')], 15, '#23303d', 'start'),
-        label(20.42, 2.98, [('i', 'ℒ'), ('sub', 'rgb')], 15, '#23303d'),
-        label(4.05, 3.38, [('b', 'I'), ('sub', 'tgt')], 13, '#8a6d2a'),
+        label(cx(zst) + 0.1, zst[1] + zst[3] + 0.26, ['Static latent ', ('b', 'z'), ('sub', 'st')], 14, '#5f7681'),
+        label(cx(zres) + 0.1, zres[1] + zres[3] + 0.26, ['Residual latent ', ('b', 'z'), ('sub', 'res')], 14, '#6a4fc4'),
+        label(cx(zres_t) - 0.08, zres_t[1] + zres_t[3] + 0.3, [('b', 'z'), ('sub', 'res'), ('sup', 'tgt')], 15, '#6a4fc4'),
+        label(cx(zdyn) - 0.08, zdyn[1] + zdyn[3] + 0.3, [('b', 'z'), ('sub', 'dyn'), ('sup', 'tgt')], 15, '#3a7a9c'),
+        label(tok[0] + 0.55, tok[1] - 0.1, ['Target time ', ('i', 'τ̂'), ('sub', 'tgt')], 13, '#8a6d2a'),
+        label(cx(cam) + 0.25, cam[1] + cam[3] + 0.26, ['Target view ', ('i', 'π'), ('sub', 'tgt')], 13, '#8a6d2a'),
+        label(lmask[0] + lmask[2] + 0.1, lmask[1] + 0.08, [('i', 'ℒ'), ('sub', 'mask')], 15, '#23303d', 'start'),
+        label(lrgb[0] + lrgb[2] + 0.1, lrgb[1] + lrgb[3] / 2 + 0.08, [('i', 'ℒ'), ('sub', 'rgb')], 15, '#23303d', 'start'),
+        label(cx(qbox), qbox[1] + qbox[3] + 0.42, [('b', 'I'), ('sub', 'tgt')], 13, '#8a6d2a'),
+        label(cx(ctx) - 0.1, ctx[1] + ctx[3] + 0.42, ['Context frames'], 15, '#d88b53'),
+        label(cx(tgt), tgt[1] + tgt[3] + 0.3, ['Target frame'], 15, '#98783f'),
     ]
-    extra_cls = ['dyn', 'dyn', 'static', 'static', 'static', 'dyn time', 'time', 'time', 'time', 'static time', 'dyn', 'static time', 'sample']
+    extra_cls = ['dyn', 'dyn', 'static', 'static', 'static', 'dyn time', 'time', 'time', 'time', 'static time', 'dyn', 'static time', 'sample', 'static dyn', 'static time']
     body += ''.join(f'<g class="st {c}">{e}</g>' for e, c in zip(extra, extra_cls))
     W, H = deck.w / 12700, deck.h / 12700
     crop = (0.55 * 72, 0.35 * 72, W - 0.9 * 72, 5.45 * 72)
