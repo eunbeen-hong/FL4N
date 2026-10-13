@@ -1,5 +1,4 @@
 {
- "dataset": "NVIDIA",
  "models": [
   "ours",
   "gt",
@@ -11,6 +10,7 @@
  "scenes": [
   {
    "id": "Balloon1",
+   "ds": "nvidia",
    "name": "Balloon1",
    "keep": [
     1,
@@ -28,6 +28,7 @@
   },
   {
    "id": "Balloon2",
+   "ds": "nvidia",
    "name": "Balloon2",
    "keep": [
     0,
@@ -45,6 +46,7 @@
   },
   {
    "id": "DynamicFace",
+   "ds": "nvidia",
    "name": "Dynamic face",
    "keep": [
     0,
@@ -62,6 +64,7 @@
   },
   {
    "id": "Jumping",
+   "ds": "nvidia",
    "name": "Jumping",
    "keep": [
     0,
@@ -79,6 +82,7 @@
   },
   {
    "id": "Playground",
+   "ds": "nvidia",
    "name": "Playground",
    "keep": [
     2,
@@ -96,6 +100,7 @@
   },
   {
    "id": "Skating",
+   "ds": "nvidia",
    "name": "Skating",
    "keep": [
     0,
@@ -113,6 +118,7 @@
   },
   {
    "id": "Teadybear",
+   "ds": "nvidia",
    "name": "Teddy bear",
    "keep": [
     2,
@@ -130,6 +136,7 @@
   },
   {
    "id": "Truck",
+   "ds": "nvidia",
    "name": "Truck",
    "keep": [
     1,
@@ -147,6 +154,7 @@
   },
   {
    "id": "Umbrella",
+   "ds": "nvidia",
    "name": "Umbrella",
    "keep": [
     1,
@@ -161,6 +169,60 @@
    "w": 320,
    "h": 180,
    "psnr": 25.81
+  },
+  {
+   "id": "Scene403",
+   "ds": "camxtime",
+   "name": "CamxTime 403",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 33.85
+  },
+  {
+   "id": "Scene410",
+   "ds": "camxtime",
+   "name": "CamxTime 410",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 32.58
+  },
+  {
+   "id": "Scene384",
+   "ds": "camxtime",
+   "name": "CamxTime 384",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 30.47
   }
  ]
 }

@@ -34,8 +34,8 @@
 ],
 "labels": [
 "Context frames",
-"Static latent z_st",
-"Residual latent z_res"
+"Static latent <b>z</b><sub>st</sub>",
+"Residual latent <b>z</b><sub>res</sub>"
 ]
 },
 "comparestatic": [
