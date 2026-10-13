@@ -35,7 +35,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -80,7 +82,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -125,7 +129,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -170,7 +176,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -215,7 +223,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -268,7 +278,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -321,7 +333,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -373,7 +387,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -399,7 +415,29 @@
    5,
    6,
    7
-  ]
+  ],
+  "grid": {
+   "cams": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "rows": [
+    "ours"
+   ],
+   "baselines": [
+    "c4g",
+    "neoverse",
+    "movies",
+    "4dgt"
+   ],
+   "gap": 8
+  }
  },
  "kubric4d_scn02945": {
   "ds": "kubric4d",
@@ -418,7 +456,29 @@
    5,
    6,
    7
-  ]
+  ],
+  "grid": {
+   "cams": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "rows": [
+    "ours"
+   ],
+   "baselines": [
+    "c4g",
+    "neoverse",
+    "movies",
+    "4dgt"
+   ],
+   "gap": 8
+  }
  },
  "kubric4d_scn02952": {
   "ds": "kubric4d",
@@ -437,7 +497,29 @@
    5,
    6,
    7
-  ]
+  ],
+  "grid": {
+   "cams": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "rows": [
+    "ours"
+   ],
+   "baselines": [
+    "c4g",
+    "neoverse",
+    "movies",
+    "4dgt"
+   ],
+   "gap": 8
+  }
  },
  "kubric4d_scn02911": {
   "ds": "kubric4d",
@@ -456,7 +538,29 @@
    5,
    6,
    7
-  ]
+  ],
+  "grid": {
+   "cams": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "rows": [
+    "ours"
+   ],
+   "baselines": [
+    "c4g",
+    "neoverse",
+    "movies",
+    "4dgt"
+   ],
+   "gap": 8
+  }
  },
  "kubric4d_scn02966": {
   "ds": "kubric4d",
@@ -475,7 +579,29 @@
    5,
    6,
    7
-  ]
+  ],
+  "grid": {
+   "cams": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "rows": [
+    "ours"
+   ],
+   "baselines": [
+    "c4g",
+    "neoverse",
+    "movies",
+    "4dgt"
+   ],
+   "gap": 8
+  }
  },
  "camxtime_Scene410": {
   "ds": "camxtime",
@@ -509,7 +635,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -550,7 +678,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -591,7 +721,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -632,7 +764,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -673,7 +807,9 @@
    ],
    "rows": [
     "gt",
-    "ours",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -682,37 +818,45 @@
    "gap": 8
   }
  },
- "charge_010_0050": {
-  "ds": "charge",
-  "id": "010_0050",
-  "cams": 8,
-  "frames": 8,
-  "fps": 3,
+ "nvidia_Balloon1": {
+  "ds": "nvidia",
+  "id": "Balloon1",
+  "cams": 12,
+  "frames": 12,
+  "fps": 4,
   "w": 360,
-  "h": 150,
+  "h": 202,
   "input_cam": [
-   6,
-   1,
-   4,
-   2,
    0,
+   1,
+   2,
    3,
+   4,
+   5,
+   6,
    7,
-   5
+   8,
+   9,
+   10,
+   11
   ],
+  "gt": true,
   "grid": {
    "cams": [
     0,
-    1,
     2,
     3,
-    4,
     5,
     6,
-    7
+    8,
+    9,
+    11
    ],
    "rows": [
-    "ours",
+    "gt",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -721,37 +865,45 @@
    "gap": 8
   }
  },
- "charge_020_0020": {
-  "ds": "charge",
-  "id": "020_0020",
-  "cams": 8,
-  "frames": 8,
-  "fps": 3,
+ "nvidia_DynamicFace": {
+  "ds": "nvidia",
+  "id": "DynamicFace",
+  "cams": 12,
+  "frames": 12,
+  "fps": 4,
   "w": 360,
-  "h": 150,
+  "h": 202,
   "input_cam": [
-   6,
-   1,
-   4,
-   2,
    0,
+   1,
+   2,
    3,
+   4,
+   5,
+   6,
    7,
-   5
+   8,
+   9,
+   10,
+   11
   ],
+  "gt": true,
   "grid": {
    "cams": [
     0,
-    1,
     2,
     3,
-    4,
     5,
     6,
-    7
+    8,
+    9,
+    11
    ],
    "rows": [
-    "ours",
+    "gt",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -760,37 +912,45 @@
    "gap": 8
   }
  },
- "charge_050_0160": {
-  "ds": "charge",
-  "id": "050_0160",
-  "cams": 8,
-  "frames": 8,
-  "fps": 3,
+ "nvidia_Playground": {
+  "ds": "nvidia",
+  "id": "Playground",
+  "cams": 12,
+  "frames": 12,
+  "fps": 4,
   "w": 360,
-  "h": 150,
+  "h": 202,
   "input_cam": [
-   6,
-   1,
-   4,
-   2,
    0,
+   1,
+   2,
    3,
+   4,
+   5,
+   6,
    7,
-   5
+   8,
+   9,
+   10,
+   11
   ],
+  "gt": true,
   "grid": {
    "cams": [
     0,
-    1,
     2,
     3,
-    4,
     5,
     6,
-    7
+    8,
+    9,
+    11
    ],
    "rows": [
-    "ours",
+    "gt",
+    "ours"
+   ],
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",
@@ -799,76 +959,45 @@
    "gap": 8
   }
  },
- "charge_060_0100": {
-  "ds": "charge",
-  "id": "060_0100",
-  "cams": 8,
-  "frames": 8,
-  "fps": 3,
+ "nvidia_Teadybear": {
+  "ds": "nvidia",
+  "id": "Teadybear",
+  "cams": 12,
+  "frames": 12,
+  "fps": 4,
   "w": 360,
-  "h": 150,
+  "h": 202,
   "input_cam": [
-   6,
-   1,
-   4,
-   2,
    0,
+   1,
+   2,
    3,
+   4,
+   5,
+   6,
    7,
-   5
+   8,
+   9,
+   10,
+   11
   ],
+  "gt": true,
   "grid": {
    "cams": [
     0,
-    1,
     2,
     3,
-    4,
     5,
     6,
-    7
+    8,
+    9,
+    11
    ],
    "rows": [
-    "ours",
-    "c4g",
-    "neoverse",
-    "movies",
-    "4dgt"
+    "gt",
+    "ours"
    ],
-   "gap": 8
-  }
- },
- "charge_060_0130": {
-  "ds": "charge",
-  "id": "060_0130",
-  "cams": 8,
-  "frames": 8,
-  "fps": 3,
-  "w": 360,
-  "h": 150,
-  "input_cam": [
-   6,
-   1,
-   4,
-   2,
-   0,
-   3,
-   7,
-   5
-  ],
-  "grid": {
-   "cams": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-   ],
-   "rows": [
-    "ours",
+   "baselines": [
     "c4g",
     "neoverse",
     "movies",

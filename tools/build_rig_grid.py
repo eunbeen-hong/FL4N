@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 RIG = "/home/cvlab20/project/eunbeen/FL4N_project_page/static/videos/rig"
-ROWS = ["gt", "ours", "c4g", "neoverse", "movies", "4dgt"]
+BASELINES = ["c4g", "neoverse", "movies", "4dgt"]
 MAX_CAMS, GAP, BG = 8, 8, (255, 255, 255)
 
 
@@ -26,10 +26,10 @@ def frames_of(path):
     return out
 
 
-def build(key, m, force=False):
-    out = f"{RIG}/{key}__grid.mp4"
+def build(key, m, baseline, force=False):
+    out = f"{RIG}/{key}__grid_{baseline}.mp4"
     cams = pick(m["cams"], MAX_CAMS)
-    rows = [r for r in ROWS if r != "gt" or m.get("gt")]
+    rows = (["gt"] if m.get("gt") else []) + ["ours", baseline]
     if os.path.exists(out) and not force:
         return cams, rows
     clips = {(r, c): frames_of(f"{RIG}/{key}__{r}__c{c:02d}.mp4") for r in rows for c in cams}
@@ -59,7 +59,9 @@ if __name__ == "__main__":
     for key, e in m.items():
         if only and e["ds"] not in only:
             continue
-        cams, rows = build(key, e, force)
-        e["grid"] = {"cams": cams, "rows": rows, "gap": GAP}
+        for b in BASELINES:
+            cams, rows = build(key, e, b, force)
+        e["grid"] = {"cams": cams, "rows": rows[:-1], "baselines": BASELINES, "gap": GAP}
+        e.pop("grid_old", None)
     json.dump(m, open(mp + ".tmp", "w"), indent=1)
     os.replace(mp + ".tmp", mp)

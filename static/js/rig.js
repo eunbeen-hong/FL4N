@@ -11,7 +11,9 @@
       { key: 'gt', label: 'Ground truth', optional: true }, { key: 'ours', label: 'FL4N (Ours)' }, { key: 'c4g', label: 'C4G' },
       { key: 'neoverse', label: 'NeoVerse' }, { key: 'movies', label: 'MoVieS' }, { key: '4dgt', label: '4DGT' },
     ],
-    excludeDatasets: ['kubric4d'],
+    excludeDatasets: ['kubric4d', 'charge'],
+    datasetOrder: ['nvidia', 'n3dv', 'camxtime'],
+    sceneName: s => s.id.replace(/_/g, ' ').replace(/^(\w)/, c => c.toUpperCase()),
     maxCams: 8,
     pickCams: (n, k) => Array.from({ length: Math.min(n, k) }, (_, i) => Math.round(i * (n - 1) / (Math.min(n, k) - 1))),
     camSrc: (scene, model, k) => `${CONFIG.base}${scene.ds}_${scene.id}__${model}__c${String(k).padStart(2, '0')}.mp4`,
@@ -22,7 +24,10 @@
   const NS = 'http://www.w3.org/2000/svg';
 
   const stage = $('.rig-stage', root), world = $('.rig-world', root), thumbs = $('.rig-thumbs', root);
-  let manifest = null, scene = null, meta = null;
+  const basebar = document.createElement('div');
+  basebar.className = 'rig-basebar';
+  stage.parentNode.insertBefore(basebar, stage.nextSibling);
+  let manifest = null, scene = null, meta = null, baseline = 'c4g';
   let center = null, cols = [], vids = [], svg = null;
 
   function build() {
@@ -34,7 +39,7 @@
     center.className = 'rig-center';
     center.innerHTML = `<video muted loop playsinline preload="auto" style="aspect-ratio:${meta.w}/${meta.h}" poster="${CONFIG.inputPoster(scene)}"></video><div class="rig-clabel">Input video</div>`;
     world.appendChild(center);
-    const G = meta.grid, gap = G.gap, nc = G.cams.length, nr = G.rows.length;
+    const G = meta.grid, gap = G.gap, nc = G.cams.length, rowsAll = G.rows.concat([baseline]), nr = rowsAll.length;
     const GW = nc * meta.w + (nc - 1) * gap, GH = nr * meta.h + (nr - 1) * gap;
     const wrap = document.createElement('div');
     wrap.className = 'rig-gridwrap';
@@ -55,7 +60,7 @@
     const heads = document.createElement('div');
     heads.className = 'rig-heads';
     cols.forEach(h => heads.appendChild(h));
-    G.rows.forEach((r, ri) => {
+    rowsAll.forEach((r, ri) => {
       const lab = document.createElement('div');
       lab.className = 'rig-rowlabel' + (r === 'ours' ? ' ours' : '') + (r === 'gt' ? ' gt' : '');
       lab.textContent = CONFIG.models.find(m => m.key === r).label;
@@ -144,6 +149,7 @@
     v.oncanplay = () => { v.oncanplay = null; try { v.currentTime = vids[0] ? vids[0].currentTime : 0; } catch (e) {} v.play().catch(() => {}); };
   }
 
+  function gridSrc(s) { return `${CONFIG.base}${s.ds}_${s.id}__grid_${baseline}.mp4`; }
   function show(s) {
     scene = s;
     meta = manifest[`${s.ds}_${s.id}`];
@@ -152,9 +158,31 @@
     const cv = $('video', center), gv = $('.rig-gridvideo', world);
     vids = [cv, gv];
     attach(cv, CONFIG.inputSrc(s));
-    attach(gv, `${CONFIG.base}${s.ds}_${s.id}__grid.mp4`);
+    attach(gv, gridSrc(s));
     $$('.rig-thumb', thumbs).forEach(b => b.classList.toggle('active', b.dataset.key === `${s.ds}_${s.id}`));
   }
+  function setBaseline(b) {
+    baseline = b;
+    $$('button', basebar).forEach(x => x.classList.toggle('active', x.dataset.key === b));
+    if (!scene) return;
+    const t = vids[0] ? vids[0].currentTime : 0;
+    build();
+    const cv = $('video', center), gv = $('.rig-gridvideo', world);
+    const old = vids[0];
+    vids = [cv, gv];
+    cv.src = old && old.src ? old.src : CONFIG.inputSrc(scene);
+    cv.oncanplay = () => { cv.oncanplay = null; try { cv.currentTime = t; } catch (e) {} cv.play().catch(() => {}); };
+    attach(gv, gridSrc(scene));
+  }
+  basebar.innerHTML = '<span class="lbl">Compare FL4N with</span>';
+  CONFIG.models.filter(m => !['gt', 'ours'].includes(m.key)).forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (m.key === baseline ? ' active' : '');
+    b.dataset.key = m.key;
+    b.textContent = m.label;
+    b.addEventListener('click', () => setBaseline(m.key));
+    basebar.appendChild(b);
+  });
 
   setInterval(() => {
     const m = vids[0];
@@ -167,7 +195,8 @@
 
   fetch(CONFIG.manifest).then(r => r.json()).then(j => {
     manifest = j;
-    const scenes = FL4N_MV.filter(s => j[`${s.ds}_${s.id}`] && j[`${s.ds}_${s.id}`].grid && !CONFIG.excludeDatasets.includes(s.ds));
+    const scenes = Object.values(j).filter(e => e.grid && !CONFIG.excludeDatasets.includes(e.ds)).map(e => ({ ds: e.ds, id: e.id, name: CONFIG.sceneName(e) }))
+      .sort((a, b) => CONFIG.datasetOrder.indexOf(a.ds) - CONFIG.datasetOrder.indexOf(b.ds) || a.name.localeCompare(b.name));
     thumbs.innerHTML = '';
     scenes.forEach(s => {
       const b = document.createElement('button');

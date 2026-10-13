@@ -330,6 +330,8 @@ footer { border-top: 1px solid var(--line); padding: 34px 0 44px; color: var(--i
 .rig-cellbox { position: absolute; box-sizing: border-box; border: 1px solid var(--line-2); border-radius: 4px; pointer-events: none; }
 .rig-cellbox.ours { border: 1.5px solid var(--primary); box-shadow: 0 0 0 1.5px var(--primary-soft); }
 .rig-cellbox.gt { border-color: var(--green); }
+.rig-basebar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+.rig-basebar .lbl { font-size: .82rem; font-weight: 600; color: var(--ink-3); margin-right: 4px; }
 .rig-thumbs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
 .rig-thumb { width: 104px; padding: 4px 4px 6px; border-radius: 9px; border: 1px solid var(--line); background: #fff; text-align: center; transition: all .15s; line-height: 1.2; }
 .rig-thumb img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 5px; display: block; }

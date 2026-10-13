@@ -49,22 +49,26 @@
   <div class="hero-bg"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
   <div class="wrap">
     <div class="hero-head">
-      <span class="badge reveal"><span class="dot"></span>Paper under review</span>
       <h1 class="title reveal" style="--d:60ms"><span class="grad">FL4N</span><span class="tail">Feed-forward Latent Model for 4D Novel View Synthesis</span></h1>
       <p class="subtitle reveal" style="--d:120ms">A monocular video goes in. Any viewpoint at any timestamp comes out, in one feed-forward pass, with no 3D Gaussians, no deformation fields, and no geometry supervision.</p>
       <p class="authors reveal" style="--d:180ms">
-        <a href="#">First Author</a><sup>1</sup>,
-        <a href="#">Second Author</a><sup>1</sup>,
-        <a href="#">Third Author</a><sup>1</sup>,
-        <a href="#">Fourth Author</a><sup>2</sup>,
-        <a href="#">Last Author</a><sup>1</sup>
+        <span>Eunbeen Hong<sup>1</sup></span>,
+        <span>Hyeonseo Yu<sup>1</sup></span>,
+        <span>Honggyu An<sup>1</sup></span>,
+        <span>Jooho Son<sup>1</sup></span>,
+        <span>Hyunah Ko<sup>1</sup></span>,
+        <span>Soowon Son<sup>1</sup></span>,
+        <span>Chaehyun Kim<sup>1</sup></span>,
+        <span>Jahyeok Koo<sup>1</sup></span>,
+        <span>Jisoo Kim<sup>1</sup></span>,
+        <span>Junhwa Hur<sup>2†</sup></span>,
+        <span>Seungryong Kim<sup>1†</sup></span>
       </p>
-      <p class="affils reveal" style="--d:220ms"><sup>1</sup>Affiliation One &nbsp;&nbsp; <sup>2</sup>Affiliation Two</p>
-      <p class="author-note reveal" style="--d:240ms">Author list and affiliations to be filled in.</p>
+      <p class="affils reveal" style="--d:220ms"><sup>1</sup>KAIST AI &nbsp;&nbsp; <sup>2</sup>Google DeepMind</p>
+      <p class="author-note reveal" style="--d:240ms">† Corresponding authors.</p>
       <div class="btn-row reveal" style="--d:280ms">
         <a class="btn btn--primary" href="#"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm8 1.5V8h4.5L14 3.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>Paper</a>
         <a class="btn" href="#"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>Code (coming soon)</a>
-        <a class="btn" href="#"><svg viewBox="0 0 24 24"><path d="M4 4h16v2H4V4zm0 7h16v2H4v-2zm0 7h10v2H4v-2z"/></svg>arXiv</a>
         <a class="btn" href="#bibtex"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-3-7 3V5a2 2 0 0 1 2-2z"/></svg>BibTeX</a>
       </div>
     </div>
@@ -72,7 +76,7 @@
     <div class="rig reveal" id="rig" style="--d:340ms">
       <div class="rig-stage"><div class="rig-world"></div></div>
       <div class="rig-thumbs"></div>
-      <p class="rig-note"><b>A monocular video, re-rendered from a rig of fixed cameras.</b> The video at the top is the only input. Each pyramid is one of the dataset's fixed camera poses along the capture trajectory; the column beneath it shows that camera's view across the whole sequence, synthesised from the single input video by FL4N and by each Gaussian baseline. Pick a scene from the thumbnails.</p>
+      <p class="rig-note"><b>A monocular video, re-rendered from a rig of fixed cameras.</b> The video at the top is the only input. Each pyramid is one of the dataset's fixed camera poses along the capture trajectory; the column beneath it shows that camera's view across the whole sequence: the ground truth, FL4N's rendering from the single input video, and one Gaussian baseline of your choice. Pick a scene from the thumbnails.</p>
     </div>
   </div>
 </header>
@@ -221,12 +225,7 @@
 <section class="section" id="bibtex">
   <div class="wrap wrap--narrow">
     <div class="section-head reveal"><span class="eyebrow">Citation</span><h2>BibTeX</h2></div>
-    <div class="bib reveal"><button class="copy">Copy</button><pre>@article{fl4n2026,
-  title   = {FL4N: Feed-forward Latent Model for 4D Novel View Synthesis},
-  author  = {Author, First and Author, Second and Author, Third and Author, Fourth and Author, Last},
-  journal = {arXiv preprint},
-  year    = {2026}
-}</pre></div>
+    <div class="bib reveal"><pre>BibTeX: TBD (will be added with the arXiv version)</pre></div>
   </div>
 </section>
 

@@ -42,6 +42,8 @@ def inputs(ds, scene, tmp):
     if ds == "n3dv":
         z = np.load(sorted(glob.glob(f"{N3DV_CACHE}/{scene}_1014x1352_*c_*.npz"))[-1])
         return [Image.fromarray(a) for a in z["cond"]]
+    if not os.path.exists(f"{CLIPS}/ctvs_{ds}_{scene}__inp.mp4"):
+        return None
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{CLIPS}/ctvs_{ds}_{scene}__inp.mp4", f"{tmp}/inp_%03d.png"], check=True)
     return [Image.open(f"{tmp}/{f}").convert("RGB") for f in sorted(os.listdir(tmp)) if f.startswith("inp_")]
 
@@ -107,13 +109,18 @@ def build(ds, scene):
     frames = sorted(set(fr for v in views for fr in ours[v]))
     diag = {v: next(fr for fr in frames if fr not in ours[v]) for v in views}
     inps = inputs(ds, scene, tmp)
-    assert len(inps) == len(views), (scene, len(inps), len(views))
-    sig = {v: np.mean([small(Image.open(ours[v][f])) for f in list(ours[v])[:3]], axis=0) for v in views}
-    v2inp, used = {}, set()
-    for i, im in enumerate(inps):
-        s = small(im)
-        best = min((v for v in views if v not in used), key=lambda v: np.abs(sig[v] - s).mean())
-        v2inp[best], used = i, used | {best}
+    if inps is None:
+        g = gt_provider(ds, scene, views, frames)
+        inps = [g(v, diag[v]).convert("RGB") for v in views]
+        v2inp = {v: i for i, v in enumerate(views)}
+    else:
+        assert len(inps) == len(views), (scene, len(inps), len(views))
+        sig = {v: np.mean([small(Image.open(ours[v][f])) for f in list(ours[v])[:3]], axis=0) for v in views}
+        v2inp, used = {}, set()
+        for i, im in enumerate(inps):
+            s = small(im)
+            best = min((v for v in views if v not in used), key=lambda v: np.abs(sig[v] - s).mean())
+            v2inp[best], used = i, used | {best}
     w0, h0 = Image.open(next(iter(ours[views[0]].values()))).size
     cw, ch = CELL_W, round(CELL_W * h0 / w0 / 2) * 2
     fit = lambda im: im.resize((cw, ch), Image.LANCZOS)
@@ -163,6 +170,9 @@ if __name__ == "__main__":
             WANT = set(a[len("--only="):].split(","))
     only = [a for a in args if not a.startswith("--")]
     entries = [e for e in json.load(open(MANIFEST)) if e["protocol"] == "ctvs" and e["dataset"] in FPS and (not only or e["dataset"] in only)]
+    for a in args:
+        if a.startswith("--scenes="):
+            entries = [{"dataset": x.split(":")[0], "scene": x.split(":")[1]} for x in a[len("--scenes="):].split(",")]
     mp = f"{OUT}/manifest.json"
     for e in entries:
         entry = build(e["dataset"], e["scene"])
