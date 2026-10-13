@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;500&family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/css/style.css?v=202610131758">
-<link rel="stylesheet" href="static/css/figures.css?v=202610131758">
+<link rel="stylesheet" href="static/css/style.css?v=202610131802">
+<link rel="stylesheet" href="static/css/figures.css?v=202610131802">
 <link rel="icon" type="image/png" href="static/images/favicon.png">
 <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
 </head>
@@ -35,6 +35,7 @@
 <aside class="side">
   <a class="brand" href="#top"><img class="logo" src="static/images/flan-icon.webp" alt="">FL4N</a>
   <div class="side-sub">Feed-forward Latent Model for 4D Novel View Synthesis</div>
+  <div class="side-btns"><a class="btn btn--primary" href="#"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm8 1.5V8h4.5L14 3.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>Paper</a><a class="btn" href="#"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>Code</a></div>
   <div class="side-links">
     <a href="#explorer"><span class="tick"></span>Explorer</a>
     <a href="#overview"><span class="tick"></span>Overview</a>
@@ -92,11 +93,7 @@
       <p>4D novel view synthesis renders a dynamic scene from viewpoints and instants that were never observed. Feed-forward methods do it with explicit 3D Gaussians plus motion, and pay with ghosting, floaters and holes.</p>
       <p><span class="hl">FL4N is the first feed-forward latent 4D NVS model.</span> A frozen static latent backbone supplies the 3D prior; a lightweight <b>dynamic encoder</b> adds a <b>temporal residual</b> on top. Training needs only images and binary motion masks.</p>
     </div>
-    <div class="tldr reveal">
-      <div class="tag">TL;DR</div>
-      <p>Freeze a static latent view synthesizer, add a small dynamic branch that predicts a time-conditioned residual, and you get a real-time 4D renderer that beats Gaussian-based methods on every benchmark.</p>
-    </div>
-    <div class="section-head reveal" style="margin-top:56px"><span class="eyebrow">Abstract</span></div>
+        <div class="section-head reveal" style="margin-top:56px"><span class="eyebrow">Abstract</span></div>
     <div class="prose reveal">
       <p>4D Novel View Synthesis (NVS) from monocular videos aims to render dynamic scenes across viewpoints and timestamps, requiring jointly inferring 3D structure and temporal dynamics. Existing feed-forward methods rely on explicit 3D Gaussian representations, which are prone to temporal inconsistency and severe rendering artifacts. We present <b>FL4N</b>, the first feed-forward latent 4D NVS model. We bypass explicit 3D primitives by weaving a geometrically grounded scene prior into a unified latent representation across space and time. To overcome dynamic training data scarcity, we learn a temporal residual on top of a frozen, pretrained static latent backbone. A lightweight dynamic encoder learns to isolate true scene motion from camera parallax. Trained purely on image synthesis with binary mask guidance, FL4N achieves state-of-the-art rendering quality for 4D NVS in real time. Our proposed latent representation successfully learns a strong 4D prior, generalizes across novel views and timestamps, and cleanly decouples view and time in the latent space.</p>
     </div>
@@ -168,9 +165,9 @@
 
 
 <div class="lightbox" role="dialog"><button class="lb-close" aria-label="close">✕</button><div class="lb-body"><img alt=""></div><div class="lb-cap"></div></div>
-<script src="static/js/scenes.js?v=202610131758"></script>
-<script src="static/js/main.js?v=202610131758"></script>
-<script src="static/js/figdata.js?v=202610131758"></script>
-<script src="static/js/figures.js?v=202610131758"></script>
+<script src="static/js/scenes.js?v=202610131802"></script>
+<script src="static/js/main.js?v=202610131802"></script>
+<script src="static/js/figdata.js?v=202610131802"></script>
+<script src="static/js/figures.js?v=202610131802"></script>
 </body>
 </html>
