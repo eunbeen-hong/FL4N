@@ -26,7 +26,7 @@
   .sub { font: 600 40px var(--disp); color: var(--ink); letter-spacing: -.01em; }
   .box { position: absolute; height: 130px; border-radius: 16px; border: 2px solid var(--line2); background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 6px 18px rgba(150, 90, 30, .08); }
   .box .t { font: 700 26px var(--disp); }
-  .box .s { font: 500 20px var(--mono); color: var(--mute); margin-top: 6px; }
+  .box .s { font: 500 22px var(--mono); color: var(--mute); margin-top: 6px; }
   .box.dyn { border-color: var(--p); background: var(--pg); }
   .box.frz { border-color: #cfd8d4; background: #f3f6f5; }
   .box.warm { border-color: var(--y); background: #fffbef; }
@@ -43,7 +43,7 @@
   .bars .fill.ours { background: linear-gradient(90deg, var(--pd), var(--p)); }
   .bars .val { width: 90px; font: 500 22px var(--mono); padding-left: 14px; color: var(--ink); }
   .ptitle { position: absolute; font: 700 26px var(--disp); }
-  .psub { position: absolute; font: 400 20px var(--mono); color: var(--mute); }
+  .psub { position: absolute; font: 400 22px var(--mono); color: var(--mute); }
   .cam { position: absolute; width: 30px; height: 22px; }
   .check { position: absolute; width: 56px; height: 56px; border-radius: 50%; background: var(--g); color: #fff; display: flex; align-items: center; justify-content: center; font: 700 34px var(--disp); box-shadow: 0 6px 16px rgba(27,127,75,.35); }
   .ax { position: absolute; font-size: 22px; font-weight: 700; color: var(--mute); letter-spacing: .06em; text-transform: uppercase; }
@@ -106,24 +106,24 @@ const LOCK = '<svg class="lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16
 function build() {
   const c1 = $('#c1frames'), s1 = $('#c1svg'); defs(s1, 1);
   state.c1 = [];
-  const n = 12, w = 176, h = 99, x0 = 96, x1 = 1824 - w;
+  const n = 12, w = 170, h = 96, x0 = 60, x1 = 1860 - w;
   const pts = [];
-  for (let i = 0; i < n; i++) { const u = i / (n - 1), x = lerp(x0, x1, u), y = 300 - 110 * Math.sin(Math.PI * u); pts.push([x + w / 2, y + h + 58]); }
+  for (let i = 0; i < n; i++) { const u = i / (n - 1), x = lerp(x0, x1, u), y = 330 - 150 * Math.sin(Math.PI * u); pts.push([x + w / 2, y + h + 58]); }
   state.c1arc = svgEl(s1, 'path', { d: 'M' + pts.map(p => p.join(',')).join(' L'), fill: 'none', stroke: '#e2d0b8', 'stroke-width': 3, 'stroke-dasharray': '8 8', opacity: 0 });
   for (let i = 0; i < n; i++) {
-    const u = i / (n - 1), x = lerp(x0, x1, u), y = 300 - 110 * Math.sin(Math.PI * u), rot = (u - .5) * -14;
+    const u = i / (n - 1), x = lerp(x0, x1, u), y = 330 - 150 * Math.sin(Math.PI * u), rot = (u - .5) * -18;
     const card = el('div', 'card', `left:${x}px;top:${y}px;width:${w}px;height:${h}px;opacity:0;z-index:${i}`, `<img src="${A}input/${String(i + 1).padStart(2, '0')}.png">`);
     card.dataset.rot = rot;
     const cam = el('div', 'cam', `left:${x + w / 2 - 15}px;top:${y + h + 46}px;opacity:0`, CAM);
     const lbl = el('div', 'lbl', `left:${x + w / 2 - 30}px;top:${y + h + 76}px;width:60px;text-align:center;font:500 22px var(--mono);color:var(--p);opacity:0`, `t${i + 1}`);
     c1.append(card, cam, lbl); state.c1.push([card, cam, lbl]);
   }
-  state.c1note = el('div', 'lbl', 'left:0;right:0;top:600px;text-align:center;font-size:28px;opacity:0', '12 frames &nbsp;=&nbsp; <b style="color:var(--p)">12 viewpoints</b> &nbsp;=&nbsp; <b style="color:var(--p)">12 instants</b>'); c1.appendChild(state.c1note);
+  state.c1note = el('div', 'lbl', 'left:0;right:0;top:640px;text-align:center;font-size:28px;opacity:0', '12 frames &nbsp;=&nbsp; <b style="color:var(--p)">12 viewpoints</b> &nbsp;=&nbsp; <b style="color:var(--p)">12 instants</b>'); c1.appendChild(state.c1note);
 
-  const g = $('#c2grid'); const cs = 58, gap = 6, gx = 300, gy = 160;
+  const g = $('#c2grid'); const cs = 62, gap = 6, gx = 300, gy = 170;
   g.appendChild(el('div', 'ax', `left:${gx}px;top:${gy - 36}px`, 'Time →'));
   g.appendChild(el('div', 'ax', `left:${gx - 44}px;top:${gy}px;writing-mode:vertical-rl`, 'View'));
-  g.appendChild(el('div', 'ax', `left:${gx - 44}px;top:${gy + 76}px`, '↓'));
+  g.appendChild(el('div', 'ax', `left:${gx - 44}px;top:${gy + 78}px`, '↓'));
   state.c2 = [];
   for (let v = 0; v < 8; v++) for (let t = 0; t < 8; t++) {
     const c = el('div', 'cell', `left:${gx + t * (cs + gap)}px;top:${gy + v * (cs + gap)}px;width:${cs}px;height:${cs}px`);
@@ -133,7 +133,7 @@ function build() {
   }
   const bx = 1000, by = 160;
   state.c2big = el('div', 'card', `left:${bx}px;top:${by}px;width:720px;height:405px;opacity:0;border:3px solid var(--p)`, `<img src="${T}ours_v01_f08.webp">`);
-  state.c2bigl = el('div', 'lbl', `left:${bx}px;top:${by + 420}px;opacity:0;font-size:24px`, '<b style="color:var(--p)">FL4N</b> renders view 2 at time 6 from the single input video');
+  state.c2bigl = el('div', 'lbl', `left:${bx}px;top:${by + 420}px;opacity:0;font-size:24px`, '<b style="color:var(--p)">FL4N</b> renders a never-seen view and instant from the single input video');
   state.c2gl = el('div', 'lbl', `left:${gx}px;top:${gy + 8 * (cs + gap) + 10}px;opacity:0;font-size:22px`, '<span style="display:inline-block;width:18px;height:18px;background:var(--y);border-radius:4px;vertical-align:-2px;margin-right:8px"></span>context frame &nbsp;&nbsp; <span style="display:inline-block;width:18px;height:18px;background:var(--p);border-radius:4px;vertical-align:-2px;margin-right:8px"></span>target');
   g.append(state.c2big, state.c2bigl, state.c2gl);
 
@@ -156,12 +156,12 @@ function build() {
 
   const c4 = $('#c4d'), s4 = $('#c4svg'); defs(s4, 4);
   state.c4 = { frames: [], lats: [] };
-  for (let i = 3; i >= 0; i--) { const d = el('div', 'card', `left:${120 + i * 14}px;top:${320 - i * 14}px;width:300px;height:169px;opacity:0`, `<img src="${A}input/${String(1 + i * 3).padStart(2, '0')}.png">`); c4.appendChild(d); state.c4.frames.push(d); }
-  state.c4.fl = el('div', 'lbl', 'left:120px;top:500px;opacity:0;color:var(--p);font-weight:600', 'Context frames'); c4.appendChild(state.c4.fl);
-  state.c4.enc = box('frz', 620, 325, 380, 'Static encoder', '×24 layers · frozen', LOCK); c4.appendChild(state.c4.enc);
-  state.c4.w1 = wire(s4, 'M470,390 L616,390'); state.c4.w2 = wire(s4, 'M1000,390 L1146,390');
-  for (let i = 0; i < 4; i++) { const d = el('div', 'card', `left:${1160 + i * 170}px;top:345px;width:156px;height:88px;opacity:0;border-color:var(--line2)`, `<img src="${lat('st', i * 2)}">`); c4.appendChild(d); state.c4.lats.push(d); }
-  state.c4.ll = el('div', 'lbl', 'left:1160px;top:450px;opacity:0', 'Static latent <b>z</b><sub>st</sub> &nbsp;·&nbsp; PCA, one per context frame'); c4.appendChild(state.c4.ll);
+  for (let i = 3; i >= 0; i--) { const d = el('div', 'card', `left:${120 + i * 14}px;top:${300 - i * 14}px;width:340px;height:191px;opacity:0`, `<img src="${A}input/${String(1 + i * 3).padStart(2, '0')}.png">`); c4.appendChild(d); state.c4.frames.push(d); }
+  state.c4.fl = el('div', 'lbl', 'left:120px;top:502px;opacity:0;color:var(--p);font-weight:600', 'Context frames'); c4.appendChild(state.c4.fl);
+  state.c4.enc = box('frz', 640, 330, 400, 'Static encoder', '×24 layers · frozen', LOCK); c4.appendChild(state.c4.enc);
+  state.c4.w1 = wire(s4, 'M510,395 L636,395'); state.c4.w2 = wire(s4, 'M1040,395 L1126,395');
+  for (let i = 0; i < 4; i++) { const d = el('div', 'card', `left:${1140 + i * 184}px;top:343px;width:172px;height:97px;opacity:0;border-color:var(--line2)`, `<img src="${lat('st', i * 2)}">`); c4.appendChild(d); state.c4.lats.push(d); }
+  state.c4.ll = el('div', 'lbl', 'left:1140px;top:456px;opacity:0', 'Static latent <b>z</b><sub>st</sub> &nbsp;·&nbsp; PCA, one per context frame'); c4.appendChild(state.c4.ll);
   state.c4.note = el('div', 'lbl', 'left:0;top:0;opacity:0', '');
 
   const c5 = $('#c5d'), s5 = $('#c5svg'); defs(s5, 5);
