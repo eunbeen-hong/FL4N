@@ -187,10 +187,15 @@
     basebar.appendChild(b);
   });
 
-  let lastT = 0;
+  let lastT = 0, stalled = false;
   setInterval(() => {
     const m = vids[0];
-    if (!m || m.paused || !isFinite(m.duration)) return;
+    if (!m || !isFinite(m.duration)) return;
+    const live = vids.filter(v => v.src && !v.oncanplay);
+    const ready = live.every(v => v.readyState >= 3);
+    if (!ready && !stalled && !m.paused) { stalled = true; live.forEach(v => v.pause()); return; }
+    if (stalled && ready) { stalled = false; live.forEach(v => { v.currentTime = m.currentTime; v.play().catch(() => {}); }); return; }
+    if (m.paused) return;
     const wrapped = m.currentTime < lastT - 0.5;
     lastT = m.currentTime;
     vids.slice(1).forEach(v => { if (v.src && !v.oncanplay && (wrapped || Math.abs(v.currentTime - m.currentTime) > 0.1)) v.currentTime = m.currentTime; });
