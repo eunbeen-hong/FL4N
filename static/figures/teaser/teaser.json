@@ -1,1 +1,166 @@
-{"scene": "Skating", "dataset": "NVIDIA", "views": 12, "frames": 12, "models": ["ours", "gt", "c4g", "neoverse", "movies", "4dgt"], "w": 320, "h": 180}
+{
+ "dataset": "NVIDIA",
+ "models": [
+  "ours",
+  "gt",
+  "c4g",
+  "neoverse",
+  "movies",
+  "4dgt"
+ ],
+ "scenes": [
+  {
+   "id": "Balloon1",
+   "name": "Balloon1",
+   "keep": [
+    1,
+    2,
+    3,
+    4,
+    7,
+    8,
+    9,
+    10
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 22.26
+  },
+  {
+   "id": "Balloon2",
+   "name": "Balloon2",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    8,
+    9,
+    10
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 26.76
+  },
+  {
+   "id": "DynamicFace",
+   "name": "Dynamic face",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    10
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 20.28
+  },
+  {
+   "id": "Jumping",
+   "name": "Jumping",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 23.87
+  },
+  {
+   "id": "Playground",
+   "name": "Playground",
+   "keep": [
+    2,
+    3,
+    4,
+    5,
+    7,
+    8,
+    9,
+    10
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 24.31
+  },
+  {
+   "id": "Skating",
+   "name": "Skating",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    8,
+    9,
+    10
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 28.83
+  },
+  {
+   "id": "Teadybear",
+   "name": "Teddy bear",
+   "keep": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 27.93
+  },
+  {
+   "id": "Truck",
+   "name": "Truck",
+   "keep": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    9
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 29.25
+  },
+  {
+   "id": "Umbrella",
+   "name": "Umbrella",
+   "keep": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9
+   ],
+   "w": 320,
+   "h": 180,
+   "psnr": 25.81
+  }
+ ]
+}

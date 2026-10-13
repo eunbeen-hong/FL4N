@@ -48,7 +48,8 @@
     const box = document.createElement('div');
     box.className = 'rig-gridbox';
     box.style.aspectRatio = `${GW}/${GH}`;
-    box.innerHTML = `<video class="rig-gridvideo" muted loop playsinline preload="auto"></video>`;
+    const mainH = (G.rows.length * meta.h + (G.rows.length - 1) * gap) / GH * 100, baseTop = (G.rows.length * (meta.h + gap)) / GH * 100;
+    box.innerHTML = `<video class="rig-gridvideo main" muted loop playsinline preload="auto" style="top:0;height:${mainH}%"></video><video class="rig-gridvideo base" muted loop playsinline preload="auto" style="top:${baseTop}%;height:${meta.h / GH * 100}%"></video>`;
     cols = G.cams.map((k, i) => {
       const h = document.createElement('div');
       h.className = 'rig-colhead';
@@ -149,30 +150,26 @@
     v.oncanplay = () => { v.oncanplay = null; try { v.currentTime = vids[0] ? vids[0].currentTime : 0; } catch (e) {} v.play().catch(() => {}); };
   }
 
-  function gridSrc(s) { return `${CONFIG.base}${s.ds}_${s.id}__grid_${baseline}.mp4`; }
+  function gridSrc(s, name) { return `${CONFIG.base}${s.ds}_${s.id}__grid_${name}.mp4`; }
   function show(s) {
     scene = s;
     meta = manifest[`${s.ds}_${s.id}`];
     if (!meta) return;
     build();
-    const cv = $('video', center), gv = $('.rig-gridvideo', world);
-    vids = [cv, gv];
+    const cv = $('video', center), mv = $('.rig-gridvideo.main', world), bv = $('.rig-gridvideo.base', world);
+    vids = [cv, mv, bv];
     attach(cv, CONFIG.inputSrc(s));
-    attach(gv, gridSrc(s));
+    attach(mv, gridSrc(s, 'main'));
+    attach(bv, gridSrc(s, baseline));
     $$('.rig-thumb', thumbs).forEach(b => b.classList.toggle('active', b.dataset.key === `${s.ds}_${s.id}`));
   }
   function setBaseline(b) {
     baseline = b;
     $$('button', basebar).forEach(x => x.classList.toggle('active', x.dataset.key === b));
     if (!scene) return;
-    const t = vids[0] ? vids[0].currentTime : 0;
-    build();
-    const cv = $('video', center), gv = $('.rig-gridvideo', world);
-    const old = vids[0];
-    vids = [cv, gv];
-    cv.src = old && old.src ? old.src : CONFIG.inputSrc(scene);
-    cv.oncanplay = () => { cv.oncanplay = null; try { cv.currentTime = t; } catch (e) {} cv.play().catch(() => {}); };
-    attach(gv, gridSrc(scene));
+    const lab = $$('.rig-rowlabel', world).pop();
+    if (lab) lab.textContent = CONFIG.models.find(m => m.key === b).label;
+    attach(vids[2], gridSrc(scene, b));
   }
   basebar.innerHTML = '<span class="lbl">Compare FL4N with</span>';
   CONFIG.models.filter(m => !['gt', 'ours'].includes(m.key)).forEach(m => {

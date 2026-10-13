@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compose each scene's per-camera rig clips into ONE grid mp4 (rows = models, cols = selected cameras) so the page plays a single synced video."""
+"""Compose each scene's per-camera rig clips into grid mp4s: `__grid_main` (GT + FL4N rows) and one single-row `__grid_<baseline>` per baseline, cols = selected cameras."""
 import json, os, shutil, subprocess, sys, tempfile
 import cv2
 import numpy as np
@@ -26,10 +26,9 @@ def frames_of(path):
     return out
 
 
-def build(key, m, baseline, force=False):
-    out = f"{RIG}/{key}__grid_{baseline}.mp4"
+def build(key, m, name, rows, force=False):
+    out = f"{RIG}/{key}__grid_{name}.mp4"
     cams = pick(m["cams"], MAX_CAMS)
-    rows = (["gt"] if m.get("gt") else []) + ["ours", baseline]
     if os.path.exists(out) and not force:
         return cams, rows
     clips = {(r, c): frames_of(f"{RIG}/{key}__{r}__c{c:02d}.mp4") for r in rows for c in cams}
@@ -59,9 +58,10 @@ if __name__ == "__main__":
     for key, e in m.items():
         if only and e["ds"] not in only:
             continue
+        main = (["gt"] if e.get("gt") else []) + ["ours"]
+        cams, rows = build(key, e, "main", main, force)
         for b in BASELINES:
-            cams, rows = build(key, e, b, force)
-        e["grid"] = {"cams": cams, "rows": rows[:-1], "baselines": BASELINES, "gap": GAP}
-        e.pop("grid_old", None)
+            build(key, e, b, [b], force)
+        e["grid"] = {"cams": cams, "rows": main, "baselines": BASELINES, "gap": GAP}
     json.dump(m, open(mp + ".tmp", "w"), indent=1)
     os.replace(mp + ".tmp", mp)

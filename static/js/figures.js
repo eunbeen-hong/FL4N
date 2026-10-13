@@ -84,59 +84,49 @@
 
   function teaserFig(root) {
     fetch(F + 'teaser/teaser.json').then(r => r.json()).then(m => {
-      const V = m.views, T = m.frames;
-      const src = (model, v, t) => `${F}teaser/${v === t ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
-      const pad = el('div', 'tz-pad'), main = el('div', 'tz-main'), others = el('div', 'tz-others'), ctrls = el('div', 'tz-ctrl'), info = el('div', 'tz-info');
-      pad.style.setProperty('--n', T);
-      const cells = [];
+      const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
+      const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
       const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span><span class="ax-v">View ↓</span>`);
-      for (let v = 0; v < V; v++) for (let t = 0; t < T; t++) {
-        const c = btn('tz-cell' + (v === t ? ' obs' : ''), '', () => { stop(); go(v, t); });
-        c.title = v === t ? `Observed input frame: view ${v + 1} at time ${t + 1}` : `Render view ${v + 1} at time ${t + 1}`;
-        c.addEventListener('mouseenter', () => { if (!timer) go(v, t, true); });
-        pad.appendChild(c); cells.push(c);
-      }
-      const big = el('img', 'tz-big'), bigLab = el('div', 'tz-biglab');
-      main.append(big, bigLab);
-      const smalls = {};
-      ['gt', 'c4g', 'neoverse', 'movies', '4dgt'].forEach(k => { const w = el('figure', 'tz-small'); const i = el('img'); w.append(i, el('figcaption', '', MODEL_NAMES[k])); others.appendChild(w); smalls[k] = { w, i }; });
-      let cv = 2, ct = 7, timer = null, mode = 'free';
-      function go(v, t, hover) {
-        if (!hover) { cv = v; ct = t; }
-        cells.forEach((c, i) => { c.classList.toggle('cur', i === v * T + t); });
-        big.src = src('ours', v, t);
-        const obs = v === t;
-        bigLab.innerHTML = obs ? `<b>Observed input frame</b> · view ${v + 1}, time ${t + 1}` : `<b>FL4N (Ours)</b> · view ${v + 1}, time ${t + 1}`;
-        Object.entries(smalls).forEach(([k, s]) => { s.w.style.visibility = obs && k !== 'gt' ? 'hidden' : ''; s.i.src = src(k, v, t); });
-        preload([[v, (t + 1) % T], [(v + 1) % V, t]].map(([a, b]) => src('ours', a, b)));
-      }
-      function paint(path) { cells.forEach(c => c.classList.remove('path')); path.forEach(([v, t]) => cells[v * T + t].classList.add('path')); }
-      function stop() { clearInterval(timer); timer = null; root.dataset.mode = mode = 'free'; paint([]); mbs.forEach(b => b.classList.remove('active')); }
-      function run(kind) {
-        stop(); mode = kind; root.dataset.mode = kind;
-        let path = [];
-        if (kind === 'bullet') for (let v = 0; v < V; v++) path.push([v, ct]);
-        if (kind === 'video') for (let t = 0; t < T; t++) path.push([cv, t]);
-        if (kind === 'both') for (let i = 0; i < V; i++) path.push([i, (i + 5) % T]);
-        paint(path); preload(path.map(([v, t]) => src('ours', v, t)));
-        let i = 0; go(...path[0], true);
-        timer = setInterval(() => { i = (i + 1) % path.length; go(...path[i], true); }, 380);
-      }
-      const mbs = [
-        btn('chip', 'Bullet time · fixed time, sweep views', () => { run('bullet'); mbs[0].classList.add('active'); }),
-        btn('chip', 'Novel-view video · fixed view, sweep time', () => { run('video'); mbs[1].classList.add('active'); }),
-        btn('chip', 'Free view + time', () => { run('both'); mbs[2].classList.add('active'); }),
-      ];
-      mbs.forEach(b => ctrls.appendChild(b));
-      ctrls.appendChild(enlarge(() => [big.src, smalls.gt.i.src], () => `${bigLab.textContent} (left) vs. ground truth (right)`));
-      info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input (one frame per camera)</span><span class="k"><i class="sw"></i>never observed: rendered by FL4N</span><span class="k"><i class="sw cur"></i>selected</span>`;
-      const grid = el('div', 'tz-grid');
-      const padWrap = el('div', 'tz-padwrap'); padWrap.append(padHead, pad, info);
-      const right = el('div', 'tz-right'); right.append(main, others);
-      grid.append(padWrap, right);
+      info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input frame (one per camera)</span><span class="k"><i class="sw"></i>never observed: rendered</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover the grid to pick a cell; it auto-plays otherwise.</span>`;
+      padWrap.append(padHead, pad, info);
+      const P = {};
+      [['ours', 'FL4N (Ours)'], ['gt', 'Ground truth'], ['c4g', 'C4G'], ['neoverse', 'NeoVerse'], ['movies', 'MoVieS'], ['4dgt', '4DGT']].forEach(([k, lab]) => {
+        const f = el('figure', 'tz-panel ' + k); const i = el('img'); i.alt = lab;
+        f.append(i, el('figcaption', '', lab)); panels.appendChild(f); P[k] = { f, i, cap: f.lastChild, lab };
+      });
+      grid.append(padWrap, panels);
+      ctrls.append(chips, enlarge(() => [P.ours.i.src, P.gt.i.src], () => `${P.ours.cap.textContent} (left) vs. ground truth (right)`));
       mount(root, ctrls, grid);
-      go(cv, ct);
-      new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) stop(); }), { threshold: 0 }).observe(root);
+      let sc = null, keep = [], cells = [], cur = [0, 0], timer = null, hover = false, step = 0;
+      const src = (model, v, t) => `${F}teaser/${sc.id}/${v === t ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
+      function go(v, t) {
+        cur = [v, t];
+        cells.forEach(c => c.classList.toggle('cur', +c.dataset.v === v && +c.dataset.t === t));
+        const obs = v === t;
+        Object.entries(P).forEach(([k, p]) => { p.i.src = src(k, v, t); p.f.classList.toggle('dim', obs && k !== 'gt'); });
+        P.ours.cap.textContent = obs ? `Observed input frame · view ${v + 1}, time ${t + 1}` : `FL4N (Ours) · view ${v + 1}, time ${t + 1}`;
+        P.gt.cap.textContent = obs ? `Ground truth (= input) · view ${v + 1}, time ${t + 1}` : `Ground truth · view ${v + 1}, time ${t + 1}`;
+      }
+      function tick() { const n = keep.length; step = (step + 1) % (n * n); go(keep[Math.floor(step / n)], keep[step % n]); }
+      function start() { if (!timer) timer = setInterval(() => { if (!hover) tick(); }, 420); }
+      function stop() { clearInterval(timer); timer = null; }
+      function pickScene(s) {
+        sc = s; keep = s.keep; cells = []; pad.innerHTML = ''; pad.style.setProperty('--n', keep.length);
+        keep.forEach(v => keep.forEach(t => {
+          const c = el('button', 'tz-cell' + (v === t ? ' obs' : '')); c.type = 'button'; c.dataset.v = v; c.dataset.t = t;
+          c.title = v === t ? `Observed input: view ${v + 1} at time ${t + 1}` : `Render view ${v + 1} at time ${t + 1}`;
+          c.addEventListener('mouseenter', () => { step = keep.indexOf(v) * keep.length + keep.indexOf(t); go(v, t); });
+          c.addEventListener('click', () => go(v, t));
+          pad.appendChild(c); cells.push(c);
+        }));
+        preload(keep.flatMap(v => keep.map(t => src('ours', v, t))));
+        step = 0; go(keep[0], keep[0]);
+      }
+      pad.addEventListener('mouseenter', () => (hover = true));
+      pad.addEventListener('mouseleave', () => (hover = false));
+      pick(chips, m.scenes.map(s => ({ label: s.name, s })), it => pickScene(it.s), Math.max(0, m.scenes.findIndex(s => s.id === 'Skating')));
+      pickScene(m.scenes.find(s => s.id === 'Skating') || m.scenes[0]);
+      new IntersectionObserver(es => es.forEach(e => (e.isIntersecting ? start() : stop())), { threshold: 0.05 }).observe(root);
     });
   }
 
