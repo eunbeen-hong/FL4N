@@ -65,13 +65,20 @@
       mount(root, ctrls, grid);
       let sc = null, keep = [], cells = [], cur = [0, 0], timer = null, hover = false, step = 0;
       const src = (model, v, t) => `${F}teaser/${sc.id}/${v === t ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
+      let seq = 0;
+      const decoded = {};
+      function load(u) { if (!decoded[u]) { const im = new Image(); im.src = u; decoded[u] = im.decode().catch(() => {}); } return decoded[u]; }
       function go(v, t) {
         cur = [v, t];
+        const my = ++seq, obs = v === t;
         cells.forEach(c => c.classList.toggle('cur', +c.dataset.v === v && +c.dataset.t === t));
-        const obs = v === t;
-        Object.entries(P).forEach(([k, p]) => { p.i.src = src(k, v, t); p.f.classList.toggle('dim', obs && k !== 'gt'); });
-        P.ours.cap.textContent = obs ? `Observed input frame · view ${v + 1}, time ${t + 1}` : `FL4N (Ours) · view ${v + 1}, time ${t + 1}`;
-        P.gt.cap.textContent = obs ? `Ground truth (= input) · view ${v + 1}, time ${t + 1}` : `Ground truth · view ${v + 1}, time ${t + 1}`;
+        const srcs = Object.keys(P).map(k => [k, src(k, v, t)]);
+        Promise.all(srcs.map(([, u]) => load(u))).then(() => {
+          if (my !== seq) return;
+          srcs.forEach(([k, u]) => { P[k].i.src = u; P[k].f.classList.toggle('dim', obs && k !== 'gt'); });
+          P.ours.cap.textContent = obs ? `Observed input frame · view ${v + 1}, time ${t + 1}` : `FL4N (Ours) · view ${v + 1}, time ${t + 1}`;
+          P.gt.cap.textContent = obs ? `Ground truth (= input) · view ${v + 1}, time ${t + 1}` : `Ground truth · view ${v + 1}, time ${t + 1}`;
+        });
       }
       function tick() { const n = keep.length; step = (step + 1) % (n * n); go(keep[Math.floor(step / n)], keep[step % n]); }
       function start() { if (!timer) timer = setInterval(() => { if (!hover) tick(); }, 420); }
@@ -85,8 +92,9 @@
           c.addEventListener('click', () => go(v, t));
           pad.appendChild(c); cells.push(c);
         }));
-        preload(keep.flatMap(v => keep.map(t => src('ours', v, t))));
         step = 0; go(keep[0], keep[0]);
+        const all = keep.flatMap(v => keep.map(t => Object.keys(P).map(k => src(k, v, t)))).flat();
+        (function warm(i) { if (i >= all.length || sc !== s) return; Promise.all(all.slice(i, i + 12).map(load)).then(() => warm(i + 12)); })(0);
       }
       pad.addEventListener('mouseenter', () => (hover = true));
       pad.addEventListener('mouseleave', () => (hover = false));
