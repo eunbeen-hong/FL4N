@@ -58,7 +58,7 @@ def region(cx, cy):
     return 'static time'
 
 
-def label(x, y, parts, size=14, color='#23303d', anchor='middle', weight=500):
+def label(x, y, parts, size=14, color='#23303d', anchor='middle', weight=500, halo=False):
     spans = ''
     for p in parts:
         if isinstance(p, str):
@@ -73,7 +73,8 @@ def label(x, y, parts, size=14, color='#23303d', anchor='middle', weight=500):
                 spans += f'<tspan font-weight="700">{t}</tspan>'
             elif kind == 'i':
                 spans += f'<tspan font-style="italic" font-family="Cambria Math, STIX Two Math, Times New Roman, serif">{t}</tspan>'
-    return f'<text x="{x * 72:.1f}" y="{y * 72:.1f}" text-anchor="{anchor}" font-size="{size}" font-weight="{weight}" fill="{color}" font-family="\'Google Sans\', \'Google Sans Flex\', Inter, system-ui, sans-serif">{spans}</text>'
+    h = ' stroke="#ffffff" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round"' if halo else ''
+    return f'<text x="{x * 72:.1f}" y="{y * 72:.1f}" text-anchor="{anchor}" font-size="{size}" font-weight="{weight}" fill="{color}"{h} font-family="\'Google Sans\', \'Google Sans Flex\', Inter, system-ui, sans-serif">{spans}</text>'
 
 
 def main():
@@ -83,15 +84,27 @@ def main():
     svg = conv.slide(SLIDE)
     head, body = svg.split('</defs>', 1)
     body = body[:-len('</svg>')]
-    out, depth, pos = [], 0, 0
+    out, depth, pos, skip = [], 0, 0, None
     for m in re.finditer(r'<g [^>]*>|</g>', body):
         if m.group(0) == '</g>':
             depth -= 1
+            if skip is not None and depth < skip:
+                skip = None
+                pos = m.end()
+            continue
+        if skip is not None:
+            depth += 1
             continue
         if depth == 0:
             t = m.group(0)
             bb = re.search(r'data-bbox="([^"]*)"', t)
             x, y, w, h = [float(v) / 72 for v in bb.group(1).split()]
+            if x > 21.3 or x + w < 0.2 or y + h < 0.1:
+                depth += 1
+                skip = depth
+                out.append(body[pos:m.start()])
+                pos = None
+                continue
             cls = region(x + w / 2, y + h / 2)
             nt = t.replace('<g ', f'<g class="st {cls}" ', 1)
             out.append(body[pos:m.start()])
@@ -122,7 +135,7 @@ def main():
         label(cx(cam) + 0.25, cam[1] + cam[3] + 0.26, ['Target view ', ('i', 'π'), ('sub', 'tgt')], 13, '#8a6d2a'),
         label(lmask[0] + lmask[2] + 0.1, lmask[1] + 0.08, [('i', 'ℒ'), ('sub', 'mask')], 15, '#23303d', 'start'),
         label(lrgb[0] + lrgb[2] + 0.1, lrgb[1] + lrgb[3] / 2 + 0.08, [('i', 'ℒ'), ('sub', 'rgb')], 15, '#23303d', 'start'),
-        label(cx(qbox), qbox[1] + qbox[3] + 0.42, [('b', 'I'), ('sub', 'tgt')], 13, '#8a6d2a'),
+        label(qbox[0] + 0.05, qbox[1] + qbox[3] + 0.3, [('b', 'I'), ('sub', 'tgt')], 13, '#8a6d2a', 'start', halo=True),
         label(cx(ctx) - 0.1, ctx[1] + ctx[3] + 0.42, ['Context frames'], 15, '#d88b53'),
         label(cx(tgt), tgt[1] + tgt[3] + 0.3, ['Target frame'], 15, '#98783f'),
     ]

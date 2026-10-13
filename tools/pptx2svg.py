@@ -159,7 +159,8 @@ class Conv:
             if col is None:
                 return None
         he, te = ln.find(q('a:headEnd')), ln.find(q('a:tailEnd'))
-        return dict(color=col, alpha=alpha, w=w, dash=dash, head=he.get('type') if he is not None else None, tail=te.get('type') if te is not None else None)
+        ends = [e.get('type') if e is not None and e.get('type') not in (None, 'none') else None for e in (he, te)]
+        return dict(color=col, alpha=alpha, w=w, dash=dash, head=ends[0], tail=ends[1])
 
     def marker(self, kind, col, w, start):
         key = (kind, col, start)
@@ -412,7 +413,7 @@ class Conv:
                             words.append(dict(r, t=tok))
                 cur, cw = [], 0
                 for wd in words:
-                    ww = len(wd['t']) * wd['sz'] * 0.52
+                    ww = len(wd['t']) * wd['sz'] * 0.47
                     if cur and cw + ww > avail and not wd['t'].isspace():
                         wrapped.append(dict(l, runs=cur))
                         cur, cw = [], 0

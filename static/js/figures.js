@@ -52,7 +52,7 @@
       const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
       const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View ←</span>`);
-      info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input frame</span><span class="k"><i class="sw"></i>rendered (never observed)</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover to pick a cell.</span>`;
+      info.innerHTML = `<span class="k"><i class="sw obs"></i>context frame</span><span class="k"><i class="sw"></i>rendered frame</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover to pick a cell.</span>`;
       const padBox = el('div', 'tz-padbox'); padBox.append(padSide, pad);
       padWrap.append(padHead, padBox, info);
       const P = {};
