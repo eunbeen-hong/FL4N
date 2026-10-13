@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/css/style.css?v=202610131459">
-<link rel="stylesheet" href="static/css/figures.css?v=202610131459">
+<link rel="stylesheet" href="static/css/style.css?v=202610131541">
+<link rel="stylesheet" href="static/css/figures.css?v=202610131541">
 <link rel="icon" type="image/png" href="static/images/favicon.png">
 <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
 </head>
@@ -151,7 +151,8 @@
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">Quantitative results</span><h2>State of the art across three protocols and eight benchmarks.</h2>
       <p class="lede">We split 4D NVS into three settings on synchronized multi-view video. <b>Novel view synthesis</b> (NVS) renders held-out cameras at observed times, <b>cross-time view synthesis</b> (CTVS) renders unseen view-time pairs from a monocular sweep, and <b>novel time synthesis</b> (NTS) interpolates between temporally strided inputs on moving-camera monocular videos.</p></div>
-    <figure class="ifig reveal" data-fig="evalsettings">
+    <figure class="figure reveal" style="max-width:900px;margin-left:auto;margin-right:auto">
+      <img src="static/images/evalsettings.webp" alt="Three evaluation settings" loading="lazy">
       <figcaption><b>Three evaluation settings.</b> Red outlines are input context frames, blue outlines are evaluation targets. NVS and CTVS use NVIDIA, N3DV, Kubric4D, CamxTime and Charge; NTS uses DyCheck, ADT and TUM. Only Kubric4D and CamxTime are in the training distribution, everything else is zero-shot.</figcaption>
     </figure>
     <div class="toolbar reveal"><div class="tabs restabs"></div><span class="hint">† 2,000-step test-time pose alignment with target frames. Pose: whether context camera poses are given.</span></div>
@@ -203,22 +204,14 @@
     <figure class="ifig reveal" data-fig="gatefeature">
       <figcaption><b>Residual gate activation.</b> Channel-wise L2 norm of the gated residual is high on dynamic objects and near zero in the background: temporal modelling capacity concentrates where motion occurs. The third panel blends the activation over the frame.</figcaption>
     </figure>
-    <figure class="ifig reveal" data-fig="staticfeat">
+    <figure class="figure reveal">
+      <img src="static/images/supp_staticfeat.webp" alt="PCA of the static latent across context frames" loading="lazy">
       <figcaption><b>The static latent encodes camera pose.</b> PCA colours of the static latent are similar for cameras pointing in the same direction. The red boxes mark overlapping regions across context frames, which show the same colour gradients.</figcaption>
     </figure>
-    <figure class="ifig reveal" data-fig="residualgrid">
-      <figcaption><b>Residual latent across the view × time grid.</b> Ground-truth frames with the dynamic mask overlaid (blend left) and the corresponding residual latent (blend right). Dynamic objects produce stronger residuals as the target pose and time move away from the context frames, i.e. with a larger discrepancy from what was observed.</figcaption>
+    <figure class="figure reveal">
+      <img src="static/images/main_qual.webp" alt="Qualitative comparison on 4D novel view synthesis" loading="lazy">
+      <figcaption><b>Qualitative comparison on 4D novel view synthesis.</b> Gaussian-based methods exhibit holes, inconsistent objects and blurred detail; FL4N stays coherent.</figcaption>
     </figure>
-    <figure class="ifig reveal" data-fig="dynmask">
-      <figcaption><b>Dynamic masks.</b> Masks predicted by the DPT mask head of FL4N against VGGT4D and the ground truth on five scenes. FL4N produces more accurate masks with clearer object boundaries.</figcaption>
-    </figure>
-    <figure class="ifig reveal" data-fig="qual">
-      <figcaption><b>Qualitative comparison on 4D novel view synthesis.</b> Gaussian-based methods exhibit holes, inconsistent objects and blurred detail; FL4N stays coherent. Pick a dataset and a method, then drag the divider to compare against the ground truth.</figcaption>
-    </figure>
-    <div class="duo">
-      <div class="trio-card reveal"><span class="tag">Zero-shot matching · DAVIS</span><h3>Dynamic latent matches better where things move</h3><p>Probing dense correspondence with the protocol of Nam et al., the dynamic latent beats the static latent on the whole frame and the gap widens on dynamic regions, where moving content breaks the multi-view consistency the static prior relies on.</p></div>
-      <div class="trio-card reveal" style="--d:80ms"><span class="tag">Video depth probing · Kubric</span><h3>Geometry is preserved, temporal cues are added</h3><p>A DPT depth head trained on frozen latents is consistently more accurate on the dynamic latent than on the static one, and the advantage grows with the temporal stride between context frames, i.e. with larger object motion.</p></div>
-    </div>
   </div>
 </section>
 
@@ -229,18 +222,12 @@
   </div>
 </section>
 
-<footer>
-  <div class="wrap foot">
-    <span class="brand"><img class="logo" src="static/images/flan-icon.webp" alt="">FL4N</span>
-    <span>Page template inspired by the project pages of the KAIST Computer Vision Lab. Videos are best viewed in a desktop browser.</span>
-  </div>
-</footer>
 
 <div class="lightbox" role="dialog"><button class="lb-close" aria-label="close">✕</button><div class="lb-body"><img alt=""></div><div class="lb-cap"></div></div>
-<script src="static/js/scenes.js?v=202610131459"></script>
-<script src="static/js/main.js?v=202610131459"></script>
-<script src="static/js/rig.js?v=202610131459"></script>
-<script src="static/js/figdata.js?v=202610131459"></script>
-<script src="static/js/figures.js?v=202610131459"></script>
+<script src="static/js/scenes.js?v=202610131541"></script>
+<script src="static/js/main.js?v=202610131541"></script>
+<script src="static/js/rig.js?v=202610131541"></script>
+<script src="static/js/figdata.js?v=202610131541"></script>
+<script src="static/js/figures.js?v=202610131541"></script>
 </body>
 </html>

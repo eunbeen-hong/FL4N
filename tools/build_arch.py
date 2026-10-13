@@ -5,7 +5,7 @@ from pptx2svg import Deck, Conv
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'static', 'figures')
-SLIDE = 3
+SLIDE = 0
 YELLOW = [(2, 0), (1, 1), (2, 1), (2, 2), (3, 2)]
 
 
@@ -37,6 +37,8 @@ STEPS = [
 
 
 def region(cx, cy):
+    if cx > 16.4 and cy < 1.75:
+        return 'sample static dyn time'
     if cx < 6.6:
         return 'sample'
     if cx < 9.05:
@@ -108,7 +110,7 @@ def main():
         label(17.02, 3.42, [('b', 'z'), ('sub', 'dyn'), ('sup', 'tgt')], 15, '#3a7a9c'),
         label(12.86, 2.24, ['Target time ', ('i', 'τ̂'), ('sub', 'tgt')], 13, '#8a6d2a'),
         label(17.0, 4.32, ['Target view ', ('i', 'π'), ('sub', 'tgt')], 13, '#8a6d2a'),
-        label(15.9, 1.62, [('i', 'ℒ'), ('sub', 'mask')], 15, '#23303d', 'start'),
+        label(15.45, 1.98, [('i', 'ℒ'), ('sub', 'mask')], 15, '#23303d', 'start'),
         label(20.42, 2.98, [('i', 'ℒ'), ('sub', 'rgb')], 15, '#23303d'),
         label(4.05, 3.38, [('b', 'I'), ('sub', 'tgt')], 13, '#8a6d2a'),
     ]
