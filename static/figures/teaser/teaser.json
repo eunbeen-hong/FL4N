@@ -171,6 +171,78 @@
    "psnr": 25.81
   },
   {
+   "id": "Scene377",
+   "ds": "camxtime",
+   "name": "CamxTime 377",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 33.83
+  },
+  {
+   "id": "Scene381",
+   "ds": "camxtime",
+   "name": "CamxTime 381",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 30.61
+  },
+  {
+   "id": "Scene383",
+   "ds": "camxtime",
+   "name": "CamxTime 383",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 30.58
+  },
+  {
+   "id": "Scene392",
+   "ds": "camxtime",
+   "name": "CamxTime 392",
+   "keep": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "w": 320,
+   "h": 320,
+   "psnr": 33.93
+  },
+  {
    "id": "Scene403",
    "ds": "camxtime",
    "name": "CamxTime 403",
@@ -205,24 +277,6 @@
    "w": 320,
    "h": 320,
    "psnr": 32.58
-  },
-  {
-   "id": "Scene384",
-   "ds": "camxtime",
-   "name": "CamxTime 384",
-   "keep": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-   ],
-   "w": 320,
-   "h": 320,
-   "psnr": 30.47
   }
  ]
 }

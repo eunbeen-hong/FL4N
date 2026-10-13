@@ -10,7 +10,7 @@ GT_CX = "/mnt/sde/eunbeen/data/CamxTime_x/CamxTime"
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "figures", "teaser")
 MODELS = {"ours": "ours_posed", "4dgt": "4dgt", "movies": "movies", "neoverse": "neoverse_tto_nostatic", "c4g": "c4g_lbgt"}
 NAMES = {"Teadybear": "Teddy bear", "DynamicFace": "Dynamic face"}
-CAMX = ["Scene403", "Scene410", "Scene384"]
+CAMX = ["Scene377", "Scene381", "Scene383", "Scene392", "Scene403", "Scene410"]
 W, KEEP = 320, 8
 C4G_RE = re.compile(r"^all_(\d+)_i\d+_f(\d+)\.png$")
 
