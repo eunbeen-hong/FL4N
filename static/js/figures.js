@@ -29,7 +29,7 @@
   function archFig(root) {
     const stage = el('div', 'arch-stage'), cards = el('div', 'arch-steps'), cap = el('div', 'arch-cap');
     mount(root, cards, stage, cap);
-    Promise.all([fetch(F + 'arch.svg').then(r => r.text()), fetch(F + 'arch_steps.json').then(r => r.json())]).then(([svg, steps]) => {
+    Promise.all([fetch(F + 'arch.svg?v=202610141020').then(r => r.text()), fetch(F + 'arch_steps.json?v=202610141020').then(r => r.json())]).then(([svg, steps]) => {
       stage.innerHTML = svg;
       const all = { key: 'all', no: '', title: 'Full pipeline', text: 'Frozen static encoder and renderer, plus a small dynamic encoder that adds a temporal residual. Click a stage to isolate it.' };
       const items = [all, ...steps];

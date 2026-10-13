@@ -2,3 +2,4 @@ figure_ppts/
 static/videos/rig/*__c[0-9][0-9].mp4
 node_modules/
 .DS_Store
+__pycache__/

@@ -1,31 +1,28 @@
 WEBVTT
 
-00:00.000 --> 00:03.000
+00:00.000 --> 00:02.500
 FL4N: Feed-forward Latent Model for 4D Novel View Synthesis. Title card with the flan logo.
 
-00:03.000 --> 00:08.000
+00:02.500 --> 00:06.500
 Twelve frames of a monocular video fan out along a camera arc: every frame is a new viewpoint and a new instant.
 
-00:08.000 --> 00:13.000
+00:06.500 --> 00:11.000
 A view by time grid. Only the diagonal is observed. A target cell off the diagonal is rendered by FL4N.
 
-00:13.000 --> 00:19.000
+00:11.000 --> 00:16.000
 Ground truth next to four Gaussian-based baselines showing ghosting, blur, floaters and holes; FL4N's render appears with a check.
 
-00:19.000 --> 00:24.000
-Context frames enter a frozen static encoder and become a static latent that knows where to render, not when.
+00:16.000 --> 00:25.500
+The architecture figure from the paper lights up stage by stage: monocular sequence sampling, the frozen static encoder and its static latent, the dynamic encoder with learnable time tokens, static anchoring, residual latent and mask head, then the time module, sum and frozen renderer at the target view.
 
-00:24.000 --> 00:30.000
-A trainable dynamic encoder with learnable time tokens sits above the frozen static encoder; static injection feeds it; it outputs a residual latent and a dynamic mask.
+00:25.500 --> 00:31.500
+FL4N output at a fixed novel camera while a slider sweeps time, then at a frozen instant while the camera sweeps twelve viewpoints.
 
-00:30.000 --> 00:36.000
-The residual latent passes a time module, is added to the static latent, and the frozen renderer decodes it. A time slider plays a novel-view video, then a view slider sweeps cameras at a fixed instant.
+00:31.500 --> 00:35.000
+Three loss cards: RGB, dynamic crop and mask. Depth, optical flow and 3D motion labels are struck through.
 
-00:36.000 --> 00:40.000
-Three loss cards: RGB, dynamic and mask. Depth, optical flow, 3D motion labels and per-scene optimisation are struck out.
+00:35.000 --> 00:39.500
+Bar charts of cross-time view synthesis PSNR on NVIDIA, N3DV and CamxTime, FL4N on top, and 40 FPS.
 
-00:40.000 --> 00:45.000
-Bar charts of cross-time view synthesis PSNR on NVIDIA, N3DV and CamxTime; FL4N leads every chart, at 40 FPS.
-
-00:45.000 --> 00:47.000
-Closing card: FL4N. Latent 4D, no primitives.
+00:39.500 --> 00:41.500
+Closing card: FL4N, latent 4D, no primitives.

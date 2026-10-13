@@ -467,6 +467,9 @@ class Conv:
         x, y, w, h, rot, fh, fv, _ = self.xfrm(pic.find(q('p:spPr')), ctx)
         blip = pic.find('.//' + q('a:blip'))
         rid = blip.get(q('r:embed')) if blip is not None else None
+        svb = blip.find('.//{http://schemas.microsoft.com/office/drawing/2016/SVG/main}svgBlip') if blip is not None else None
+        if svb is not None and svb.get(q('r:embed')) in rels:
+            rid = svb.get(q('r:embed'))
         if rid is None or rid not in rels:
             return ''
         src = rels[rid]

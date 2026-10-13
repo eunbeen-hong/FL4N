@@ -8,19 +8,19 @@
  {
   "key": "static",
   "no": "01",
-  "title": "Frozen static prior",
+  "title": "Frozen static encoder",
   "text": "The pretrained static encoder (24 layers) and renderer stay frozen. They turn the context frames into a static latent that knows geometry and viewpoint, but not time."
  },
  {
   "key": "dyn",
   "no": "02",
-  "title": "Lightweight dynamic encoder",
-  "text": "Eight layers with learnable time tokens cross-attend into the frozen static features and output a time-invariant residual latent plus a dynamic mask."
+  "title": "Dynamic encoder",
+  "text": "Eight layers with learnable time tokens, anchored to the frozen static features through cross-attention, output a time-invariant residual latent and a dynamic mask."
  },
  {
   "key": "time",
   "no": "03",
   "title": "Target-time adaptation and rendering",
-  "text": "A time module adapts the residual to the target time through a zero-initialised gate. Residual plus static latent is decoded by the frozen renderer at the target view."
+  "text": "A time module adapts the residual to the target time. Residual plus static latent is decoded by the frozen renderer at the target view."
  }
 ]
