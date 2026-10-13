@@ -23,7 +23,6 @@
     return bs;
   }
   function mount(root, ...els) { const cap = root.querySelector(':scope > figcaption'); els.forEach(e => (cap ? root.insertBefore(e, cap) : root.appendChild(e))); }
-  function enlarge(get, cap) { return btn('fig-enlarge', '<span>⤢</span> Enlarge', () => lb(get(), typeof cap === 'function' ? cap() : cap)); }
 
   function preload(srcs) { srcs.forEach(s => { const i = new Image(); i.src = s; }); }
 
@@ -61,7 +60,7 @@
         f.append(i, el('figcaption', '', lab)); panels.appendChild(f); P[k] = { f, i, cap: f.lastChild, lab };
       });
       grid.append(padWrap, panels);
-      ctrls.append(chips, enlarge(() => [P.ours.i.src, P.gt.i.src], () => `${P.ours.cap.textContent} (left) vs. ground truth (right)`));
+      ctrls.append(chips);
       mount(root, ctrls, grid);
       let sc = null, keep = [], cells = [], cur = [0, 0], timer = null, hover = false, step = 0;
       const src = (model, v, t) => `${F}teaser/${sc.id}/${v === t ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
