@@ -73,7 +73,7 @@ def label(x, y, parts, size=14, color='#23303d', anchor='middle', weight=500):
                 spans += f'<tspan font-weight="700">{t}</tspan>'
             elif kind == 'i':
                 spans += f'<tspan font-style="italic" font-family="Cambria Math, STIX Two Math, Times New Roman, serif">{t}</tspan>'
-    return f'<text x="{x * 72:.1f}" y="{y * 72:.1f}" text-anchor="{anchor}" font-size="{size}" font-weight="{weight}" fill="{color}" font-family="Inter, system-ui, sans-serif">{spans}</text>'
+    return f'<text x="{x * 72:.1f}" y="{y * 72:.1f}" text-anchor="{anchor}" font-size="{size}" font-weight="{weight}" fill="{color}" font-family="\'Google Sans\', \'Google Sans Flex\', Inter, system-ui, sans-serif">{spans}</text>'
 
 
 def main():
@@ -101,7 +101,6 @@ def main():
     out.append(body[pos:])
     body = ''.join(out)
     body = re.sub(r'(data-name="Picture 152"[^>]*>\s*<image[^>]*href=")img/[^"]+"', r'\1img/9677ee948a.webp"', body)
-    body = body.replace('img/42fb69aaaa.webp', 'img/4421af8406.webp').replace('img/f7167f24cd.webp', 'img/4421af8406.webp')
     boxes = [(m.group(1), [float(v) / 72 for v in m.group(2).split()]) for m in re.finditer(r'data-name="([^"]*)" data-bbox="([^"]*)"', body)]
     def near(name, x, y):
         cands = [b for n, b in boxes if n == name]
@@ -110,6 +109,7 @@ def main():
     cam = near('그룹 78', 17.0, 3.8); tgt = near('그림 117', 18.5, 3.2); ctx = near('Picture 100', 8.0, 3.0); tok = near('dynamic-patch-token-0', 12.3, 2.5)
     lmask = near('flow-38', 15.4, 1.5); lrgb = near('그룹 172', 20.3, 3.3); qbox = near('직사각형 52', 4.0, 2.4)
     body = body.replace('#156082', '#1b1b1f')
+    body = re.sub(r'<g id="[^"]*" data-name="직사각형 (20|46)" data-bbox="[^"]*" transform="[^"]*">.*?</g>', '', body)
     cx = lambda b: b[0] + b[2] / 2
     extra = [
         label(9.56, 2.27, ['×8'], 13, '#4b4475', 'middle', 600), label(9.56, 2.48, ['layers'], 13, '#4b4475', 'middle', 600),
@@ -132,6 +132,8 @@ def main():
     crop = (0.55 * 72, 0.35 * 72, W - 0.9 * 72, 5.45 * 72)
     head = re.sub(r'viewBox="[^"]*" width="[^"]*" height="[^"]*"', f'viewBox="{crop[0]:.1f} {crop[1]:.1f} {crop[2] - crop[0]:.1f} {crop[3] - crop[1]:.1f}"', head, count=1)
     svg = (head + '</defs>' + body + '</svg>').replace('href="img/', 'href="static/figures/img/')
+    svg = svg.replace('font-family="Inter, system-ui, sans-serif"', 'font-family="\'Google Sans\', \'Google Sans Flex\', Inter, system-ui, sans-serif"')
+    svg = svg.replace("font-family:Inter, 'Google Sans', system-ui, sans-serif", "font-family:'Google Sans', 'Google Sans Flex', Inter, system-ui, sans-serif").replace("font-family:Inter, 'Nimbus Sans', sans-serif", "font-family:'Google Sans', 'Google Sans Flex', Inter, sans-serif")
     os.makedirs(OUT, exist_ok=True)
     open(os.path.join(OUT, 'arch.svg'), 'w').write(svg)
     json.dump(STEPS, open(os.path.join(OUT, 'arch_steps.json'), 'w'), indent=1, ensure_ascii=False)
