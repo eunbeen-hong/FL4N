@@ -3,24 +3,24 @@
   "key": "sample",
   "no": "00",
   "title": "Monocular sequence sampling",
-  "text": "From synchronized multi-view video we sample context frames along one moving camera, each at its own timestamp, and a target frame at a different view and time. Asynchronous view-time sampling is what lets the model disentangle camera parallax from scene motion."
+  "text": "Context frames come from one moving camera, each at its own instant; the target is another view and time. Sampling view and time asynchronously separates camera parallax from scene motion."
  },
  {
   "key": "static",
   "no": "01",
   "title": "Frozen static prior",
-  "text": "The pretrained static encoder (24 layers) and renderer stay frozen. Context frames become the static latent z_st, which already encodes geometry and viewpoint. On its own it can render any view, but it has no notion of time."
+  "text": "The pretrained static encoder (24 layers) and renderer stay frozen. They turn the context frames into a static latent that knows geometry and viewpoint, but not time."
  },
  {
   "key": "dyn",
   "no": "02",
   "title": "Lightweight dynamic encoder",
-  "text": "Eight transformer layers take the same frames with learnable time tokens. Frame and global attention are followed by cross-attention into the frozen static features (static injection), so the branch explains only what the static prior cannot: true scene motion. It outputs a time-invariant residual latent z_res and a dynamic mask through a DPT mask head."
+  "text": "Eight layers with learnable time tokens cross-attend into the frozen static features and output a time-invariant residual latent plus a dynamic mask."
  },
  {
   "key": "time",
   "no": "03",
   "title": "Target-time adaptation and rendering",
-  "text": "For a target timestamp, adjacent time tokens are interpolated and drive an AdaLN time module with a zero-initialised residual gate. The adapted residual is added to the static latent, and the frozen renderer decodes the dynamic latent at the target view. Training uses only image losses and the mask loss."
+  "text": "A time module adapts the residual to the target time through a zero-initialised gate. Residual plus static latent is decoded by the frozen renderer at the target view."
  }
 ]

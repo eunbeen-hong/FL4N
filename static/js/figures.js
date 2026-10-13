@@ -32,7 +32,7 @@
     mount(root, cards, stage, cap);
     Promise.all([fetch(F + 'arch.svg').then(r => r.text()), fetch(F + 'arch_steps.json').then(r => r.json())]).then(([svg, steps]) => {
       stage.innerHTML = svg;
-      const all = { key: 'all', no: '', title: 'Full pipeline', text: 'Context frames feed a frozen static encoder and a small trainable dynamic encoder. The residual is adapted to the target time, added to the static latent and decoded by the frozen renderer at the target view. Click a stage to isolate it.' };
+      const all = { key: 'all', no: '', title: 'Full pipeline', text: 'Frozen static encoder and renderer, plus a small dynamic encoder that adds a temporal residual. Click a stage to isolate it.' };
       const items = [all, ...steps];
       let cur = 'all';
       function apply(k) { cur = k; root.dataset.step = k; const s = items.find(i => i.key === k); cap.innerHTML = `<strong>${s.no ? s.no + ' · ' : ''}${s.title}</strong><p>${s.text}</p>`; bs.forEach((b, i) => b.setAttribute('aria-pressed', items[i].key === k)); }
@@ -52,7 +52,7 @@
       const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
       const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View ←</span>`);
-      info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input frame (one per camera)</span><span class="k"><i class="sw"></i>never observed: rendered</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover the grid to pick a cell; it auto-plays otherwise.</span>`;
+      info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input frame</span><span class="k"><i class="sw"></i>rendered (never observed)</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover to pick a cell.</span>`;
       const padBox = el('div', 'tz-padbox'); padBox.append(padSide, pad);
       padWrap.append(padHead, padBox, info);
       const P = {};
