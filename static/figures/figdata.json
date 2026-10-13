@@ -38,34 +38,6 @@
 "Residual latent z_res"
 ]
 },
-"gatefeature": {
-"rows": [
-[
-"eb5e55a5ca.webp",
-"edd87badf7.webp",
-"7ee39bf995.webp",
-"f5e5a63c33.webp",
-"3eca2eb8d1.webp",
-"ba4115869d.webp",
-"58828f9aec.webp",
-"c00ed066c9.webp"
-],
-[
-"5e72ebd308.webp",
-"89a8119bc1.webp",
-"65c18f691d.webp",
-"87617f6e17.webp",
-"6f15d835ae.webp",
-"39b77b6fe7.webp",
-"c796be3674.webp",
-"a9c8c76458.webp"
-]
-],
-"labels": [
-"Context frames",
-"Gate activation"
-]
-},
 "comparestatic": [
 {
 "title": "Lady with a plate (CamxTime)",

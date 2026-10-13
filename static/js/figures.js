@@ -109,7 +109,7 @@
     const wrap = el('div', 'cs-duo');
     scenes.forEach(sc => {
       const col = el('div', 'cs-col');
-      const strip = el('div', 'cs-strip', '<span class="cs-lab">Context frames →</span>');
+      const strip = el('div', 'cs-strip', '<span class="cs-lab">Context frames</span>');
       sc.inputs.forEach(src => { const i = el('img', 'cs-thumb'); i.src = `${F}compare_static/${src}`; strip.appendChild(i); });
       const row = el('div', 'cs-row');
       const staticCard = el('figure', 'cs-static'); const sImg = el('img'); sImg.src = `${F}compare_static/${sc.static}`;
@@ -143,12 +143,10 @@
       r.imgs.forEach((srcs, k) => {
         const c = el('div', 'gf-cell'); c.dataset.c = k;
         srcs.forEach((src, si) => { const i = el('img', si ? 'ov' : ''); i.src = `${F}${dir}${src}`; i.alt = ''; c.appendChild(i); });
-        c.addEventListener('mouseenter', () => (grid.dataset.col = k));
         grid.appendChild(c);
       });
     });
-    grid.addEventListener('mouseleave', () => (grid.dataset.col = ''));
-    const axis = el('div', 'gf-axis', `<span>Time →</span><span class="sc-hint">Hover a column to magnify that instant across the rows.</span>`);
+    const axis = el('div', 'gf-axis', `<span>Time →</span>`);
     mount(root, axis, grid);
   }
 
