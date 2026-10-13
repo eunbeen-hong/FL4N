@@ -39,7 +39,8 @@
 
 /* teaser explorer */
 .tz-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
-.tz-grid { display: grid; grid-template-columns: 300px 1fr 150px; gap: 18px; align-items: start; }
+.tz-grid { display: grid; grid-template-columns: 300px 1fr; gap: 18px; align-items: start; }
+.tz-right { display: grid; gap: 10px; }
 .tz-padwrap { position: relative; }
 .tz-axes { display: flex; justify-content: space-between; font-size: .74rem; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px; }
 .tz-pad { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 3px; }
@@ -56,7 +57,7 @@
 .tz-big { width: 100%; border-radius: var(--radius-sm); border: 2px solid var(--primary); background: #eee; }
 .tz-biglab { position: absolute; left: 10px; bottom: 10px; background: rgba(22, 20, 31, .75); color: #fff; padding: 5px 10px; border-radius: 6px; font-size: .82rem; }
 .tz-biglab b { color: #fff; }
-.tz-others { display: grid; gap: 8px; }
+.tz-others { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .tz-small { margin: 0; }
 .tz-small img { width: 100%; border-radius: 6px; border: 1px solid var(--line); background: #eee; }
 .tz-small:first-child img { border-color: var(--green); }
@@ -158,7 +159,6 @@
 @media (max-width: 980px) {
   .archfig .arch-steps { grid-template-columns: repeat(2, 1fr); }
   .tz-grid { grid-template-columns: 1fr; }
-  .tz-others { grid-template-columns: repeat(5, 1fr); }
   .ev-wrap { grid-template-columns: 1fr; }
   .cs-row { grid-template-columns: 1fr; }
 }

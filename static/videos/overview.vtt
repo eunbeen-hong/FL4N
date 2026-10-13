@@ -1,0 +1,31 @@
+WEBVTT
+
+00:00.000 --> 00:04.000
+FL4N: Feed-forward Latent Model for 4D Novel View Synthesis. The title appears over a faint latent-grid texture.
+
+00:04.000 --> 00:11.000
+Monocular video input. Twelve frames of a skateboarder appear one by one along a camera arc. Each frame is a new viewpoint and a new instant.
+
+00:11.000 --> 00:18.000
+The task. A view-by-time grid: observed frames fill the diagonal, and an off-diagonal target cell is marked with a question mark. 4D novel view synthesis renders views and timestamps never observed.
+
+00:18.000 --> 00:26.000
+Explicit Gaussians struggle. Pixels lift into scattered Gaussian blobs, then renders from 4DGT, MoVieS, NeoVerse and C4G show ghosting, blurred detail, floaters and holes.
+
+00:26.000 --> 00:34.000
+A frozen static prior. Context frames pass through a frozen 24-layer static encoder into the static latent, whose PCA shows camera-ray-like structure that ignores time.
+
+00:34.000 --> 00:44.000
+A lightweight dynamic encoder. Learnable time tokens attach to the frames; eight trainable layers cross-attend into the frozen static features and output a residual latent and a dynamic mask. The residual and gate activation respond only where things move.
+
+00:44.000 --> 00:53.000
+Any target time, any target view. A time slider drives the time module; the adapted residual is added to the static latent and the frozen renderer decodes a novel-view video, then a bullet-time sweep across twelve cameras.
+
+00:53.000 --> 01:00.000
+Trained from images alone. Three losses: RGB, dynamic-region and mask. Depth, optical flow, 3D motion labels and per-scene optimisation are crossed out; only a small set of synchronized multi-view videos is used.
+
+01:00.000 --> 01:08.000
+State of the art. Bar charts of cross-time view synthesis PSNR on NVIDIA, N3DV and CamxTime show FL4N ahead of 4DGT, MoVieS, NeoVerse and C4G, at 40 frames per second.
+
+01:08.000 --> 01:12.000
+FL4N. Latent 4D, no primitives. The closing title fades out.

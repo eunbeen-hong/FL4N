@@ -132,7 +132,8 @@
       info.innerHTML = `<span class="k"><i class="sw obs"></i>observed input (one frame per camera)</span><span class="k"><i class="sw"></i>never observed: rendered by FL4N</span><span class="k"><i class="sw cur"></i>selected</span>`;
       const grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'); padWrap.append(padHead, pad, info);
-      grid.append(padWrap, main, others);
+      const right = el('div', 'tz-right'); right.append(main, others);
+      grid.append(padWrap, right);
       mount(root, ctrls, grid);
       go(cv, ct);
       new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) stop(); }), { threshold: 0 }).observe(root);
