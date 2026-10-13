@@ -88,6 +88,7 @@ h1 .tail { display: block; font-size: clamp(1.25rem, 2.6vw, 1.9rem); font-weight
 .authors a { color: var(--ink); font-weight: 500; border-bottom: 1px solid transparent; }
 .authors a:hover { border-bottom-color: var(--primary); color: var(--primary-ink); }
 .authors sup { font-size: .68em; color: var(--primary); margin-left: 1px; }
+.authors .au { white-space: nowrap; display: inline-block; margin-right: .25em; }
 .affils { margin-top: 6px; color: var(--ink-3); font-size: .95rem; }
 .affils sup { color: var(--primary); }
 .author-note { margin-top: 4px; font-size: .85rem; color: var(--ink-3); }
