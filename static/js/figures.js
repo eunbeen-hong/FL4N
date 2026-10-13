@@ -74,7 +74,7 @@
         const srcs = Object.keys(P).map(k => [k, src(k, v, t)]);
         Promise.all(srcs.map(([, u]) => load(u))).then(() => {
           if (my !== seq) return;
-          srcs.forEach(([k, u]) => { P[k].i.src = u; P[k].f.classList.toggle('dim', obs && k !== 'gt'); });
+          srcs.forEach(([k, u]) => { P[k].i.src = u; });
           P.ours.cap.textContent = obs ? 'Context frame' : 'FL4N (Ours)';
           P.gt.cap.textContent = obs ? 'Ground truth (= context frame)' : 'Ground truth';
         });
