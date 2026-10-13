@@ -41,9 +41,16 @@
   function watch(v) { vio.observe(v); }
   $$('video.lazy').forEach(watch);
 
-  const lb = $('.lightbox'), lbImg = $('.lightbox img'), lbCap = $('.lb-cap');
-  function openLb(src, cap) { lbImg.src = src; lbCap.textContent = cap || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeLb() { lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; }
+  const lb = $('.lightbox'), lbBody = $('.lb-body'), lbCap = $('.lb-cap');
+  function openLb(src, cap) {
+    const srcs = Array.isArray(src) ? src.filter(Boolean) : [src];
+    lbBody.innerHTML = srcs.map(() => '<img alt="">').join('');
+    $$('img', lbBody).forEach((im, i) => (im.src = srcs[i]));
+    lbBody.className = 'lb-body' + (srcs.length === 2 ? ' pair' : srcs.length > 2 ? ' triple' : '');
+    lbCap.textContent = cap || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden';
+  }
+  function closeLb() { lb.classList.remove('open'); lbBody.innerHTML = ''; document.body.style.overflow = ''; }
+  window.FL4N_lightbox = openLb;
   $$('.figure img, .car-slide img').forEach(img => img.addEventListener('click', () => {
     const cap = img.closest('figure')?.querySelector('figcaption')?.textContent || img.closest('.car-slide')?.querySelector('.cap')?.textContent || img.alt;
     openLb(img.dataset.full || img.src, cap);

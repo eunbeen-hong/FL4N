@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FL4N overview animation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --p: #8b74ff; --p2: #5a3fd6; --y: #e9b421; --ink: #eef0fa; --mute: #9aa3c7; --mono: 'JetBrains Mono', monospace; }
+  html, body { margin: 0; width: 1920px; height: 840px; overflow: hidden; background: #070b18; font-family: Inter, system-ui, sans-serif; color: var(--ink); }
+  #stage { position: relative; width: 1920px; height: 840px; overflow: hidden; background: radial-gradient(1200px 700px at 30% 20%, #141b3a 0%, #0b1020 55%, #05070f 100%); }
+  .ch { position: absolute; inset: 0; opacity: 0; }
+  .abs { position: absolute; }
+  #hud { position: absolute; inset: 0; pointer-events: none; }
+  #chno { position: absolute; left: 64px; top: 40px; font: 500 16px var(--mono); color: var(--p); letter-spacing: .08em; }
+  #chtitle { position: absolute; left: 64px; top: 64px; font-size: 30px; font-weight: 700; letter-spacing: -.01em; }
+  #bar { position: absolute; right: 64px; top: 52px; width: 300px; height: 3px; background: rgba(255,255,255,.12); border-radius: 2px; }
+  #barfill { height: 100%; width: 0; background: var(--p); border-radius: 2px; }
+  #cap { position: absolute; left: 0; right: 0; bottom: 48px; text-align: center; font-size: 24px; color: #cfd4ee; font-weight: 400; }
+  #cap b { color: #fff; font-weight: 600; }
+  .card { position: absolute; border-radius: 8px; overflow: hidden; box-shadow: 0 14px 40px rgba(0,0,0,.55); background: #000; }
+  .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .lbl { position: absolute; font-size: 15px; color: var(--mute); font-weight: 500; letter-spacing: .02em; white-space: nowrap; }
+  .big { font-size: 230px; font-weight: 800; letter-spacing: -.04em; line-height: 1; background: linear-gradient(90deg, #b9a8ff, #7a62ea 60%, #5a3fd6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: 34px; font-weight: 500; color: #d6dbf5; letter-spacing: -.01em; }
+  .box { position: absolute; border-radius: 14px; border: 1.5px solid rgba(255,255,255,.18); background: rgba(255,255,255,.05); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .box .t { font-size: 24px; font-weight: 700; }
+  .box .s { font-size: 15px; color: var(--mute); margin-top: 6px; font-family: var(--mono); }
+  .box.purple { border-color: rgba(139,116,255,.7); background: rgba(90,63,214,.18); }
+  .box.teal { border-color: rgba(120,200,210,.6); background: rgba(80,160,170,.14); }
+  .box.grey { border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.06); }
+  .tag { position: absolute; font: 500 13px var(--mono); color: var(--y); letter-spacing: .06em; text-transform: uppercase; }
+  .lock { position: absolute; width: 22px; height: 22px; }
+  .cell { position: absolute; border-radius: 6px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700; color: var(--y); }
+  .cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .callout { position: absolute; font-size: 15px; font-weight: 600; color: #fff; background: rgba(233,180,33,.92); color: #1a1400; padding: 4px 10px; border-radius: 6px; }
+  .grid4 { position: absolute; }
+  .tok { position: absolute; width: 16px; height: 16px; border-radius: 3px; background: #f6c76b; border: 1px solid #e9b421; }
+  .note { position: absolute; font-size: 18px; color: var(--mute); }
+  .strike { text-decoration: line-through; color: #6c7391; }
+  .bars .row { position: absolute; height: 34px; display: flex; align-items: center; }
+  .bars .name { width: 110px; font-size: 16px; color: var(--mute); text-align: right; padding-right: 14px; }
+  .bars .track { width: 300px; height: 14px; background: rgba(255,255,255,.07); border-radius: 7px; overflow: hidden; }
+  .bars .fill { height: 100%; width: 0; background: #5b6280; border-radius: 7px; }
+  .bars .fill.ours { background: linear-gradient(90deg, #8b74ff, #5a3fd6); }
+  .bars .val { width: 70px; font: 500 15px var(--mono); padding-left: 12px; color: #cfd4ee; }
+  .panel-title { position: absolute; font-size: 20px; font-weight: 700; }
+  .panel-sub { position: absolute; font: 400 13px var(--mono); color: var(--mute); }
+  svg text { font-family: Inter, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <section class="ch" id="c0">
+    <svg class="abs" id="gridtex" width="1920" height="840" viewBox="0 0 1920 840"></svg>
+    <div class="abs" style="left:0;right:0;top:250px;text-align:center"><div class="big" id="title0">FL4N</div><div class="sub" id="sub0" style="margin-top:18px">Feed-forward Latent Model for 4D Novel View Synthesis</div></div>
+  </section>
+  <section class="ch" id="c1">
+    <svg class="abs" width="1920" height="840" viewBox="0 0 1920 840" id="arcsvg"></svg>
+    <div id="arcframes"></div>
+    <div class="note" id="c1note" style="left:0;right:0;top:640px;text-align:center;font-size:22px"></div>
+  </section>
+  <section class="ch" id="c2">
+    <div id="vtgrid"></div>
+    <div class="lbl" style="left:700px;top:118px;font-size:18px;color:#cfd4ee">time &nbsp;→</div>
+    <div class="lbl" style="left:600px;top:200px;font-size:18px;color:#cfd4ee;transform:rotate(90deg);transform-origin:left top">view &nbsp;→</div>
+    <div class="note" id="c2a" style="left:1250px;top:250px;width:520px;font-size:24px;line-height:1.4"></div>
+  </section>
+  <section class="ch" id="c3">
+    <div class="card" id="c3src" style="left:150px;top:200px;width:560px;height:315px"><img src="assets/base/gt.png"></div>
+    <svg class="abs" id="gauss" width="1920" height="840" viewBox="0 0 1920 840"></svg>
+    <div id="c3base"></div>
+    <div class="lbl" id="c3lbl" style="left:150px;top:612px;font-size:17px">pixels lifted to 3D/4D Gaussians with predicted motion</div>
+  </section>
+  <section class="ch" id="c4"><div id="c4wrap"></div></section>
+  <section class="ch" id="c5"><div id="c5wrap"></div></section>
+  <section class="ch" id="c6"><div id="c6wrap"></div></section>
+  <section class="ch" id="c7"><div id="c7wrap"></div></section>
+  <section class="ch" id="c8"><div id="c8wrap"></div></section>
+  <section class="ch" id="c9">
+    <div class="abs" style="left:0;right:0;top:270px;text-align:center"><div class="big" style="font-size:200px">FL4N</div><div class="sub" style="margin-top:14px">Latent 4D, no primitives.</div></div>
+  </section>
+  <div id="hud"><div id="chno"></div><div id="chtitle"></div><div id="bar"><div id="barfill"></div></div><div id="cap"></div></div>
+</div>
+<script>
+const TOTAL = 72;
+const CH = [
+  { id: 'c0', a: 0, b: 4, no: '', title: '', cap: '' },
+  { id: 'c1', a: 4, b: 11, no: '01 / 08', title: 'Monocular video input', cap: 'A single moving camera sees a dynamic scene: every frame is a new viewpoint <b>and</b> a new instant.' },
+  { id: 'c2', a: 11, b: 18, no: '02 / 08', title: 'The task: any view, any time', cap: '4D novel view synthesis: render the scene at viewpoints and timestamps that were <b>never observed</b>.' },
+  { id: 'c3', a: 18, b: 26, no: '03 / 08', title: 'Explicit Gaussians struggle', cap: 'Feed-forward 4D Gaussian methods pay for mispredicted primitives with <b>ghosting, floaters and holes</b>.' },
+  { id: 'c4', a: 26, b: 34, no: '04 / 08', title: 'A frozen static prior', cap: 'A pretrained latent view synthesizer already knows <b>where</b> to render. We freeze it.' },
+  { id: 'c5', a: 34, b: 44, no: '05 / 08', title: 'A lightweight dynamic encoder', cap: 'Eight extra layers learn only <b>when</b>: a temporal residual that lights up where things move.' },
+  { id: 'c6', a: 44, b: 53, no: '06 / 08', title: 'Any target time, any target view', cap: 'Residual + static latent = dynamic latent. The frozen renderer decodes it at <b>any view and time, in real time</b>.' },
+  { id: 'c7', a: 53, b: 60, no: '07 / 08', title: 'Trained from images alone', cap: 'Image synthesis and binary dynamic masks are the only supervision. <b>No depth, no flow, no 3D motion labels.</b>' },
+  { id: 'c8', a: 60, b: 68, no: '08 / 08', title: 'State of the art', cap: 'Best on <b>every benchmark of every protocol</b>, at 40 FPS.' },
+  { id: 'c9', a: 68, b: 72, no: '', title: '', cap: '' },
+];
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const lerp = (a, b, x) => a + (b - a) * x;
+const $ = (s, r = document) => r.querySelector(s);
+const el = (tag, cls, style, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (style) e.style.cssText = style; if (html != null) e.innerHTML = html; return e; };
+const pad2 = n => String(n).padStart(2, '0');
+const INPUT = Array.from({ length: 12 }, (_, i) => `assets/input/${pad2(i + 1)}.png`);
+const OURS05 = Array.from({ length: 12 }, (_, i) => `assets/ours05/${pad2(i + 1)}.png`);
+const BULLET = Array.from({ length: 12 }, (_, i) => `assets/bullet/c${pad2(i)}.png`);
+const LAT = { ctx: ['40bfc41847', '6de6a80f3f', 'f70d51ae8f', '338535bd24', '8e5f4cd58b', 'b559f973cf', 'd525074f4f', '941b8c89e9'], st: ['396135bf92', 'd011169efb', '2f9b719dbe', 'c16b672851', '098653f2c4', '83fb6da308', 'ad29ccec37', 'edfe8d098d'], res: ['41ab6cda23', '149915634c', 'f8f21a8fe3', '3fd9425dbb', 'a670990e53', '422b59b30c', '387c53cd52', '90e5d6794c'], gctx: ['eb5e55a5ca', 'edd87badf7', '7ee39bf995', 'f5e5a63c33', '3eca2eb8d1', 'ba4115869d', '58828f9aec', 'c00ed066c9'], gate: ['5e72ebd308', '89a8119bc1', '65c18f691d', '87617f6e17', '6f15d835ae', '39b77b6fe7', 'c796be3674', 'a9c8c76458'] };
+const lat = (k, i) => `assets/lat/${LAT[k][i]}.webp`;
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const lockSvg = (x, y, col = '#cfd4ee') => `<svg class="lock" style="left:${x}px;top:${y}px" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2" fill="${col}"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="${col}" stroke-width="2"/></svg>`;
+const camSvg = (x, y, s = 1, col = '#8b74ff') => `<svg class="abs" style="left:${x}px;top:${y}px;width:${34 * s}px;height:${26 * s}px" viewBox="0 0 34 26"><path d="M3 8h8l3-4h6l3 4h8v15H3z" fill="${col}"/><circle cx="17" cy="15" r="5" fill="#0b1020"/><circle cx="17" cy="15" r="2.5" fill="${col}"/></svg>`;
+const frameStack = (x, y, w, h, srcs, gap = 10) => srcs.map((s, i) => `<div class="card" style="left:${x + i * gap}px;top:${y - i * gap}px;width:${w}px;height:${h}px;z-index:${10 - i};opacity:${1 - i * .18}"><img src="${s}"></div>`).reverse().join('');
+const stackLat = (x, y, w, h, srcs, gap = 9, border = '#8b74ff') => srcs.map((s, i) => `<div class="card" style="left:${x + i * gap}px;top:${y - i * gap}px;width:${w}px;height:${h}px;z-index:${10 - i};opacity:${1 - i * .2};border:1.5px solid ${border}"><img src="${s}"></div>`).reverse().join('');
+const arrow = (svg, x1, y1, x2, y2, col = '#9aa3c7', dash = false, w = 2.2) => { svgEl('line', { x1, y1, x2, y2, stroke: col, 'stroke-width': w, 'marker-end': 'url(#ah)', 'stroke-dasharray': dash ? '6 5' : 'none' }, svg); };
+const defs = svg => { svg.innerHTML = '<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z" fill="#9aa3c7"/></marker></defs>'; };
+const state = {};
+
+function build() {
+  const gt = $('#gridtex');
+  for (let i = 0; i < 44; i++) for (let j = 0; j < 20; j++) {
+    const r = svgEl('rect', { x: 20 + i * 43, y: 10 + j * 43, width: 36, height: 36, rx: 4, fill: '#8b74ff', opacity: 0 }, gt);
+    r.dataset.seed = Math.sin(i * 12.9898 + j * 78.233) * 43758.5453 % 1;
+  }
+  const arc = $('#arcsvg'); defs(arc);
+  svgEl('path', { id: 'arcpath', d: 'M160,470 Q960,80 1760,470', fill: 'none', stroke: 'rgba(255,255,255,.22)', 'stroke-width': 2, 'stroke-dasharray': '8 8' }, arc);
+  const af = $('#arcframes');
+  state.arc = [];
+  for (let i = 0; i < 12; i++) {
+    const u = i / 11, x = lerp(160, 1760, u), y = 470 - 390 * 4 * u * (1 - u) * 0.5 - 0;
+    const card = el('div', 'card', `left:0;top:0;width:164px;height:92px;opacity:0`, `<img src="${INPUT[i]}">`);
+    const cam = el('div', 'abs', `left:0;top:0;opacity:0`, camSvg(0, 0, 1, '#e9b421'));
+    const lbl = el('div', 'lbl', `left:0;top:0;opacity:0;font-family:var(--mono);color:#e9b421`, `t<sub>${i + 1}</sub>`);
+    af.append(card, cam, lbl);
+    state.arc.push({ card, cam, lbl, x, y: 470 - 2 * 390 * u * (1 - u) });
+  }
+  const vg = $('#vtgrid'); state.cells = [];
+  const N = 6, S = 86, G = 8, X0 = 700, Y0 = 150;
+  for (let v = 0; v < N; v++) for (let tt = 0; tt < N; tt++) {
+    const c = el('div', 'cell', `left:${X0 + tt * (S + G)}px;top:${Y0 + v * (S + G)}px;width:${S}px;height:${S}px`);
+    const img = el('img'); img.src = INPUT[v * 2]; img.style.opacity = 0; c.appendChild(img);
+    const q = el('div', 'abs', 'inset:0;display:flex;align-items:center;justify-content:center;opacity:0', '?'); c.appendChild(q);
+    vg.appendChild(c); state.cells.push({ c, img, q, v, t: tt });
+  }
+  const ga = $('#gauss'); state.dots = [];
+  for (let i = 0; i < 420; i++) {
+    const gx = 150 + (i % 28) * 20 + 10, gy = 200 + Math.floor(i / 28) * 21 + 10;
+    const sd = Math.abs(Math.sin(i * 9.17)), sd2 = Math.abs(Math.sin(i * 3.33 + 1));
+    const d = svgEl('ellipse', { cx: gx, cy: gy, rx: 5, ry: 5, fill: i % 3 ? '#b7a9ff' : '#e9b421', opacity: 0 }, ga);
+    state.dots.push({ d, gx, gy, tx: 150 + sd * 560 + (sd2 - .5) * 120, ty: 200 + sd2 * 315 + (sd - .5) * 100, rx: 4 + sd * 18, ry: 3 + sd2 * 9 });
+  }
+  const bases = [['4dgt', '4DGT', 'ghosting'], ['movies', 'MoVieS', 'blurred detail'], ['neoverse', 'NeoVerse', 'floaters & holes'], ['c4g', 'C4G', 'ghosting']];
+  const cb = $('#c3base'); state.base = [];
+  bases.forEach(([k, name, call], i) => {
+    const x = 840 + (i % 2) * 505, y = 140 + Math.floor(i / 2) * 318;
+    const card = el('div', 'card', `left:${x}px;top:${y}px;width:485px;height:273px;opacity:0`, `<img src="assets/base/${k}.png">`);
+    const lbl = el('div', 'lbl', `left:${x}px;top:${y - 26}px;color:#fff;font-size:17px;opacity:0`, name);
+    const co = el('div', 'callout', `left:${x + 290}px;top:${y + 222}px;opacity:0`, call);
+    cb.append(card, lbl, co); state.base.push({ card, lbl, co });
+  });
+  buildC4(); buildC5(); buildC6(); buildC7(); buildC8();
+}
+
+function buildC4() {
+  const w = $('#c4wrap');
+  w.innerHTML = frameStack(150, 250, 280, 158, [INPUT[2], INPUT[5], INPUT[8]])
+    + `<div class="lbl" style="left:150px;top:430px;font-size:17px">context frames</div>`
+    + `<div class="box teal" id="c4enc" style="left:620px;top:215px;width:300px;height:170px"><div class="t">Static encoder</div><div class="s">×24 layers</div>${lockSvg(12, 12)}</div>`
+    + `<div class="tag" id="c4tag" style="left:632px;top:400px">frozen</div>`
+    + `<div id="c4lat" class="abs" style="left:1070px;top:0">${stackLat(1070, 232, 250, 141, [lat('st', 2), lat('st', 3), lat('st', 4)], 10, '#79c3cc')}</div>`
+    + `<div class="lbl" id="c4latl" style="left:1080px;top:395px;font-size:17px;color:#cfd4ee">static latent &nbsp;<span style="font-family:var(--mono);color:#79c3cc">z<sub>st</sub></span></div>`
+    + `<div class="note" id="c4n" style="left:1070px;top:150px;width:620px;font-size:22px;color:#fff;font-weight:600">knows <span style="color:#79c3cc">where</span> to render</div>`
+    + `<svg class="abs" id="c4svg" width="1920" height="840" viewBox="0 0 1920 840"></svg>`
+    + `<div id="c4row"></div>`;
+  const s = $('#c4svg'); defs(s); arrow(s, 450, 330, 612, 300); arrow(s, 925, 300, 1062, 305);
+  const row = $('#c4row'); state.c4row = [];
+  for (let i = 0; i < 4; i++) {
+    const x = 1430 + 0 - 0 + i * 0;
+    const cx = 150 + i * 215;
+    const a = el('div', 'card', `left:${cx}px;top:500px;width:200px;height:112px;opacity:0`, `<img src="${lat('ctx', i * 2)}">`);
+    const b = el('div', 'card', `left:${cx}px;top:622px;width:200px;height:112px;opacity:0;border:1.5px solid #79c3cc`, `<img src="${lat('st', i * 2)}">`);
+    row.append(a, b); state.c4row.push(a, b);
+  }
+  row.appendChild(el('div', 'note', 'left:1030px;top:560px;width:560px;font-size:20px;line-height:1.45;opacity:0', 'PCA of <span style="color:#79c3cc;font-family:var(--mono)">z<sub>st</sub></span>: a camera-ray-like structure that changes with viewpoint but <b style="color:#fff">ignores time</b>.')); state.c4note = row.lastChild;
+}
+
+function buildC5() {
+  const w = $('#c5wrap');
+  w.innerHTML = frameStack(120, 250, 260, 146, [INPUT[2], INPUT[5], INPUT[8]])
+    + `<div id="c5toks"></div>`
+    + `<div class="box teal" style="left:520px;top:430px;width:250px;height:120px;opacity:.75"><div class="t" style="font-size:20px">Static encoder</div><div class="s">×24 layers · frozen</div>${lockSvg(10, 10)}</div>`
+    + `<div class="box purple" id="c5enc" style="left:520px;top:150px;width:250px;height:200px"><div class="t">Dynamic encoder</div><div class="s">×8 layers · trainable</div><div class="s" style="color:#cfd4ee;margin-top:10px">frame attn · global attn · <span style="color:#8b74ff">cross attn</span></div></div>`
+    + `<div class="tag" id="c5inj" style="left:520px;top:565px;color:#8b74ff;opacity:0">↑ static injection: cross-attention into frozen features</div>`
+    + `<svg class="abs" id="c5svg" width="1920" height="840" viewBox="0 0 1920 840"></svg>`
+    + `<div id="c5res" class="abs" style="opacity:0">${stackLat(900, 180, 240, 135, [lat('res', 2), lat('res', 3), lat('res', 4)], 10, '#8b74ff')}<div class="lbl" style="left:900px;top:335px;font-size:17px;color:#cfd4ee">residual latent &nbsp;<span style="font-family:var(--mono);color:#8b74ff">z<sub>res</sub></span></div></div>`
+    + `<div id="c5mask" class="abs" style="opacity:0"><div class="box grey" style="left:900px;top:440px;width:240px;height:70px"><div class="t" style="font-size:18px">Mask head</div><div class="s">DPT · dynamic mask</div></div></div>`
+    + `<div id="c5row"></div>`;
+  const s = $('#c5svg'); defs(s);
+  arrow(s, 395, 310, 512, 250); arrow(s, 395, 330, 512, 490); arrow(s, 775, 250, 890, 250); arrow(s, 775, 290, 890, 475);
+  state.c5inj = svgEl('path', { d: 'M645,428 C645,395 645,380 645,352', fill: 'none', stroke: '#8b74ff', 'stroke-width': 3, 'stroke-dasharray': '7 6', 'marker-end': 'url(#ah)', opacity: 0 }, s);
+  state.c5inj2 = svgEl('path', { d: 'M700,428 C700,395 700,380 700,352', fill: 'none', stroke: '#8b74ff', 'stroke-width': 3, 'stroke-dasharray': '7 6', 'marker-end': 'url(#ah)', opacity: 0 }, s);
+  const tk = $('#c5toks'); state.c5toks = [];
+  for (let i = 0; i < 3; i++) { const t = el('div', 'tok', `left:${120 + i * 10 + 230}px;top:${250 - i * 10 - 22}px;opacity:0`); tk.appendChild(t); state.c5toks.push(t); }
+  tk.appendChild(el('div', 'lbl', 'left:300px;top:150px;color:#e9b421;font-size:15px;opacity:0', 'learnable time tokens')); state.c5tokl = tk.lastChild;
+  const row = $('#c5row'); state.c5row = [];
+  for (let i = 0; i < 4; i++) {
+    const cx = 1230 + (i % 2) * 215, cy = 140 + Math.floor(i / 2) * 124;
+    const a = el('div', 'card', `left:${cx}px;top:${cy}px;width:200px;height:112px;opacity:0;border:1.5px solid #8b74ff`, `<img src="${lat('res', i * 2)}">`);
+    row.appendChild(a); state.c5row.push(a);
+  }
+  row.appendChild(el('div', 'lbl', 'left:1230px;top:395px;font-size:16px;color:#cfd4ee;opacity:0', 'residual latent over time: responds only to the moving subject')); state.c5row.push(row.lastChild);
+  for (let i = 0; i < 4; i++) {
+    const cx = 1230 + (i % 2) * 215, cy = 440 + Math.floor(i / 2) * 124;
+    const a = el('div', 'card', `left:${cx}px;top:${cy}px;width:200px;height:112px;opacity:0;border:1.5px solid #e9b421`, `<img src="${lat('gate', i * 2)}">`);
+    row.appendChild(a); state.c5row.push(a);
+  }
+  row.appendChild(el('div', 'lbl', 'left:1230px;top:695px;font-size:16px;color:#cfd4ee;opacity:0', 'residual gate activation: high on the dynamic object, near zero elsewhere')); state.c5row.push(row.lastChild);
+}
+
+function buildC6() {
+  const w = $('#c6wrap');
+  w.innerHTML = `<div class="abs" id="c6slider" style="left:120px;top:150px;width:560px"><div class="lbl" id="c6sl" style="left:0;top:-30px;font-size:17px;color:#fff">target time</div><div class="abs" style="left:0;top:8px;width:560px;height:4px;background:rgba(255,255,255,.15);border-radius:2px"></div><div class="abs" id="c6knob" style="left:0;top:-6px;width:28px;height:28px;border-radius:50%;background:#e9b421;box-shadow:0 0 0 6px rgba(233,180,33,.25)"></div><div class="lbl" id="c6tv" style="left:0;top:28px;font-family:var(--mono);color:#e9b421;white-space:nowrap"></div></div>`
+    + `<div id="c6stlat" class="abs">${stackLat(120, 470, 200, 112, [lat('st', 2), lat('st', 3)], 9, '#79c3cc')}<div class="lbl" style="left:120px;top:590px;font-size:15px">static latent</div></div>`
+    + `<div id="c6reslat" class="abs">${stackLat(120, 300, 200, 112, [lat('res', 2), lat('res', 3)], 9, '#8b74ff')}<div class="lbl" style="left:120px;top:420px;font-size:15px">residual latent</div></div>`
+    + `<div class="box purple" id="c6tm" style="left:420px;top:280px;width:220px;height:140px"><div class="t" style="font-size:21px">Time module</div><div class="s">AdaLN · zero-init gate</div></div>`
+    + `<div class="box grey" id="c6sum" style="left:730px;top:395px;width:64px;height:64px;border-radius:50%"><div class="t" style="font-size:30px">+</div></div>`
+    + `<div class="box grey" id="c6rend" style="left:880px;top:360px;width:200px;height:130px"><div class="t" style="font-size:21px">Renderer</div><div class="s">frozen · target view</div>${lockSvg(10, 10)}</div>`
+    + `<div class="card" id="c6out" style="left:1180px;top:200px;width:600px;height:337px"><div id="c6outimgs"></div></div>`
+    + `<div class="lbl" id="c6outl" style="left:1180px;top:550px;font-size:18px;color:#fff"></div>`
+    + `<div id="c6cams" class="abs" style="left:1180px;top:600px;width:600px;height:120px;opacity:0"><svg width="600" height="120" viewBox="0 0 600 120" id="c6camsvg"></svg></div>`
+    + `<svg class="abs" id="c6svg" width="1920" height="840" viewBox="0 0 1920 840"></svg>`
+    + `<div class="tag" id="c6rt" style="left:1180px;top:745px;opacity:0;font-size:15px">40 fps · 224×224</div>`;
+  const s = $('#c6svg'); defs(s);
+  arrow(s, 330, 350, 412, 350); arrow(s, 648, 350, 745, 400); arrow(s, 330, 520, 722, 440); arrow(s, 800, 427, 870, 427); arrow(s, 1088, 427, 1170, 400);
+  const oi = $('#c6outimgs'); state.c6imgs = [];
+  [...OURS05, ...BULLET].forEach(src => { const im = el('img', '', 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0'); im.src = src; oi.appendChild(im); state.c6imgs.push(im); });
+  const cs = $('#c6camsvg'); state.c6cams = [];
+  svgEl('path', { d: 'M20,100 Q300,-40 580,100', fill: 'none', stroke: 'rgba(255,255,255,.25)', 'stroke-width': 2, 'stroke-dasharray': '6 6' }, cs);
+  for (let i = 0; i < 12; i++) { const u = i / 11, x = lerp(20, 580, u), y = 100 - 2 * 70 * u * (1 - u); state.c6cams.push(svgEl('circle', { cx: x, cy: y, r: 7, fill: '#5b6280' }, cs)); }
+}
+
+function buildC7() {
+  const w = $('#c7wrap');
+  const cards = [['ℒ<sub>rgb</sub>', 'L2 + perceptual loss on the rendered target frame', '#79c3cc'], ['ℒ<sub>dyn</sub>', 'extra perceptual + gradient loss on dynamic crops', '#8b74ff'], ['ℒ<sub>mask</sub>', 'BCE on the DPT mask head vs. pseudo dynamic masks', '#e9b421']];
+  w.innerHTML = cards.map(([t, d, c], i) => `<div class="box grey c7card" style="left:${160 + i * 400}px;top:190px;width:360px;height:220px;opacity:0;border-color:${c}"><div class="t" style="font-size:40px;color:${c};font-family:'Cambria Math','STIX Two Math',serif">${t}</div><div class="s" style="font-family:Inter;font-size:17px;color:#cfd4ee;margin-top:14px;padding:0 24px;line-height:1.4">${d}</div></div>`).join('')
+    + `<div class="card" style="left:1400px;top:190px;width:360px;height:202px;opacity:0" id="c7mask"><img src="assets/lat/5e72ebd308.webp"></div><div class="lbl" id="c7maskl" style="left:1400px;top:400px;opacity:0">predicted dynamic mask (gate response)</div>`
+    + `<div class="note" id="c7no" style="left:160px;top:480px;font-size:28px;color:#fff;opacity:0;line-height:1.5"><span class="strike">depth</span> &nbsp;·&nbsp; <span class="strike">optical flow</span> &nbsp;·&nbsp; <span class="strike">3D motion labels</span> &nbsp;·&nbsp; <span class="strike">per-scene optimisation</span></div>`
+    + `<div class="note" id="c7yes" style="left:160px;top:560px;font-size:24px;opacity:0">only a <b style="color:#fff">small set of synchronized multi-view videos</b>, sampled asynchronously in view and time</div>`;
+  state.c7cards = Array.from(w.querySelectorAll('.c7card'));
+}
+
+function buildC8() {
+  const w = $('#c8wrap');
+  const data = { NVIDIA: [15.94, 15.79, 14.45, 16.40, 21.84], N3DV: [16.10, 19.71, 12.45, 17.04, 25.11], CamxTime: [17.02, 17.34, 10.28, 20.18, 27.65] };
+  const names = ['4DGT', 'MoVieS', 'NeoVerse', 'C4G', 'FL4N (ours)'];
+  let html = ''; state.c8fills = []; state.c8vals = [];
+  Object.keys(data).forEach((ds, p) => {
+    const x = 120 + p * 580, y = 150;
+    html += `<div class="panel-title" style="left:${x}px;top:${y}px">${ds}</div><div class="panel-sub" style="left:${x}px;top:${y + 30}px">cross-time view synthesis · PSNR ↑</div><div class="bars abs" style="left:${x}px;top:${y + 70}px">`;
+    data[ds].forEach((v, i) => { html += `<div class="row" style="left:0;top:${i * 46}px"><div class="name" style="${i == 4 ? 'color:#fff;font-weight:600' : ''}">${names[i]}</div><div class="track"><div class="fill ${i == 4 ? 'ours' : ''}" data-v="${v}" data-p="${p}"></div></div><div class="val"></div></div>`; });
+    html += `</div>`;
+  });
+  html += `<div class="note" id="c8rt" style="left:120px;top:520px;width:1700px;opacity:0;font-size:26px;color:#fff;line-height:1.5"><span style="font-size:64px;font-weight:800;color:#8b74ff;vertical-align:middle">40 FPS</span> &nbsp; FL4N at 224×224 on one GPU &nbsp;<span style="color:#9aa3c7">·</span>&nbsp; <span style="font-size:40px;font-weight:700;color:#6c7391;vertical-align:middle">0.04 FPS</span> &nbsp;<span style="color:#9aa3c7">C4G with test-time pose alignment</span></div>`
+    + `<div class="note" id="c8rt2" style="left:120px;top:640px;opacity:0;font-size:20px">the residual latent is computed once per video; each new target time only runs the two-block time module and the renderer</div>`;
+  w.innerHTML = html;
+  state.c8fills = Array.from(w.querySelectorAll('.fill')); state.c8vals = Array.from(w.querySelectorAll('.val'));
+}
+
+function render(t) {
+  let cur = CH[0];
+  CH.forEach(c => { const s = $('#' + c.id); const f = ease(seg(t, c.a, c.a + .6)) * (1 - ease(seg(t, c.b - .5, c.b))); s.style.opacity = f; if (t >= c.a && t < c.b) cur = c; });
+  $('#chno').textContent = cur.no; $('#chtitle').textContent = cur.title; $('#cap').innerHTML = cur.cap;
+  const hudA = ease(seg(t, cur.a, cur.a + .6)) * (1 - ease(seg(t, cur.b - .5, cur.b)));
+  $('#chno').style.opacity = $('#chtitle').style.opacity = $('#cap').style.opacity = hudA;
+  $('#bar').style.opacity = t < 4 || t >= 68 ? 0 : 1; $('#barfill').style.width = (100 * t / TOTAL) + '%';
+  rC0(t); rC1(t - 4); rC2(t - 11); rC3(t - 18); rC4(t - 26); rC5(t - 34); rC6(t - 44); rC7(t - 53); rC8(t - 60);
+}
+function rC0(t) {
+  const rects = $('#gridtex').children;
+  for (const r of rects) { const s = +r.dataset.seed; const a = (Math.sin(t * 1.3 + s * 40) * .5 + .5) * .12 + (s > .93 ? .25 * (Math.sin(t * 2 + s * 90) * .5 + .5) : 0); r.setAttribute('opacity', (a * ease(seg(t, 0, 1.2))).toFixed(3)); }
+  $('#title0').style.transform = `translateY(${lerp(30, 0, easeOut(seg(t, 0, 1.2)))}px)`; $('#title0').style.opacity = ease(seg(t, 0, 1));
+  $('#sub0').style.opacity = ease(seg(t, .6, 1.6));
+}
+function rC1(t) {
+  state.arc.forEach((o, i) => {
+    const a = easeOut(seg(t, .3 + i * .42, .8 + i * .42));
+    const sc = lerp(.5, 1, a); o.card.style.opacity = a; o.card.style.transform = `translate(${o.x - 82}px,${o.y - 46 - 92 + (1 - a) * 30}px) scale(${sc})`;
+    o.cam.style.opacity = a; o.cam.style.transform = `translate(${o.x - 17}px,${o.y + 10}px)`;
+    o.lbl.style.opacity = a; o.lbl.style.transform = `translate(${o.x - 10}px,${o.y + 40}px)`;
+  });
+  $('#c1note').style.opacity = ease(seg(t, 5.6, 6.3)); $('#c1note').innerHTML = '12 frames &nbsp;=&nbsp; <b style="color:#e9b421">12 viewpoints</b> &nbsp;=&nbsp; <b style="color:#8b74ff">12 instants</b> &nbsp;·&nbsp; never two views of the same moment';
+}
+function rC2(t) {
+  state.cells.forEach(o => {
+    const onDiag = o.v === o.t;
+    const obs = onDiag ? easeOut(seg(t, .4 + o.v * .35, .8 + o.v * .35)) : 0;
+    o.img.style.opacity = obs; o.c.style.borderColor = onDiag && obs > 0 ? `rgba(233,180,33,${obs})` : 'rgba(255,255,255,.1)';
+    const isT = o.v === 1 && o.t === 4;
+    let qa = 0;
+    if (isT) { qa = ease(seg(t, 3.2, 3.8)) * (0.6 + 0.4 * Math.sin(t * 6)); o.c.style.boxShadow = `0 0 0 ${3 * ease(seg(t, 3.2, 3.8))}px rgba(139,116,255,.9)`; o.c.style.background = `rgba(139,116,255,${.25 * ease(seg(t, 3.2, 3.8))})`; }
+    else if (!onDiag) { qa = .35 * ease(seg(t, 4.8 + ((o.v * 7 + o.t * 3) % 6) * .15, 5.6 + ((o.v * 7 + o.t * 3) % 6) * .15)); }
+    o.q.style.opacity = qa;
+  });
+  const n = $('#c2a');
+  if (t < 3) { n.innerHTML = '<span style="color:#e9b421;font-weight:600">observed</span>: one view per instant, along the camera path'; n.style.opacity = ease(seg(t, .8, 1.4)); }
+  else if (t < 4.8) { n.innerHTML = '<span style="color:#8b74ff;font-weight:600">target</span>: view 2 at time 5, never seen by the camera'; n.style.opacity = ease(seg(t, 3.2, 3.8)); }
+  else { n.innerHTML = 'every off-diagonal cell is a valid target: <b>bullet time</b> (one column) or a <b>novel-view video</b> (one row)'; n.style.opacity = ease(seg(t, 4.8, 5.4)); }
+}
+function rC3(t) {
+  const lift = ease(seg(t, .6, 2.6)), fadeSrc = 1 - .55 * lift;
+  $('#c3src').style.opacity = fadeSrc; $('#c3lbl').style.opacity = ease(seg(t, 1.6, 2.2));
+  state.dots.forEach(o => { const x = lerp(o.gx, o.tx, lift), y = lerp(o.gy, o.ty, lift); o.d.setAttribute('cx', x); o.d.setAttribute('cy', y); o.d.setAttribute('rx', lerp(5, o.rx, lift)); o.d.setAttribute('ry', lerp(5, o.ry, lift)); o.d.setAttribute('opacity', (.85 * ease(seg(t, .4, 1.2)) * (1 - .4 * lift)).toFixed(3)); });
+  state.base.forEach((o, i) => { const a = easeOut(seg(t, 2.6 + i * .35, 3.2 + i * .35)); o.card.style.opacity = a; o.lbl.style.opacity = a; o.co.style.opacity = ease(seg(t, 4.4 + i * .3, 4.9 + i * .3)); });
+}
+function rC4(t) {
+  $('#c4enc').style.opacity = ease(seg(t, .5, 1.1)); $('#c4tag').style.opacity = ease(seg(t, 1.2, 1.7));
+  $('#c4lat').style.opacity = ease(seg(t, 1.8, 2.4)); $('#c4latl').style.opacity = ease(seg(t, 2.0, 2.6)); $('#c4n').style.opacity = ease(seg(t, 2.6, 3.2));
+  state.c4row.forEach((e, i) => e.style.opacity = easeOut(seg(t, 3.6 + i * .2, 4.1 + i * .2))); state.c4note.style.opacity = ease(seg(t, 5.2, 5.8));
+}
+function rC5(t) {
+  state.c5toks.forEach((e, i) => { const a = easeOut(seg(t, .5 + i * .25, 1 + i * .25)); e.style.opacity = a; e.style.transform = `translateY(${(1 - a) * -20}px)`; });
+  state.c5tokl.style.opacity = ease(seg(t, .9, 1.4));
+  $('#c5enc').style.opacity = ease(seg(t, 1.4, 2.0));
+  const inj = ease(seg(t, 2.6, 3.3)); state.c5inj.setAttribute('opacity', inj); state.c5inj2.setAttribute('opacity', inj); $('#c5inj').style.opacity = inj;
+  $('#c5res').style.opacity = ease(seg(t, 3.6, 4.2)); $('#c5mask').style.opacity = ease(seg(t, 4.0, 4.6));
+  state.c5row.forEach((e, i) => e.style.opacity = easeOut(seg(t, 5 + i * .25, 5.5 + i * .25)));
+}
+function rC6(t) {
+  const phase1 = t < 4.6, u = phase1 ? ease(seg(t, .5, 4.2)) : ease(seg(t, 5.0, 8.3));
+  const idx = Math.round(u * 11);
+  state.c6imgs.forEach((im, i) => im.style.opacity = (phase1 ? i === idx : i === 12 + idx) ? 1 : 0);
+  $('#c6sl').textContent = phase1 ? 'target time' : 'target view';
+  $('#c6knob').style.left = (u * 532) + 'px'; $('#c6tv').style.left = (u * 532 - 10) + 'px'; $('#c6tv').textContent = phase1 ? `t = ${idx + 1} / 12` : `cam ${idx + 1} / 12`;
+  $('#c6outl').innerHTML = phase1 ? `novel-view video &nbsp;<span style="color:#9aa3c7">fixed camera 6, time sweeps</span>` : `bullet time &nbsp;<span style="color:#9aa3c7">fixed instant, camera sweeps</span>`;
+  $('#c6cams').style.opacity = ease(seg(t, 4.6, 5.0));
+  state.c6cams.forEach((c, i) => c.setAttribute('fill', (!phase1 && i === idx) ? '#e9b421' : '#5b6280'));
+  $('#c6rt').style.opacity = ease(seg(t, 7.4, 8));
+  $('#c6tm').style.boxShadow = `0 0 ${12 + 10 * Math.sin(t * 5)}px rgba(139,116,255,.6)`;
+}
+function rC7(t) {
+  state.c7cards.forEach((e, i) => { const a = easeOut(seg(t, .4 + i * .5, 1 + i * .5)); e.style.opacity = a; e.style.transform = `translateY(${(1 - a) * 24}px)`; });
+  $('#c7mask').style.opacity = ease(seg(t, 2.0, 2.6)); $('#c7maskl').style.opacity = ease(seg(t, 2.2, 2.8));
+  $('#c7no').style.opacity = ease(seg(t, 3.2, 3.9)); $('#c7yes').style.opacity = ease(seg(t, 4.4, 5.1));
+}
+function rC8(t) {
+  state.c8fills.forEach((f, i) => { const p = +f.dataset.p, v = +f.dataset.v, a = easeOut(seg(t, .4 + p * .5 + (i % 5) * .12, 1.6 + p * .5 + (i % 5) * .12)); f.style.width = (100 * v / 30 * a) + '%'; state.c8vals[i].textContent = a > 0 ? (v * a).toFixed(2) : ''; state.c8vals[i].style.color = i % 5 === 4 ? '#fff' : '#cfd4ee'; });
+  $('#c8rt').style.opacity = ease(seg(t, 4.2, 4.9)); $('#c8rt2').style.opacity = ease(seg(t, 5.4, 6.0));
+}
+build(); render(0);
+window.render = render;
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{"scene": "Skating", "dataset": "NVIDIA", "views": 12, "frames": 12, "models": ["ours", "gt", "c4g", "neoverse", "movies", "4dgt"], "w": 320, "h": 180}

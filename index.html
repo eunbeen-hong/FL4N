@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/figures.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235a3fd6'/%3E%3Crect x='9' y='9' width='14' height='14' rx='3' fill='white'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -102,6 +103,7 @@
 <section class="section section--tint" id="overview">
   <div class="wrap wrap--narrow">
     <div class="section-head reveal"><span class="eyebrow">Overview</span><h2>4D scenes do not need explicit 4D primitives.</h2></div>
+    <div class="video-shell reveal"><video id="overview-video" controls playsinline preload="metadata" poster="static/images/overview-poster.webp" aria-label="Animated overview of FL4N: a monocular video becomes a static latent plus a temporal residual, rendered at any view and time"><source src="static/videos/overview.mp4" type="video/mp4"><track kind="descriptions" src="static/videos/overview.vtt" srclang="en" label="English descriptions">Your browser does not support embedded video. <a href="static/videos/overview.mp4">Download the overview.</a></video></div>
     <div class="prose reveal">
       <p>4D novel view synthesis (NVS) from a monocular video asks a model to render a dynamic scene from viewpoints and timestamps it never observed. Existing feed-forward methods answer with explicit 3D Gaussians plus motion fields, and pay for it with temporal ghosting, floaters and holes wherever primitives are mispredicted.</p>
       <p><span class="hl">FL4N is the first feed-forward latent 4D NVS model.</span> Instead of reconstructing primitives, it weaves a geometrically grounded scene prior into a single latent representation across space and time. A frozen, pretrained static latent NVS backbone supplies the 3D prior; a lightweight <b>dynamic encoder</b> learns only a <b>temporal residual</b> on top of it, isolating true scene motion from camera parallax. Training needs nothing but image synthesis and binary dynamic masks on a small amount of multi-view video.</p>
@@ -110,9 +112,8 @@
       <div class="tag">TL;DR</div>
       <p>Freeze a static latent view synthesizer, bolt on a small ControlNet-style dynamic branch that predicts a time-conditioned residual latent, and you get a real-time 4D renderer that beats Gaussian-based feed-forward methods on every benchmark and protocol we tested.</p>
     </div>
-    <figure class="figure reveal">
-      <img src="static/images/teaser.webp" alt="FL4N teaser: explicit Gaussian representations vs. the FL4N latent 4D representation" loading="lazy">
-      <figcaption><b>Latent versus explicit.</b> Gaussian-based feed-forward methods (top right) exhibit temporal ghosting, floaters and holes on the monocular input (top left). FL4N models dynamics in a latent 4D space and renders coherent frames for bullet-time (fixed time, moving view) and novel-view video (moving time, fixed view).</figcaption>
+    <figure class="ifig reveal" data-fig="teaser">
+      <figcaption><b>Any view, any time.</b> The NVIDIA Skating scene seen by one moving camera: each camera is observed at exactly one instant (yellow diagonal). Pick any other cell of the view × time grid and FL4N renders it from the latent 4D representation, while the Gaussian-based methods below show ghosting, floaters and holes on the same request. Bullet time sweeps views at a fixed instant; novel-view video sweeps time from a fixed camera.</figcaption>
     </figure>
     <div class="section-head reveal" style="margin-top:56px"><span class="eyebrow">Abstract</span></div>
     <div class="prose reveal">
@@ -125,8 +126,7 @@
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">Method</span><h2>A temporal residual on a frozen static prior.</h2>
       <p class="lede">FL4N keeps the pretrained static encoder and renderer of a latent NVS model frozen, and adds a trainable dynamic encoder beside them. Everything the static model already knows about geometry and viewpoint is inherited; the new branch only has to explain what changes over time.</p></div>
-    <figure class="figure reveal">
-      <img src="static/images/mainarch_0926.webp" alt="FL4N architecture overview" loading="lazy">
+    <figure class="ifig archfig reveal" data-fig="arch">
       <figcaption><b>Overview.</b> Context and target frames with varying views and timestamps are sampled from multi-view videos (left). A frozen static encoder produces the static latent; the lightweight dynamic encoder, fed the same frames plus learnable per-view time tokens and cross-attending to static features, produces a residual latent. A time module adapts the residual to the target time, adds it to the static latent, and the frozen renderer decodes the novel view.</figcaption>
     </figure>
     <div class="steps">
@@ -147,8 +147,7 @@
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">Quantitative results</span><h2>State of the art across three protocols and eight benchmarks.</h2>
       <p class="lede">We split 4D NVS into three settings on synchronized multi-view video. <b>Novel view synthesis</b> (NVS) renders held-out cameras at observed times, <b>cross-time view synthesis</b> (CTVS) renders unseen view-time pairs from a monocular sweep, and <b>novel time synthesis</b> (NTS) interpolates between temporally strided inputs on moving-camera monocular videos.</p></div>
-    <figure class="figure reveal" style="max-width:900px;margin-left:auto;margin-right:auto">
-      <img src="static/images/evalsettings.webp" alt="Three evaluation settings" loading="lazy">
+    <figure class="ifig reveal" data-fig="evalsettings">
       <figcaption><b>Three evaluation settings.</b> Red outlines are input context frames, blue outlines are evaluation targets. NVS and CTVS use NVIDIA, N3DV, Kubric4D, CamxTime and Charge; NTS uses DyCheck, ADT and TUM. Only Kubric4D and CamxTime are in the training distribution, everything else is zero-shot.</figcaption>
     </figure>
     <div class="toolbar reveal"><div class="tabs restabs"></div><span class="hint">† 2,000-step test-time pose alignment with target frames. Pose: whether context camera poses are given.</span></div>
@@ -181,6 +180,9 @@
         </div>
       </div>
     </div>
+    <figure class="ifig reveal" data-fig="nframe">
+      <figcaption><b>Generalisation to the number of context frames.</b> PSNR on CamxTime as the number of conditioning frames varies at inference, with the context sampled from the same camera and temporal extent. The model is trained with 8 frames (yellow line) yet stays on a flat plateau up to 32 and beyond: the dynamic encoder exploits temporal context far longer than it was trained on. Values are read from the paper figure; hover the points.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -188,17 +190,26 @@
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">Analysis</span><h2>What does the residual latent actually learn?</h2>
       <p class="lede">The static model can answer <i>where</i> to render but not <i>when</i>: with no target-time input it compresses the whole video into a single time-invariant prediction. The residual supplies the missing temporal axis, and it does so only where motion happens.</p></div>
-    <figure class="figure reveal">
-      <img src="static/images/compare_static.webp" alt="Rendered frames from the static latent and with the residual time correction" loading="lazy">
+    <figure class="ifig reveal" data-fig="comparestatic">
       <figcaption><b>Residual complements static rendering.</b> On dynamic scenes the frozen static latent either suppresses moving content (left) or copies it from the nearest context frame (right). Adding the time-conditioned residual places the moving subject at the target time while preserving the static background.</figcaption>
     </figure>
-    <figure class="figure reveal">
-      <img src="static/images/dynfeature.webp" alt="PCA visualisation of static and residual latents" loading="lazy">
+    <figure class="ifig reveal" data-fig="dynfeature">
       <figcaption><b>Residual latent encodes temporal dynamics.</b> PCA of the static latent shows camera-ray-like structure, whereas the residual latent suppresses static regions and varies distinctly across time around the moving objects.</figcaption>
     </figure>
-    <figure class="figure reveal">
-      <img src="static/images/gatefeature.webp" alt="Residual gate activation magnitude" loading="lazy">
-      <figcaption><b>Residual gate activation.</b> Channel-wise L2 norm of the gated residual is high on dynamic objects and near zero in the background: temporal modelling capacity concentrates where motion occurs.</figcaption>
+    <figure class="ifig reveal" data-fig="gatefeature">
+      <figcaption><b>Residual gate activation.</b> Channel-wise L2 norm of the gated residual is high on dynamic objects and near zero in the background: temporal modelling capacity concentrates where motion occurs. The third panel blends the activation over the frame.</figcaption>
+    </figure>
+    <figure class="ifig reveal" data-fig="staticfeat">
+      <figcaption><b>The static latent encodes camera pose.</b> PCA colours of the static latent are similar for cameras pointing in the same direction. The red boxes mark overlapping regions across context frames, which show the same colour gradients.</figcaption>
+    </figure>
+    <figure class="ifig reveal" data-fig="residualgrid">
+      <figcaption><b>Residual latent across the view × time grid.</b> Ground-truth frames with the dynamic mask overlaid (blend left) and the corresponding residual latent (blend right). Dynamic objects produce stronger residuals as the target pose and time move away from the context frames, i.e. with a larger discrepancy from what was observed.</figcaption>
+    </figure>
+    <figure class="ifig reveal" data-fig="dynmask">
+      <figcaption><b>Dynamic masks.</b> Masks predicted by the DPT mask head of FL4N against VGGT4D and the ground truth on five scenes. FL4N produces more accurate masks with clearer object boundaries.</figcaption>
+    </figure>
+    <figure class="ifig reveal" data-fig="qual">
+      <figcaption><b>Qualitative comparison on 4D novel view synthesis.</b> Gaussian-based methods exhibit holes, inconsistent objects and blurred detail; FL4N stays coherent. Pick a dataset and a method, then drag the divider to compare against the ground truth.</figcaption>
     </figure>
     <div class="duo">
       <div class="trio-card reveal"><span class="tag">Zero-shot matching · DAVIS</span><h3>Dynamic latent matches better where things move</h3><p>Probing dense correspondence with the protocol of Nam et al., the dynamic latent beats the static latent on the whole frame and the gap widens on dynamic regions, where moving content breaks the multi-view consistency the static prior relies on.</p></div>
@@ -226,9 +237,11 @@
   </div>
 </footer>
 
-<div class="lightbox" role="dialog"><button class="lb-close" aria-label="close">✕</button><img alt=""><div class="lb-cap"></div></div>
+<div class="lightbox" role="dialog"><button class="lb-close" aria-label="close">✕</button><div class="lb-body"><img alt=""></div><div class="lb-cap"></div></div>
 <script src="static/js/scenes.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/rig.js"></script>
+<script src="static/js/figdata.js"></script>
+<script src="static/js/figures.js"></script>
 </body>
 </html>
