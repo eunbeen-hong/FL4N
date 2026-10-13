@@ -98,54 +98,50 @@
 
   function compareStaticFig(root) {
     const scenes = D.comparestatic || [];
-    const tabs = el('div', 'tabs'), strip = el('div', 'cs-strip'), row = el('div', 'cs-row');
-    const staticCard = el('figure', 'cs-static'); const sImg = el('img'); staticCard.append(sImg, el('figcaption', '', '<b>Static latent only</b><span>no target time: the frozen prior cannot place the moving subject</span>'));
-    const tgrid = el('div', 'cs-tgrid');
-    row.append(staticCard, tgrid);
-    let cur = scenes[0];
-    function show() {
-      sImg.src = `${F}compare_static/${cur.static}`;
-      tgrid.innerHTML = `<div class="cs-thead"><span></span>${cur.gt.map((_, k) => `<span>Target time ${k + 1}</span>`).join('')}</div>`;
-      [['Ground truth', cur.gt, 'gt'], ['FL4N (Ours)', cur.ours, 'ours']].forEach(([lab, imgs, cls]) => {
+    const wrap = el('div', 'cs-duo');
+    scenes.forEach(sc => {
+      const col = el('div', 'cs-col');
+      const strip = el('div', 'cs-strip', '<span class="cs-lab">Context frames →</span>');
+      sc.inputs.forEach(src => { const i = el('img', 'cs-thumb'); i.src = `${F}compare_static/${src}`; strip.appendChild(i); });
+      const row = el('div', 'cs-row');
+      const staticCard = el('figure', 'cs-static'); const sImg = el('img'); sImg.src = `${F}compare_static/${sc.static}`;
+      staticCard.append(sImg, el('figcaption', '', '<b>Static latent only</b>'));
+      const tgrid = el('div', 'cs-tgrid'); tgrid.style.setProperty('--n', sc.gt.length);
+      tgrid.innerHTML = `<div class="cs-thead"><span></span>${sc.gt.map((_, k) => `<span>t${k + 1}</span>`).join('')}</div>`;
+      [['Ground truth', sc.gt, 'gt'], ['FL4N', sc.ours, 'ours']].forEach(([lab, imgs, cls]) => {
         const r = el('div', 'cs-trow ' + cls); r.appendChild(el('span', 'cs-rlab', lab));
         imgs.forEach(src => { const i = el('img'); i.src = `${F}compare_static/${src}`; i.alt = lab; r.appendChild(i); });
         tgrid.appendChild(r);
       });
-      tgrid.style.setProperty('--n', cur.gt.length);
-    }
-    function pickScene(it) { cur = it.s; strip.innerHTML = '<span class="cs-lab">Context frames →</span>'; cur.inputs.forEach(src => { const i = el('img', 'cs-thumb'); i.src = `${F}compare_static/${src}`; strip.appendChild(i); }); show(); }
-    pick(tabs, scenes.map(s => ({ label: s.title, s })), pickScene, 0, 'tab');
-    pickScene({ s: scenes[0] });
-    const tools = el('div', 'fig-tools'); tools.append(tabs, enlarge(() => [sImg.src, ...Array.from(tgrid.querySelectorAll('img')).map(i => i.src)].slice(0, 3), 'Static latent only · ground truth · FL4N'));
-    mount(root, tools, strip, row);
+      row.append(staticCard, tgrid);
+      col.append(strip, row);
+      wrap.appendChild(col);
+    });
+    mount(root, wrap);
   }
 
-  function scrubFig(root, kind) {
+  function gridFig(root, kind) {
     const d = kind === 'gate' ? D.gatefeature : D.dynfeature;
     if (!d) return;
     const dir = kind === 'gate' ? 'gatefeature/' : 'dynfeature/';
     const n = d.rows[0].length;
-    const panels = el('div', 'sc-panels'), strip = el('div', 'sc-strip'), ctrl = el('div', 'sc-ctrl');
-    const imgs = d.rows.map((_, ri) => { const f = el('figure', 'sc-panel'); const i = el('img'); f.append(i, el('figcaption', '', d.labels[ri])); panels.appendChild(f); return i; });
-    let ov = null, ovGate = null, ovRange = null;
-    if (kind === 'gate') {
-      const f = el('figure', 'sc-panel sc-overlay'); ov = el('img'); ovGate = el('img', 'ov'); ovRange = el('input'); ovRange.type = 'range'; ovRange.min = 0; ovRange.max = 100; ovRange.value = 55;
-      ovRange.addEventListener('input', () => (ovGate.style.opacity = ovRange.value / 100));
-      const lab = el('label', '', 'Overlay opacity '); lab.appendChild(ovRange);
-      f.append(ov, ovGate, el('figcaption', '', 'Gate over frame'), lab); panels.appendChild(f); ovGate.style.opacity = .55;
-    }
-    let t = 0, timer = null, hover = false;
-    const thumbs = d.rows[0].map((src, k) => { const b = btn('sc-thumb', `<img src="${F}${dir}${src}" alt=""><span>t${k + 1}</span>`, () => set(k)); b.addEventListener('mouseenter', () => set(k)); strip.appendChild(b); return b; });
-    function set(k) { t = k; imgs.forEach((i, ri) => (i.src = `${F}${dir}${d.rows[ri][t]}`)); if (ov) { ov.src = `${F}${dir}${d.rows[0][t]}`; ovGate.src = `${F}${dir}${d.rows[1][t]}`; } thumbs.forEach((b, i) => b.classList.toggle('cur', i === t)); }
-    function start() { if (!timer) timer = setInterval(() => { if (!hover) set((t + 1) % n); }, 650); }
-    function stop() { clearInterval(timer); timer = null; }
-    strip.addEventListener('mouseenter', () => (hover = true));
-    strip.addEventListener('mouseleave', () => (hover = false));
-    ctrl.append(el('span', 'sc-hint', 'Plays through the context frames automatically; hover a frame to hold it.'), enlarge(() => imgs.map(i => i.src), () => `${d.labels.join(' · ')} at t${t + 1}`));
-    preload(d.rows.flat().map(s => `${F}${dir}${s}`));
-    mount(root, panels, strip, ctrl);
-    set(0);
-    new IntersectionObserver(es => es.forEach(e => (e.isIntersecting ? start() : stop())), { threshold: 0.05 }).observe(root);
+    const rows = d.rows.map((r, ri) => ({ label: d.labels[ri], imgs: r.map(src => [src]) }));
+    if (kind === 'gate') rows.push({ label: 'Gate over frame', imgs: d.rows[0].map((src, k) => [src, d.rows[1][k]]) });
+    const grid = el('div', 'gf-grid'); grid.style.setProperty('--n', n);
+    grid.appendChild(el('span', 'gf-corner', ''));
+    for (let k = 0; k < n; k++) grid.appendChild(el('span', 'gf-head', `t${k + 1}`));
+    rows.forEach(r => {
+      grid.appendChild(el('span', 'gf-lab', r.label));
+      r.imgs.forEach((srcs, k) => {
+        const c = el('div', 'gf-cell'); c.dataset.c = k;
+        srcs.forEach((src, si) => { const i = el('img', si ? 'ov' : ''); i.src = `${F}${dir}${src}`; i.alt = ''; c.appendChild(i); });
+        c.addEventListener('mouseenter', () => (grid.dataset.col = k));
+        grid.appendChild(c);
+      });
+    });
+    grid.addEventListener('mouseleave', () => (grid.dataset.col = ''));
+    const axis = el('div', 'gf-axis', `<span>Time →</span><span class="sc-hint">Hover a column to magnify that instant across the rows.</span>`);
+    mount(root, axis, grid);
   }
 
   function nframeFig(root) {
@@ -172,7 +168,7 @@
   $$('[data-fig]').forEach(root => {
     const k = root.dataset.fig;
     try {
-      ({ arch: archFig, teaser: teaserFig, comparestatic: compareStaticFig, dynfeature: r => scrubFig(r, 'dyn'), gatefeature: r => scrubFig(r, 'gate'), nframe: nframeFig })[k](root);
+      ({ arch: archFig, teaser: teaserFig, comparestatic: compareStaticFig, dynfeature: r => gridFig(r, 'dyn'), gatefeature: r => gridFig(r, 'gate'), nframe: nframeFig })[k](root);
     } catch (e) { console.error('figure', k, e); }
   });
 })();
