@@ -72,7 +72,7 @@ const $ = s => document.querySelector(s);
 const CH = [
   { id: 'c0', a: 0, b: 2.5 },
   { id: 'c1', a: 2.5, b: 6.5, title: 'Monocular video input', cap: 'One moving camera: every frame is a new viewpoint <b>and</b> a new instant.' },
-  { id: 'c2', a: 6.5, b: 11, title: 'The task: any view, any time', cap: 'Only the diagonal is observed. Render the scene at viewpoints and instants <b>never seen</b>.' },
+  { id: 'c2', a: 6.5, b: 11, title: 'The task: novel views and timestamps', cap: 'Only the diagonal is observed. Render the scene at viewpoints and instants <b>never seen</b>.' },
   { id: 'c3', a: 11, b: 16, title: 'Explicit Gaussians struggle', cap: 'Mispredicted primitives become <b>ghosting, floaters, holes and blur</b>.' },
   { id: 'c4', a: 16, b: 25.5, title: 'FL4N architecture', caps: [[0, 'Context frames come from <b>one moving camera</b>, each at its own instant. The target is another view and time.'], [2.3, 'A <b>frozen</b> static encoder turns them into a static latent: it knows <b>where</b> to render, not <b>when</b>.'], [4.6, 'A small dynamic encoder, anchored to the static features, adds a <b>time-invariant residual</b> and a dynamic mask.'], [7.0, 'A time module adapts the residual to the <b>target time</b>; the frozen renderer decodes it at the <b>target view</b>.']] },
   { id: 'c5', a: 25.5, b: 31.5, title: 'Any target time, any target view', cap: 'One feed-forward pass per frame. Sweep <b>time</b> at a fixed camera, or sweep the <b>camera</b> at a fixed instant.' },

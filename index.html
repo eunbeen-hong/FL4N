@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FL4N: Feed-forward Latent Model for 4D Novel View Synthesis</title>
-<meta name="description" content="FL4N is the first feed-forward latent 4D novel view synthesis model: a frozen static latent NVS prior plus a lightweight dynamic encoder that learns a temporal residual, rendering dynamic scenes from a monocular video at any view and time in real time.">
+<meta name="description" content="FL4N is the first feed-forward latent 4D novel view synthesis model: a frozen static latent NVS prior plus a lightweight dynamic encoder that learns a temporal residual, rendering dynamic scenes from a monocular video at novel views and timestamps in real time.">
 <meta property="og:title" content="FL4N: Feed-forward Latent Model for 4D Novel View Synthesis">
 <meta property="og:description" content="Feed-forward 4D novel view synthesis from a monocular video, in latent space, without explicit 3D primitives.">
 <meta property="og:image" content="static/images/teaser.webp">
@@ -81,7 +81,7 @@
 <section class="section section--tint" id="overview">
   <div class="wrap wrap--narrow">
     <div class="section-head reveal"><span class="eyebrow">Overview</span><h2>4D scenes do not need explicit 4D primitives.</h2></div>
-    <div class="video-shell reveal"><video id="overview-video" controls playsinline preload="metadata" poster="static/images/overview-poster.webp" aria-label="Animated overview of FL4N: a monocular video becomes a static latent plus a temporal residual, rendered at any view and time"><source src="static/videos/overview.mp4" type="video/mp4"><track kind="descriptions" src="static/videos/overview.vtt" srclang="en" label="English descriptions">Your browser does not support embedded video. <a href="static/videos/overview.mp4">Download the overview.</a></video></div>
+    <div class="video-shell reveal"><video id="overview-video" controls playsinline preload="metadata" poster="static/images/overview-poster.webp" aria-label="Animated overview of FL4N: a monocular video becomes a static latent plus a temporal residual, rendered at novel views and timestamps"><source src="static/videos/overview.mp4" type="video/mp4"><track kind="descriptions" src="static/videos/overview.vtt" srclang="en" label="English descriptions">Your browser does not support embedded video. <a href="static/videos/overview.mp4">Download the overview.</a></video></div>
     <div class="prose reveal">
       <p>4D novel view synthesis renders a dynamic scene from viewpoints and instants that were never observed. Feed-forward methods do it with explicit 3D Gaussians plus motion, and pay with ghosting, floaters and holes.</p>
       <p><span class="hl">FL4N is the first feed-forward latent 4D NVS model.</span> A frozen static latent backbone supplies the 3D prior; a lightweight <b>dynamic encoder</b> adds a <b>temporal residual</b> on top. Training needs only images and binary motion masks.</p>

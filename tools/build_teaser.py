@@ -5,6 +5,7 @@ import cv2
 from PIL import Image
 
 B = "/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/baseline_evals_res/ctvs"
+B_MOVIES_NV = "/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/final_benchmark/ctvs"
 GT_NV = "/mnt/sde/eunbeen/data/NVIDIA_x/NVIDIA"
 GT_CX = "/mnt/sde/eunbeen/data/CamxTime_x/CamxTime"
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "figures", "teaser")
@@ -16,7 +17,8 @@ C4G_RE = re.compile(r"^all_(\d+)_i\d+_f(\d+)\.png$")
 
 
 def pred_path(ds, key, scene, v, f):
-    d = f"{B}/{ds}/{ds}/{MODELS[key]}/{scene}/pred"
+    base = B_MOVIES_NV if ds == "nvidia" and key == "movies" else B
+    d = f"{base}/{ds}/{ds}/{MODELS[key]}/{scene}/pred"
     p = f"{d}/v{v:02d}_f{f:02d}.png"
     if os.path.exists(p):
         return p

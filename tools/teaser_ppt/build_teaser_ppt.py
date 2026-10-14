@@ -11,17 +11,18 @@ from lxml import etree
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 B = '/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/baseline_evals_res/ctvs/nvidia/nvidia'
+B_MOVIES = '/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/final_benchmark/ctvs/nvidia/nvidia'
 OUT = os.path.join(ROOT, 'figure_ppts', 'teaser.pptx')
 IMG = os.path.join(ROOT, 'tools', 'teaser_ppt', 'img')
 PW = os.environ.get('PW', '/tmp/claude-1001/-home-cvlab20-project-eunbeen-LagerNVS4d/2029518d-9a2f-403f-a387-494dcea53f53/scratchpad/pw')
 FONT = 'Google Sans'
 C = dict(ink='231a12', ink2='4e4033', ink3='7f6d5c', line='efe3d2', line2='e2d0b8', p='b4591e', pd='8e4113', ps='f4d9c2', pg='fbf1e6', y='e8b53a', ys='fbe6a8', g='1b7f4b', r='c0392b', slate='e6ecef', slate2='a3b4bd', gray='f3efe9', white='ffffff')
 W, H = 13.333, 6.2
-EX = [('Balloon1', 'movies', 1, 10, (250, 40, 750, 415), 'ghosting'), ('Jumping', '4dgt', 0, 8, (80, 70, 580, 445), 'blur'), ('Playground', 'neoverse_tto_nostatic', 2, 10, (340, 60, 800, 405), 'holes')]
+EX = [('Balloon1', 'movies', 4, 10, (330, 20, 830, 395), 'tearing'), ('Jumping', '4dgt', 0, 8, (80, 70, 580, 445), 'blur'), ('Playground', 'neoverse_tto_nostatic', 2, 10, (340, 60, 800, 405), 'holes')]
 
 
 def pred(scene, key, v, f):
-    d = f'{B}/{key}/{scene}/pred'
+    d = f'{B_MOVIES if key == "movies" else B}/{key}/{scene}/pred'
     p = f'{d}/v{v:02d}_f{f:02d}.png'
     if not os.path.exists(p):
         p = [f'{d}/{x}' for x in os.listdir(d) if re.match(rf'^all_{v}_i\d+_f{f}\.png$', x)][0]
@@ -58,7 +59,7 @@ def layout(ex, logo):
         L.append(('ellipse', dict(x=x, y=y, w=w, h=h, fill=fill, rot=rot, alpha=alpha, stroke=stroke)))
     image(0.4, 0.22, 0.9, 0.9, logo)
     text(1.35, 0.2, 2.2, 0.95, 'FL4N', 38, 'p', True)
-    text(3.35, 0.2, 7, 0.95, 'Any view, any time, from one monocular video', 17, 'ink2', False)
+    text(3.35, 0.2, 7, 0.95, 'Novel views and timestamps from one monocular video', 17, 'ink2', False)
     rows = [dict(y=1.35, h=2.2, fill='gray', stroke='line2', tag='Explicit  ·  3D Gaussians', tagc='ink2', tagbg='white'), dict(y=3.75, h=2.2, fill='pg', stroke='ps', tag='Latent  ·  FL4N (ours)', tagc='pd', tagbg='white')]
     mid = (rows[0]['y'] + rows[1]['y'] + rows[1]['h']) / 2
     sw, sh = 1.7, 0.96
