@@ -87,16 +87,16 @@
 .cs-strip { display: grid; grid-template-columns: 62px repeat(8, 1fr); gap: 5px; align-items: center; margin-bottom: 12px; }
 .cs-lab { font-size: .74rem; font-weight: 700; color: var(--ink-3); line-height: 1.2; }
 .cs-thumb { width: 100%; height: auto; border-radius: 5px; border: 1px solid var(--line); display: block; }
-.cs-row { display: grid; grid-template-columns: 2fr 3fr; gap: 12px; align-items: start; }
+.cs-row { display: grid; grid-template-columns: 2fr 3fr; gap: 14px; align-items: center; }
 .cs-static { margin: 0; }
 .cs-static img { width: 100%; border-radius: var(--radius-sm); border: 2px solid var(--line-2); }
 .cs-static figcaption { margin-top: 6px; font-size: .8rem; color: var(--ink-3); }
 .cs-static figcaption b { color: var(--ink); }
 .cs-tgrid { display: grid; gap: 6px; }
-.cs-thead, .cs-trow { display: grid; grid-template-columns: 62px repeat(var(--n, 3), 1fr); gap: 6px; align-items: center; }
+.cs-thead, .cs-trow { display: grid; grid-template-columns: 50px repeat(var(--n, 3), 1fr); gap: 6px; align-items: center; }
 .cs-thead span { font-size: .72rem; font-weight: 700; color: var(--ink-3); text-align: center; }
-.cs-rlab { font-size: .76rem; font-weight: 700; color: var(--ink-2); }
-.cs-trow.ours .cs-rlab { color: var(--primary-ink); } .cs-trow.gt .cs-rlab { color: var(--green); }
+.cs-rlab { justify-self: end; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; font-size: .68rem; font-weight: 700; letter-spacing: .04em; line-height: 1; white-space: nowrap; }
+.cs-trow.ours .cs-rlab { color: var(--primary-ink); background: var(--primary-soft); } .cs-trow.gt .cs-rlab { color: var(--green); background: var(--green-soft); }
 .cs-trow img { width: 100%; border-radius: 5px; border: 2px solid var(--line); display: block; }
 .cs-trow.ours img { border-color: var(--primary); } .cs-trow.gt img { border-color: var(--green); }
 

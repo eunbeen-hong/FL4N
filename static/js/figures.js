@@ -115,9 +115,9 @@
       staticCard.append(sImg, el('figcaption', '', '<b>Static latent only</b>'));
       const tgrid = el('div', 'cs-tgrid'); tgrid.style.setProperty('--n', sc.gt.length);
       tgrid.innerHTML = `<div class="cs-thead"><span></span>${sc.gt.map((_, k) => `<span>t${k + 1}</span>`).join('')}</div>`;
-      [['Ground truth', sc.gt, 'gt'], ['FL4N', sc.ours, 'ours']].forEach(([lab, imgs, cls]) => {
-        const r = el('div', 'cs-trow ' + cls); r.appendChild(el('span', 'cs-rlab', lab));
-        imgs.forEach(src => { const i = el('img'); i.src = `${F}compare_static/${src}`; i.alt = lab; r.appendChild(i); });
+      [['GT', 'Ground truth', sc.gt, 'gt'], ['FL4N', 'FL4N', sc.ours, 'ours']].forEach(([lab, alt, imgs, cls]) => {
+        const r = el('div', 'cs-trow ' + cls); const l = el('span', 'cs-rlab', lab); l.title = alt; r.appendChild(l);
+        imgs.forEach(src => { const i = el('img'); i.src = `${F}compare_static/${src}`; i.alt = alt; r.appendChild(i); });
         tgrid.appendChild(r);
       });
       row.append(staticCard, tgrid);
@@ -145,8 +145,7 @@
         grid.appendChild(c);
       });
     });
-    const axis = el('div', 'gf-axis', `<span>Time →</span>`);
-    mount(root, axis, grid);
+    mount(root, grid);
   }
 
   function nframeFig(root) {
