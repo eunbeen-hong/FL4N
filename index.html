@@ -109,7 +109,7 @@
       <figcaption><b>Overview.</b> Context frames feed a frozen static encoder (static latent) and a lightweight dynamic encoder with learnable time tokens (residual latent). A time module adapts the residual to the target time, adds it to the static latent, and the frozen renderer decodes the target view. Click a stage to isolate it.</figcaption>
     </figure>
     <div class="steps">
-      <div class="step reveal"><div class="no">1</div><h3>Dynamic encoder with static injection</h3><p>Eight transformer layers see each context frame with a learnable time token and cross-attend into the frozen static features, so they can separate camera motion from object motion.</p></div>
+      <div class="step reveal"><div class="no">1</div><h3>Dynamic encoder with static anchoring</h3><p>Eight transformer layers see each context frame with a learnable time token and cross-attend into the frozen static features, so they can separate camera motion from object motion.</p></div>
       <div class="step reveal" style="--d:80ms"><div class="no">2</div><h3>Target-time residual adaptation</h3><p>The residual is computed once. For a target time, interpolated time tokens drive an AdaLN time module with a zero-initialised gate, so training starts from the static prior.</p></div>
       <div class="step reveal" style="--d:160ms"><div class="no">3</div><h3>Frozen renderer, image-only training</h3><p>Static plus residual latent is decoded by the untouched renderer. Losses: L2 and perceptual on the image, extra terms on moving regions, and a mask loss. No depth, flow or 3D motion labels.</p></div>
     </div>
