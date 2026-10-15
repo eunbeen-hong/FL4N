@@ -40,14 +40,13 @@ cross-time, novel-view and novel-time synthesis **in real time** (40 FPS at 224�
 view×time explorer and the step-through architecture are on the [project page](https://eunbeen-hong.github.io/FL4N/).
 
 <div align="center">
-<img src="assets/teaser.webp" width="100%" alt="Explicit 3D Gaussians vs the FL4N latent">
-<sub>Explicit Gaussian baselines (top) tear, blur and leave holes on the same views; FL4N (bottom) renders them cleanly.</sub>
+<img src="assets/arch.webp" width="100%" alt="FL4N architecture">
+<sub>A frozen static encoder gives the static latent; the dynamic encoder, anchored to it, adds a temporal residual and a dynamic mask; the time module adapts the residual to the target time before the frozen renderer.</sub>
 </div>
 
 ## 🔥 TODO
 
 - ☑️ Training, validation and benchmark code
-- ☑️ Datasets mirrored on HuggingFace 🤗 ([pancakesonmonday/4D_dataset](https://huggingface.co/datasets/pancakesonmonday/4D_dataset/tree/main))
 - ⬜ `fl4n.ckpt` release on HuggingFace 🤗
 - ⬜ arXiv paper
 - ⬜ HuggingFace 🤗 demo
@@ -140,9 +139,8 @@ Training checkpoints contain only the trainable modules; merge one into a full c
 also accepts them directly).
 
 **Data.** All data lives under one directory, `FL4N_DATA` (default `./data`), one subdirectory per
-dataset; there are no other paths in the code. Datasets are mirrored at
-[pancakesonmonday/4D_dataset](https://huggingface.co/datasets/pancakesonmonday/4D_dataset/tree/main);
-extract each archive into its own subdirectory (`cat CamxTime.tar.* | tar xf - -C $FL4N_DATA`).
+dataset; there are no other paths in the code. Download each dataset from its original release and extract
+it into its own subdirectory.
 ```
 $FL4N_DATA/
   CamxTime/  Kubric4D/{train,test}/  NVIDIA/  N3DV/  Charge_v1_0/  ADT/  DyCheck/  TUM/
