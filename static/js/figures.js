@@ -47,7 +47,7 @@
   }
 
   function teaserFig(root) {
-    fetch(F + 'teaser/teaser.json').then(r => r.json()).then(m => {
+    fetch(F + 'teaser/teaser.json?v=202610160110').then(r => r.json()).then(m => {
       const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
       const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View →</span>`);
