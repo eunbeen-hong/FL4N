@@ -63,7 +63,7 @@
       ctrls.append(chips);
       mount(root, ctrls, grid);
       let sc = null, keep = [], cells = [], cur = [0, 0], timer = null, hover = false, step = 0;
-      const src = (model, v, t) => `${F}teaser/${sc.id}/${v === t ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
+      const src = (model, v, t) => `${F}teaser/${sc.id}/${v === t && !sc.diag ? 'gt' : model}_v${String(v).padStart(2, '0')}_f${String(t).padStart(2, '0')}.webp`;
       let seq = 0;
       const decoded = {};
       function load(u) { if (!decoded[u]) { const im = new Image(); im.src = u; decoded[u] = im.decode().catch(() => {}); } return decoded[u]; }
@@ -75,7 +75,7 @@
         Promise.all(srcs.map(([, u]) => load(u))).then(() => {
           if (my !== seq) return;
           srcs.forEach(([k, u]) => { P[k].i.src = u; });
-          P.ours.cap.textContent = obs ? 'Context frame' : 'FL4N (Ours)';
+          P.ours.cap.textContent = obs ? (sc.diag ? 'FL4N (Ours) · input view re-rendered' : 'Context frame') : 'FL4N (Ours)';
           P.gt.cap.textContent = obs ? 'Ground truth (= context frame)' : 'Ground truth';
         });
       }

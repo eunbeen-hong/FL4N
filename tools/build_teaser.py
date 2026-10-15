@@ -1,4 +1,4 @@
-"""Export view x time CTVS matrices (all models + GT) for the explorer as small webps; NVIDIA keeps the 8 view/time indices where FL4N scores best, CamxTime scenes are listed in CAMX."""
+"""Export view x time CTVS matrices (all models + GT) for the explorer as small webps; NVIDIA keeps the 8 view/time indices where FL4N scores best, CamxTime scenes are listed in CAMX; diagonal cells use the recon protocol renders when every model has them (diag flag), else GT."""
 import os, re, json, shutil
 import numpy as np
 import cv2
@@ -6,6 +6,7 @@ from PIL import Image
 
 B = "/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/baseline_evals_res/ctvs"
 B_MOVIES_NV = "/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/final_benchmark/ctvs"
+B_RECON = "/home/cvlab20/project/eunbeen/ssd_symlink/sde/eunbeen/final_benchmark/recon"
 GT_NV = "/mnt/sde/eunbeen/data/NVIDIA_x/NVIDIA"
 GT_CX = "/mnt/sde/eunbeen/data/CamxTime_x/CamxTime"
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static", "figures", "teaser")
@@ -16,12 +17,14 @@ W, KEEP = 320, 8
 C4G_RE = re.compile(r"^all_(\d+)_i\d+_f(\d+)\.png$")
 
 
-def pred_path(ds, key, scene, v, f):
-    base = B_MOVIES_NV if ds == "nvidia" and key == "movies" else B
+def pred_path(ds, key, scene, v, f, recon=False):
+    base = B_RECON if recon else (B_MOVIES_NV if ds == "nvidia" and key == "movies" else B)
     d = f"{base}/{ds}/{ds}/{MODELS[key]}/{scene}/pred"
     p = f"{d}/v{v:02d}_f{f:02d}.png"
     if os.path.exists(p):
         return p
+    if not os.path.isdir(d):
+        return None
     for x in os.listdir(d):
         m = C4G_RE.match(x)
         if m and int(m.group(1)) == v and int(m.group(2)) == f:
@@ -77,7 +80,7 @@ def export(ds, scene, name):
     keep, mean = psnr_keep(ds, scene, views, frames, gt)
     d = os.path.join(OUT, scene)
     os.makedirs(d, exist_ok=True)
-    h = None
+    h, diag = None, True
     for i in keep:
         for j in keep:
             v, f = views[i], frames[j]
@@ -86,14 +89,16 @@ def export(ds, scene, name):
                 h = save(gt(v, f), p)
             else:
                 h = Image.open(p).height
-            if i == j:
-                continue
             for key in MODELS:
+                src = pred_path(ds, key, scene, v, f, recon=i == j)
+                if src is None:
+                    diag = False
+                    continue
                 p = f"{d}/{key}_v{i:02d}_f{j:02d}.webp"
                 if not os.path.exists(p):
-                    save(Image.open(pred_path(ds, key, scene, v, f)), p)
-    print(ds, scene, keep, round(mean, 2), flush=True)
-    return dict(id=scene, ds=ds, name=name, keep=keep, w=W, h=h, psnr=round(mean, 2))
+                    save(Image.open(src), p)
+    print(ds, scene, keep, round(mean, 2), "diag" if diag else "", flush=True)
+    return dict(id=scene, ds=ds, name=name, keep=keep, w=W, h=h, psnr=round(mean, 2), diag=diag)
 
 
 def main():
