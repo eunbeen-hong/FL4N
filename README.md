@@ -15,3 +15,7 @@ To fill in before release: authors, affiliations, paper/arXiv/code links, badge 
 The hero camera-rig visualisation and its clips were removed on 2026-10-13 (user request); `tools/build_rig.py` and `tools/build_rig_grid.py` remain for reference.
 
 `tools/teaser_ppt/build_teaser_ppt.py` builds the paper teaser deck (`tools/teaser_ppt/teaser.pptx`, also copied to `figure_ppts/`): explicit 3D Gaussians vs the FL4N latent on three NVIDIA scenes (MoVieS crop from `final_benchmark`, the rest from `baseline_evals_res`), native PowerPoint shapes in the page palette with Google Sans, plus `teaser_preview.png` rendered from an HTML twin of the same layout.
+
+## Repository layout
+
+This page lives on the `gh-pages` branch of [eunbeen-hong/FL4N](https://github.com/eunbeen-hong/FL4N) and GitHub Pages serves it from there; the `main` branch holds the code release (the former `~/project/eunbeen/FL4N_code` tree). Push page changes to `gh-pages` only.
