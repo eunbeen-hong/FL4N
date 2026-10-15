@@ -13,7 +13,7 @@
 [![Checkpoint](https://img.shields.io/badge/%F0%9F%A4%97%20Checkpoint-coming%20soon-ffcc4d?style=for-the-badge)](#-checkpoint)
 
 This is the official implementation of the paper **"FL4N: Feed-forward Latent Model for 4D Novel View Synthesis"** by
-[Eunbeen Hong](https://eunbeen-hong.github.io/)<sup>1</sup>, [Hyeonseo Yu](https://hdeori.github.io/)<sup>1</sup>, [Soowon Son](https://soow0n.github.io/)<sup>1</sup>, [Chaehyun Kim](https://kchyun.github.io/)<sup>1</sup>, [Jahyeok Koo](https://jahyeok-koo.github.io/)<sup>1</sup>, [Jisoo Kim](https://jiiiisoo.github.io/)<sup>1</sup>, [Junhwa Hur](https://hurjunhwa.github.io/)<sup>2†</sup>, [Seungryong Kim](https://cvlab.kaist.ac.kr/)<sup>1†</sup>.
+[Eunbeen Hong](https://eunbeen-hong.github.io/)<sup>1</sup>, [Hyeonseo Yu](https://hdeori.github.io/)<sup>1</sup>, [Honggyu An](https://hg010303.github.io/)<sup>1</sup>, [Jooho Son](https://personal-website-rho-two-13.vercel.app/)<sup>1</sup>, [Hyunah Ko](https://hyunahko.github.io/)<sup>1</sup>, [Soowon Son](https://soow0n.github.io/)<sup>1</sup>, [Chaehyun Kim](https://kchyun.github.io/)<sup>1</sup>, [Jahyeok Koo](https://jahyeok-koo.github.io/)<sup>1</sup>, [Jisoo Kim](https://jiiiisoo.github.io/)<sup>1</sup>, [Junhwa Hur](https://hurjunhwa.github.io/)<sup>2†</sup>, [Seungryong Kim](https://cvlab.kaist.ac.kr/)<sup>1†</sup>.
 
 <sup>1</sup> KAIST AI &nbsp;&nbsp;&nbsp; <sup>2</sup> Google DeepMind
 
@@ -184,7 +184,7 @@ Protocols, baseline footing and per-cell settings: `benchmark/README.md`, `bench
 ```bibtex
 @article{hong2026fl4n,
   title   = {FL4N: Feed-forward Latent Model for 4D Novel View Synthesis},
-  author  = {Hong, Eunbeen and Yu, Hyeonseo and Son, Soowon and Kim, Chaehyun and Koo, Jahyeok and Kim, Jisoo and Hur, Junhwa and Kim, Seungryong},
+  author  = {Hong, Eunbeen and Yu, Hyeonseo and An, Honggyu and Son, Jooho and Ko, Hyunah and Son, Soowon and Kim, Chaehyun and Koo, Jahyeok and Kim, Jisoo and Hur, Junhwa and Kim, Seungryong},
   journal = {arXiv preprint},
   year    = {2026}
 }
