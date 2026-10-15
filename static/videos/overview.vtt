@@ -16,13 +16,13 @@ Ground truth and FL4N next to four Gaussian-based baselines showing washed-out, 
 The architecture figure from the paper lights up stage by stage: monocular sequence sampling, the frozen static encoder and its static latent, the dynamic encoder with learnable time tokens, static anchoring, residual latent and mask head, then the time module, sum and frozen renderer at the target view.
 
 00:25.500 --> 00:31.500
-FL4N output at a fixed novel camera while a slider sweeps time, then at a frozen instant while the camera sweeps eight viewpoints.
+FL4N output while the time slider sweeps with the camera dot fixed, then with time frozen while the highlighted camera dot moves through eight viewpoints.
 
 00:31.500 --> 00:35.000
-Three loss cards: RGB, dynamic crop and mask. Depth, optical flow and 3D motion labels are struck through.
+Depth, optical flow, 3D motion labels and per-scene optimisation are each crossed out; the only supervision is rendered target images plus binary motion masks.
 
 00:35.000 --> 00:39.500
 Bar charts of cross-time view synthesis PSNR on NVIDIA, N3DV and CamxTime, FL4N on top, and 40 FPS.
 
 00:39.500 --> 00:41.500
-Closing card: FL4N, latent 4D, no primitives.
+Closing card: FL4N, Feed-forward Latent Model for 4D Novel View Synthesis.
