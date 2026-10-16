@@ -48,7 +48,7 @@
 
   function teaserFig(root) {
     fetch(F + 'teaser/teaser.json?v=202610160110').then(r => r.json()).then(m => {
-      const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'chips'), grid = el('div', 'tz-grid');
+      const ctrls = el('div', 'tz-ctrl'), chips = el('div', 'tz-gallery'), grid = el('div', 'tz-grid');
       const padWrap = el('div', 'tz-padwrap'), pad = el('div', 'tz-pad'), info = el('div', 'tz-info'), panels = el('div', 'tz-panels');
       const padHead = el('div', 'tz-axes', `<span class="ax-t">Time →</span>`), padSide = el('div', 'tz-side', `<span class="ax-v">View →</span>`);
       info.innerHTML = `<span class="k"><i class="sw obs"></i>context frame</span><span class="k"><i class="sw"></i>rendered frame</span><span class="k"><i class="sw cur"></i>current cell</span><span class="k hint">Hover to pick a cell.</span>`;
@@ -69,14 +69,12 @@
       function load(u) { if (!decoded[u]) { const im = new Image(); im.src = u; decoded[u] = im.decode().catch(() => {}); } return decoded[u]; }
       function go(v, t) {
         cur = [v, t];
-        const my = ++seq, obs = v === t;
+        const my = ++seq;
         cells.forEach(c => c.classList.toggle('cur', +c.dataset.v === v && +c.dataset.t === t));
         const srcs = Object.keys(P).map(k => [k, src(k, v, t)]);
         Promise.all(srcs.map(([, u]) => load(u))).then(() => {
           if (my !== seq) return;
           srcs.forEach(([k, u]) => { P[k].i.src = u; });
-          P.ours.cap.textContent = obs ? (sc.diag ? 'FL4N (Ours) · input view re-rendered' : 'Context frame') : 'FL4N (Ours)';
-          P.gt.cap.textContent = obs ? 'Ground truth (= context frame)' : 'Ground truth';
         });
       }
       function tick() { const n = keep.length; step = (step + 1) % (n * n); const a = keep[Math.floor(step / n)], b = keep[step % n]; sc.ds === 'camxtime' ? go(b, a) : go(a, b); }
@@ -97,7 +95,13 @@
       }
       pad.addEventListener('mouseenter', () => (hover = true));
       pad.addEventListener('mouseleave', () => (hover = false));
-      pick(chips, m.scenes.map(s => ({ label: s.name, s })), it => pickScene(it.s), Math.max(0, m.scenes.findIndex(s => s.id === 'Skating')));
+      const thumbs = m.scenes.map(s => {
+        const b = el('button', 'tz-thumb'); b.type = 'button'; b.title = s.name; const k = String(s.keep[0]).padStart(2, '0');
+        b.innerHTML = `<img src="${F}teaser/${s.id}/gt_v${k}_f${k}.webp" alt="${s.name}" loading="lazy">`;
+        b.addEventListener('click', () => { thumbs.forEach(x => x.classList.remove('active')); b.classList.add('active'); pickScene(s); });
+        chips.appendChild(b); return b;
+      });
+      thumbs[Math.max(0, m.scenes.findIndex(s => s.id === 'Skating'))].classList.add('active');
       pickScene(m.scenes.find(s => s.id === 'Skating') || m.scenes[0]);
       new IntersectionObserver(es => es.forEach(e => (e.isIntersecting ? start() : stop())), { threshold: 0.05 }).observe(root);
     });
